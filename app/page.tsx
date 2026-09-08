@@ -1,8 +1,8 @@
-import Terminal from "@/components/Terminal";
-import { profile } from "@/lib/content";
+import Portfolio from "@/components/Portfolio";
+import { person, experiences, projects, aboutContent } from "@/lib/data";
 
 // Visually hidden, always in the DOM: gives crawlers, link-preview bots and
-// screen readers the full text that the interactive terminal renders client-side.
+// screen readers the full text that the 3D/animated UI renders client-side.
 const srOnly: React.CSSProperties = {
   position: "absolute",
   width: 1,
@@ -15,56 +15,44 @@ const srOnly: React.CSSProperties = {
   borderWidth: 0,
 };
 
-const seoProjects = [
-  ["NammaStocks, AI Stock Assistant", "Stock analytics web app with Stockie, a tool-calling AI assistant grounded in live data. React, TypeScript, FastAPI, PostgreSQL, LangChain. Contributor: built the tool-call loop, SSE streaming, RAG prompt, and multi-provider layer.", "https://nammastocks.vercel.app"],
-  ["OARFIN, Real-Time Emergency Response Platform", "Scrapes disaster news with Playwright, filters it through a Gemini relevance classifier, and routes people to the nearest shelter using merged Overpass and FEMA data. Runner-up at LNMIIT HackCrux.", "https://oarfin-website-nine.vercel.app"],
-  ["Ecom Microservice GraphQL", "Three-service e-commerce backend behind one GraphQL API, communicating over Kafka. Node.js, Express, MongoDB, Docker.", "https://ecom-microservice-graphql.vercel.app"],
-  ["Vera, but Better, Decision Automation Engine", "Deterministic rule engine scoring inputs across 26 weighted categories, chosen over an LLM after studying failure modes. Python, FastAPI, Redis. Validated against 100 scenarios.", "https://github.com/Shaurya55555/magicpin"],
-  ["DevLab, CI/CD and Deployment Automation", "Dual GitHub Actions and Jenkins pipeline with Bash automation and Docker Compose. Node.js, TypeScript.", "https://github.com/Shaurya55555/DevLab"],
-  ["TorrentEdge, Distributed Multi-Service System", "Distributed-systems study: Kafka message queue, Nginx reverse proxy, Docker Compose orchestration. Peer-protocol layer is scaffolded.", "https://github.com/Shaurya55555/TorrentEdge"],
-  ["Cat vs Dog Image Classifier", "CNN binary image classifier with augmentation and training callbacks. Python, TensorFlow, Keras, OpenCV.", "https://github.com/Shaurya55555/CatDogImageANN"],
-  ["Student Outcome Classification", "End-to-end ML pipeline comparing five algorithms with confusion matrices and precision/recall/F1. Python, scikit-learn.", "https://github.com/Shaurya55555/DataScProject"],
-];
-
 export default function Page() {
   return (
     <>
-      <article style={srOnly} aria-hidden="false">
-        <h1>{profile.name}</h1>
-        <p>{profile.role}. Based in {profile.location}. {profile.availability}</p>
+      <article style={srOnly}>
+        <h1>{person.name}</h1>
+        <p>
+          {person.role}. Based in {person.location}. {person.availability}
+        </p>
 
         <h2>About</h2>
-        <p>
-          I am a full-stack software engineer and a B.Tech Computer Science
-          student at The LNM Institute of Information Technology in Jaipur,
-          graduating in 2027. I build things that run in production, across the
-          full path from schema design and API work to the interface a person
-          clicks on. My recent focus is applied AI: LLM tool-calling agents,
-          retrieval-augmented generation, and honest evaluation of model-driven
-          systems. I have solved more than 300 data structures and algorithms
-          problems in C++.
-        </p>
+        <p>{aboutContent}</p>
 
         <h2>Experience</h2>
-        <p>
-          Marine Edge, Software Development Engineer Intern (March 2025 to
-          January 2026, Bengaluru). Built backend services and REST APIs for a
-          platform serving more than 7,000 users, integrated the Razorpay API,
-          implemented role-based access control, and designed and tuned
-          PostgreSQL schema and indexes toward a 30 percent faster load.
-        </p>
-        <p>
-          APJ Academy, Frontend Web Developer Intern (August 2024 to February
-          2025, Bengaluru). Built responsive React interfaces, cut data
-          retrieval latency by 25 percent through query and index analysis, and
-          implemented real-time sync over WebSockets.
-        </p>
+        {experiences.map((e) => (
+          <div key={e.companyName}>
+            <h3>
+              {e.title}, {e.companyName} ({e.date})
+            </h3>
+            <ul>
+              {e.points.map((p, i) => (
+                <li key={i}>{p}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
 
         <h2>Projects</h2>
         <ul>
-          {seoProjects.map(([name, blurb, url]) => (
-            <li key={name}>
-              <a href={url}>{name}</a>: {blurb}
+          {projects.map((p) => (
+            <li key={p.name}>
+              <a href={p.sourceCodeLink}>{p.name}</a>
+              {p.liveLink ? (
+                <>
+                  {" "}
+                  (<a href={p.liveLink}>live</a>)
+                </>
+              ) : null}
+              : {p.description}
             </li>
           ))}
         </ul>
@@ -86,14 +74,15 @@ export default function Page() {
 
         <h2>Contact</h2>
         <p>
-          Email <a href={`mailto:${profile.email}`}>{profile.email}</a>.
-          <a href={profile.links.github}>GitHub</a>,{" "}
-          <a href={profile.links.linkedin}>LinkedIn</a>,{" "}
-          <a href={profile.links.leetcode}>LeetCode</a>.{" "}
-          <a href="/Shaurya_Bajpai_Resume.pdf">Resume (PDF)</a>.
+          Email <a href={`mailto:${person.email}`}>{person.email}</a>.{" "}
+          <a href={person.github}>GitHub</a>,{" "}
+          <a href={person.linkedin}>LinkedIn</a>,{" "}
+          <a href={person.leetcode}>LeetCode</a>,{" "}
+          <a href={person.resume}>Resume (PDF)</a>.
         </p>
       </article>
-      <Terminal />
+
+      <Portfolio />
     </>
   );
 }

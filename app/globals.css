@@ -1,146 +1,184 @@
 @import "tailwindcss";
 
-:root {
-  --bg: #0a0e0a;
-  --bg-soft: #0e140e;
-  --fg: #cfe8d4;
-  --green: #3ef07a;
-  --green-dim: #2aa657;
-  --amber: #ffb454;
-  --cyan: #56c8ff;
-  --magenta: #ff6ac1;
-  --muted: #5f7a66;
-  --red: #ff5c5c;
+@theme {
+  --color-primary: #050816;
+  --color-secondary: #aaa6c3;
+  --color-tertiary: #151030;
+  --color-black-100: #100d25;
+  --color-black-200: #090325;
+  --color-white-100: #f3f3f3;
+
+  --breakpoint-xs: 30rem;
+
+  --shadow-card: 0px 35px 120px -15px #211e35;
+
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
 * {
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 html,
 body {
-  padding: 0;
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: "SFMono-Regular", "JetBrains Mono", "Fira Code", Menlo, Consolas,
-    "Liberation Mono", monospace;
-  font-size: 14px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
+  padding: 0;
+  background: var(--color-primary);
+  color: #fff;
+  color-scheme: dark;
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 ::selection {
-  background: var(--green-dim);
-  color: #04170b;
+  background: #915eff;
+  color: #fff;
 }
 
-/* scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
-  height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: #050816;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1c2a1f;
+  background: #1f1a3d;
   border-radius: 6px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #263a2a;
+
+.hash-span {
+  margin-top: -100px;
+  padding-bottom: 100px;
+  display: block;
 }
 
-a {
-  color: var(--cyan);
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
+.black-gradient {
+  background: #000000;
+  background: linear-gradient(to right, #434343, #000000);
 }
 
-.crt::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0px,
-    rgba(0, 0, 0, 0) 2px,
-    rgba(0, 0, 0, 0.16) 3px,
-    rgba(0, 0, 0, 0) 4px
-  );
-  z-index: 50;
-  mix-blend-mode: multiply;
+.violet-gradient {
+  background: #804dee;
+  background: linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%);
 }
 
-.crt::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(62, 240, 122, 0.04) 0%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
-  z-index: 51;
+.green-pink-gradient {
+  background: linear-gradient(90.13deg, #00cea8 1.9%, #bf61ff 97.5%);
 }
 
-.glow {
-  text-shadow: 0 0 6px rgba(62, 240, 122, 0.45);
+.orange-text-gradient {
+  background: linear-gradient(to top, #f12711, #f5af19);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.cursor {
-  display: inline-block;
-  width: 8px;
+.green-text-gradient {
+  background: linear-gradient(to top, #11998e, #38ef7d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.blue-text-gradient {
+  background: linear-gradient(to top, #2f80ed, #56ccf2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pink-text-gradient {
+  background: linear-gradient(to top, #ec008c, #fc6767);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-pattern {
+  background-image: url("/herobg.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* project card hover affordance */
+.card-img_hover {
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+}
+.group\/card:hover .card-img_hover {
+  opacity: 1;
+}
+
+/* r3f canvas loader */
+.canvas-loader {
+  font-size: 10px;
+  width: 1em;
   height: 1em;
-  background: var(--green);
-  margin-left: 2px;
-  transform: translateY(2px);
-  animation: blink 1s steps(1) infinite;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  animation: mulShdSpin 1.1s infinite ease;
+  transform: translateZ(0);
 }
 
-@keyframes blink {
-  0%,
-  50% {
-    opacity: 1;
-  }
-  50.01%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes flicker {
+@keyframes mulShdSpin {
   0%,
   100% {
-    opacity: 1;
+    box-shadow: 0em -2.6em 0em 0em #ffffff,
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.5),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
   }
-  48% {
-    opacity: 1;
+  25% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff,
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
   }
   50% {
-    opacity: 0.82;
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.5),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff,
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
+      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
   }
-  52% {
-    opacity: 1;
+  75% {
+    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
+      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
+      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
+      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
+      0em 2.5em 0 0em rgba(255, 255, 255, 0.5),
+      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff,
+      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
   }
 }
 
-.flicker {
-  animation: flicker 6s infinite;
+/* vertical timeline theme overrides */
+.vertical-timeline::before {
+  background: #232631 !important;
+}
+@media only screen and (min-width: 1170px) {
+  .vertical-timeline-element-date {
+    color: #aaa6c3;
+  }
+}
+.vertical-timeline-element-date {
+  color: #aaa6c3 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cursor {
-    animation: none;
-  }
-  .flicker {
-    animation: none;
-  }
-  .crt::before {
-    display: none;
+  * {
+    scroll-behavior: auto;
   }
 }
