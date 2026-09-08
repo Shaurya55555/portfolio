@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0e0a;
+  --bg-soft: #0e140e;
+  --fg: #cfe8d4;
+  --green: #3ef07a;
+  --green-dim: #2aa657;
+  --amber: #ffb454;
+  --cyan: #56c8ff;
+  --magenta: #ff6ac1;
+  --muted: #5f7a66;
+  --red: #ff5c5c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "SFMono-Regular", "JetBrains Mono", "Fira Code", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--green-dim);
+  color: #04170b;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #1c2a1f;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #263a2a;
+}
+
+a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.crt::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.16) 3px,
+    rgba(0, 0, 0, 0) 4px
+  );
+  z-index: 50;
+  mix-blend-mode: multiply;
+}
+
+.crt::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(62, 240, 122, 0.04) 0%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  z-index: 51;
+}
+
+.glow {
+  text-shadow: 0 0 6px rgba(62, 240, 122, 0.45);
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: var(--green);
+  margin-left: 2px;
+  transform: translateY(2px);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  48% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.82;
+  }
+  52% {
+    opacity: 1;
+  }
+}
+
+.flicker {
+  animation: flicker 6s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+  }
+  .flicker {
+    animation: none;
+  }
+  .crt::before {
+    display: none;
+  }
+}
