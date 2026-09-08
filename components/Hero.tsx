@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import ComputersCanvas from "./canvas/Computers";
 import { person, heroCopy } from "@/lib/data";
 
 export default function Hero() {
@@ -26,8 +25,6 @@ export default function Hero() {
           </p>
         </div>
       </div>
-
-      <ComputersCanvas />
 
       <div className="absolute bottom-32 flex w-full items-center justify-center xs:bottom-10">
         <a href="#about">
