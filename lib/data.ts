@@ -54,8 +54,8 @@ export const experiences = [
   {
     title: "Software Development Engineer Intern",
     companyName: "Marine Edge",
-    icon: "/tech/nodejs.png",
-    iconBg: "#383E56",
+    icon: "/company/marineedge.png",
+    iconBg: "#ffffff",
     date: "March 2025 - January 2026",
     points: [
       "Built and maintained backend services and REST APIs for a web platform serving more than 7,000 users.",
@@ -68,8 +68,8 @@ export const experiences = [
   {
     title: "Frontend Web Developer Intern",
     companyName: "APJ Academy",
-    icon: "/tech/reactjs.png",
-    iconBg: "#E6DEDD",
+    icon: "/company/apjacademy.png",
+    iconBg: "#ffffff",
     date: "August 2024 - February 2025",
     points: [
       "Built responsive, cross-device user interfaces in React.js from project requirements.",
