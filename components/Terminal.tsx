@@ -29,8 +29,9 @@ const CHIPS = [
   "experience",
   "projects",
   "skills",
-  "education",
   "achievements",
+  "education",
+  "leadership",
   "contact",
   "resume",
 ];
@@ -132,6 +133,9 @@ export default function Terminal() {
       <span key="role">
         {profile.role} <span style={{ color: "var(--muted)" }}>//</span>{" "}
         {profile.location}
+      </span>,
+      <span key="avail" style={{ color: "var(--muted)" }}>
+        {profile.availability}
       </span>,
       <span key="hint" style={{ color: "var(--muted)" }}>
         booting shell... type{" "}

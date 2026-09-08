@@ -1,37 +1,45 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const siteUrl = "https://shaurya-portfolio.vercel.app";
+const siteUrl = "https://shaurya-bajpai.vercel.app";
+const description =
+  "Full-stack software engineer and B.Tech CSE student at LNMIIT. Builds web products end to end with React, Node.js, FastAPI, and PostgreSQL, and integrates large language models into real applications.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Shaurya Bajpai // Full-Stack Software Engineer",
-  description:
-    "Interactive terminal portfolio of Shaurya Bajpai, a full-stack software engineer working across React/Next.js, Node.js, GraphQL, PostgreSQL, Docker and CI/CD.",
+  title: "Shaurya Bajpai, Full-Stack Software Engineer",
+  description,
   keywords: [
     "Shaurya Bajpai",
-    "Full-Stack Engineer",
-    "Software Engineer",
+    "full-stack developer",
+    "software engineer",
     "React",
-    "Next.js",
     "Node.js",
-    "GraphQL",
-    "Portfolio",
+    "FastAPI",
+    "PostgreSQL",
+    "LLM",
+    "LangChain",
+    "RAG",
+    "LNMIIT",
+    "Bengaluru",
+    "backend developer",
+    "AI developer",
   ],
   authors: [{ name: "Shaurya Bajpai" }],
+  alternates: { canonical: siteUrl },
   openGraph: {
-    title: "Shaurya Bajpai // Full-Stack Software Engineer",
+    title: "Shaurya Bajpai, Software Engineer",
     description:
-      "Interactive terminal portfolio. Type a command or tap a chip to explore.",
+      "Full-stack engineer working across web, backend, and applied AI. Two internships, hackathon wins, and deployed side projects.",
     url: siteUrl,
     siteName: "Shaurya Bajpai",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shaurya Bajpai // Full-Stack Software Engineer",
+    title: "Shaurya Bajpai, Software Engineer",
     description:
-      "Interactive terminal portfolio. Type a command or tap a chip to explore.",
+      "Full-stack engineer working across web, backend, and applied AI. Two internships, hackathon wins, and deployed side projects.",
   },
 };
 
