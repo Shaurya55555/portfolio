@@ -9,7 +9,7 @@ import * as random from "maath/random";
 function Stars(props: Record<string, unknown>) {
   const ref = useRef<THREE.Points>(null);
   const [sphere] = useState(() =>
-    random.inSphere(new Float32Array(5000), { radius: 1.2 })
+    random.inSphere(new Float32Array(9000), { radius: 1.5 })
   );
 
   useFrame((_state, delta) => {
@@ -24,8 +24,8 @@ function Stars(props: Record<string, unknown>) {
       <Points ref={ref} positions={sphere} stride={3} frustumCulled {...props}>
         <PointMaterial
           transparent
-          color="#f272c8"
-          size={0.002}
+          color="#cdd8ff"
+          size={0.0026}
           sizeAttenuation
           depthWrite={false}
         />
@@ -36,7 +36,7 @@ function Stars(props: Record<string, unknown>) {
 
 export default function StarsCanvas() {
   return (
-    <div className="pointer-events-none absolute inset-0 -z-10 h-full w-full">
+    <div className="pointer-events-none fixed inset-0 -z-10 h-screen w-screen">
       <Canvas camera={{ position: [0, 0, 1] }}>
         <Suspense fallback={null}>
           <Stars />

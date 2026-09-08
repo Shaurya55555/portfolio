@@ -12,7 +12,10 @@ import StarsCanvas from "./canvas/Stars";
 
 export default function Portfolio() {
   return (
-    <div className="relative z-0 bg-primary">
+    <div className="relative z-0">
+      {/* full-page space backdrop */}
+      <StarsCanvas />
+
       <div className="hero-pattern bg-cover bg-center bg-no-repeat">
         <Navbar />
         <Hero />
@@ -21,10 +24,7 @@ export default function Portfolio() {
       <Experience />
       <Tech />
       <Works />
-      <div className="relative z-0">
-        <Contact />
-        <StarsCanvas />
-      </div>
+      <Contact />
       <Footer />
     </div>
   );

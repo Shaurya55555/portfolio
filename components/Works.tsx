@@ -21,13 +21,22 @@ function ProjectCard({ index, ...project }: { index: number } & Project) {
         className="w-full sm:w-[340px]"
       >
         <div className="group/card w-full rounded-2xl bg-tertiary p-5">
-          <div
-            className="relative flex h-[200px] w-full items-center justify-center rounded-2xl"
-            style={{ background: project.gradient }}
-          >
-            <span className="text-[56px] font-black text-white/90 drop-shadow">
-              {project.monogram}
-            </span>
+          <div className="relative h-[200px] w-full overflow-hidden rounded-2xl bg-black">
+            {project.image ? (
+              <Image
+                src={project.image}
+                alt={`${project.name} homepage`}
+                fill
+                sizes="340px"
+                className="object-cover object-top"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <span className="text-[22px] font-bold tracking-wide text-white">
+                  {project.name}
+                </span>
+              </div>
+            )}
 
             <div className="card-img_hover absolute inset-0 m-3 flex justify-end gap-2">
               <a

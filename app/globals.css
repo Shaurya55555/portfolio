@@ -2,15 +2,17 @@
 
 @theme {
   --color-primary: #050816;
-  --color-secondary: #aaa6c3;
-  --color-tertiary: #151030;
-  --color-black-100: #100d25;
-  --color-black-200: #090325;
+  --color-secondary: #9fb0d4;
+  --color-tertiary: #10152e;
+  --color-black-100: #0b1024;
+  --color-black-200: #070a1a;
   --color-white-100: #f3f3f3;
+  --color-accent: #4468ff;
+  --color-accent-soft: #9db8ff;
 
   --breakpoint-xs: 30rem;
 
-  --shadow-card: 0px 35px 120px -15px #211e35;
+  --shadow-card: 0px 35px 120px -15px #0a1740;
 
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
@@ -24,15 +26,29 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--color-primary);
+  background: #02030c;
   color: #fff;
   color-scheme: dark;
   font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
 }
 
+/* deep-space backdrop: nebula glow behind everything, stars canvas sits above this */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 18% 12%, rgba(50, 92, 235, 0.20), transparent 60%),
+    radial-gradient(55% 45% at 85% 30%, rgba(28, 46, 130, 0.22), transparent 60%),
+    radial-gradient(70% 60% at 50% 100%, rgba(15, 26, 74, 0.35), transparent 65%),
+    #02030c;
+}
+
 ::selection {
-  background: #915eff;
+  background: #1e3a8a;
   color: #fff;
 }
 
@@ -59,12 +75,12 @@ body {
 }
 
 .violet-gradient {
-  background: #804dee;
-  background: linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%);
+  background: #4468ff;
+  background: linear-gradient(-90deg, #4468ff 0%, rgba(20, 30, 74, 0) 100%);
 }
 
 .green-pink-gradient {
-  background: linear-gradient(90.13deg, #00cea8 1.9%, #bf61ff 97.5%);
+  background: linear-gradient(90.13deg, #1e3a8a 1.9%, #4468ff 97.5%);
 }
 
 .orange-text-gradient {

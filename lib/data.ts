@@ -84,8 +84,8 @@ export type Project = {
   name: string;
   description: string;
   tags: { name: string; color: string }[];
-  gradient: string;
   monogram: string;
+  image?: string;
   liveLink?: string;
   demoLink?: string;
   sourceCodeLink: string;
@@ -101,7 +101,6 @@ export const projects: Project[] = [
       { name: "fastapi", color: "green-text-gradient" },
       { name: "langchain", color: "pink-text-gradient" },
     ],
-    gradient: "linear-gradient(135deg,#00cea8 0%,#bf61ff 100%)",
     monogram: "NS",
     liveLink: "https://nammastocks.vercel.app",
     sourceCodeLink: "https://github.com/Shaurya55555/NammaStocks",
@@ -115,8 +114,8 @@ export const projects: Project[] = [
       { name: "node", color: "green-text-gradient" },
       { name: "gemini-api", color: "orange-text-gradient" },
     ],
-    gradient: "linear-gradient(135deg,#2f80ed 0%,#56ccf2 100%)",
     monogram: "OF",
+    image: "/projects/oarfin.png",
     liveLink: "https://oarfin-website-nine.vercel.app",
     sourceCodeLink: "https://github.com/Shaurya55555/Oarfin",
   },
@@ -129,8 +128,8 @@ export const projects: Project[] = [
       { name: "kafka", color: "orange-text-gradient" },
       { name: "docker", color: "blue-text-gradient" },
     ],
-    gradient: "linear-gradient(135deg,#ec008c 0%,#fc6767 100%)",
     monogram: "EC",
+    image: "/projects/ecom.png",
     liveLink: "https://ecom-microservice-graphql.vercel.app",
     sourceCodeLink: "https://github.com/Shaurya55555/ecom-microservice-graphql",
   },
@@ -143,7 +142,6 @@ export const projects: Project[] = [
       { name: "fastapi", color: "green-text-gradient" },
       { name: "redis", color: "orange-text-gradient" },
     ],
-    gradient: "linear-gradient(135deg,#11998e 0%,#38ef7d 100%)",
     monogram: "VB",
     sourceCodeLink: "https://github.com/Shaurya55555/magicpin",
   },
@@ -156,7 +154,6 @@ export const projects: Project[] = [
       { name: "jenkins", color: "pink-text-gradient" },
       { name: "docker", color: "green-text-gradient" },
     ],
-    gradient: "linear-gradient(135deg,#f12711 0%,#f5af19 100%)",
     monogram: "DL",
     sourceCodeLink: "https://github.com/Shaurya55555/DevLab",
   },
@@ -169,8 +166,8 @@ export const projects: Project[] = [
       { name: "nginx", color: "green-text-gradient" },
       { name: "docker-compose", color: "blue-text-gradient" },
     ],
-    gradient: "linear-gradient(135deg,#804dee 0%,#00cea8 100%)",
     monogram: "TE",
+    image: "/projects/torrentedge.png",
     demoLink: "https://shaurya55555.github.io/TorrentEdge/",
     sourceCodeLink: "https://github.com/Shaurya55555/TorrentEdge",
   },

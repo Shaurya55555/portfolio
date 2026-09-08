@@ -26,8 +26,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 z-20 flex w-full items-center px-6 py-5 sm:px-16 ${
-        scrolled ? "bg-primary" : "bg-transparent"
+      className={`fixed top-0 z-20 flex w-full items-center px-6 py-5 transition-colors sm:px-16 ${
+        scrolled
+          ? "border-b border-white/5 bg-[#050816]/80 backdrop-blur-md"
+          : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
@@ -39,7 +41,7 @@ export default function Navbar() {
             window.scrollTo(0, 0);
           }}
         >
-          <span className="h-9 w-9 rounded-full bg-[#915EFF]" />
+          <span className="h-9 w-9 rounded-full bg-[#4468ff]" />
           <p className="cursor-pointer text-[18px] font-bold text-white">
             {person.name}
           </p>
