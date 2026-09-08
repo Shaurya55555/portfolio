@@ -8,32 +8,28 @@ export default function Astronaut({ className = "" }: { className?: string }) {
   return (
     <motion.div
       className={className}
-      animate={
-        reduce
-          ? undefined
-          : { y: [0, -18, 0], rotate: [-2.5, 2.5, -2.5] }
-      }
-      transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      animate={reduce ? undefined : { y: [0, -22, 0], rotate: [-1.6, 1.6, -1.6] }}
+      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
     >
       <svg
-        viewBox="0 0 400 440"
+        viewBox="0 0 300 640"
         role="img"
         aria-label="Illustration of an astronaut holding a laptop"
-        className="h-auto w-full drop-shadow-[0_25px_45px_rgba(68,104,255,0.25)]"
+        className="h-auto w-full drop-shadow-[0_30px_60px_rgba(68,104,255,0.25)]"
       >
         <defs>
-          <radialGradient id="astro-glow" cx="50%" cy="45%" r="55%">
-            <stop offset="0%" stopColor="#4468ff" stopOpacity="0.45" />
+          <radialGradient id="astro-glow" cx="50%" cy="42%" r="55%">
+            <stop offset="0%" stopColor="#4468ff" stopOpacity="0.4" />
             <stop offset="100%" stopColor="#4468ff" stopOpacity="0" />
           </radialGradient>
-          <radialGradient id="visor" cx="38%" cy="35%" r="75%">
+          <radialGradient id="visor" cx="38%" cy="34%" r="75%">
             <stop offset="0%" stopColor="#1b2a5c" />
             <stop offset="55%" stopColor="#0a1230" />
             <stop offset="100%" stopColor="#05091d" />
           </radialGradient>
           <linearGradient id="suit" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#d7ddf0" />
+            <stop offset="100%" stopColor="#d3d9ef" />
           </linearGradient>
           <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#12204a" />
@@ -42,92 +38,94 @@ export default function Astronaut({ className = "" }: { className?: string }) {
         </defs>
 
         {/* ambient glow */}
-        <ellipse cx="200" cy="210" rx="180" ry="190" fill="url(#astro-glow)" />
+        <ellipse cx="150" cy="300" rx="150" ry="320" fill="url(#astro-glow)" />
 
         {/* tether */}
         <path
-          d="M92 250 C 60 300, 120 340, 96 392"
+          d="M46 270 C 12 360, 70 460, 50 604"
           fill="none"
           stroke="#9db8ff"
-          strokeOpacity="0.5"
-          strokeWidth="5"
+          strokeOpacity="0.45"
+          strokeWidth="6"
           strokeLinecap="round"
         />
 
         {/* backpack */}
-        <rect x="150" y="150" width="100" height="150" rx="30" fill="#b9c2e0" />
+        <rect x="96" y="118" width="108" height="170" rx="30" fill="#b7c0de" />
 
         {/* left leg */}
         <path
-          d="M176 286 q-16 6 -20 46 q-2 24 10 40 q16 8 26 -4 q6 -34 6 -70 q0 -18 -22 -12z"
+          d="M138 316 q-30 8 -32 74 l-4 150 q-1 26 6 44 q16 10 30 0 q6 -66 6 -132 l2 -96 q1 -32 -8 -40z"
           fill="url(#suit)"
         />
-        <rect x="150" y="360" width="42" height="26" rx="12" fill="#c7cee6" />
+        <rect x="96" y="596" width="52" height="32" rx="13" fill="#c7cee6" />
+
         {/* right leg */}
         <path
-          d="M224 286 q16 6 20 46 q2 24 -10 40 q-16 8 -26 -4 q-6 -34 -6 -70 q0 -18 22 -12z"
+          d="M162 316 q30 8 32 74 l4 150 q1 26 -6 44 q-16 10 -30 0 q-6 -66 -6 -132 l-2 -96 q-1 -32 8 -40z"
           fill="url(#suit)"
         />
-        <rect x="208" y="360" width="42" height="26" rx="12" fill="#c7cee6" />
+        <rect x="152" y="596" width="52" height="32" rx="13" fill="#c7cee6" />
 
         {/* torso */}
         <path
-          d="M200 150 q54 0 58 60 q4 58 -10 84 q-48 16 -96 0 q-14 -26 -10 -84 q4 -60 58 -60z"
+          d="M150 122 q46 0 52 58 l6 96 q3 40 -12 56 q-46 16 -92 0 q-15 -16 -12 -56 l6 -96 q6 -58 52 -58z"
           fill="url(#suit)"
         />
+
+        {/* neck ring */}
+        <rect x="126" y="112" width="48" height="18" rx="8" fill="#c7cee6" />
 
         {/* chest panel */}
-        <rect x="176" y="196" width="48" height="34" rx="8" fill="#0c1330" />
-        <rect x="183" y="203" width="12" height="9" rx="2" fill="#4468ff" />
-        <rect x="199" y="203" width="12" height="9" rx="2" fill="#9db8ff" />
-        <rect x="183" y="216" width="28" height="7" rx="2" fill="#2a3358" />
+        <rect x="124" y="176" width="52" height="38" rx="9" fill="#0c1330" />
+        <rect x="132" y="184" width="14" height="10" rx="2" fill="#4468ff" />
+        <rect x="150" y="184" width="14" height="10" rx="2" fill="#9db8ff" />
+        <rect x="132" y="199" width="32" height="8" rx="2" fill="#2a3358" />
 
-        {/* arms wrapping to the laptop */}
+        {/* arms */}
         <path
-          d="M150 196 q-34 10 -40 60 q-2 20 18 30 l24 -18 q-14 -8 -12 -26 q2 -22 20 -30z"
+          d="M100 150 q-32 14 -36 74 l-2 56 q0 20 18 28 l20 -16 q-13 -8 -11 -26 l2 -50 q3 -42 27 -62z"
           fill="url(#suit)"
         />
         <path
-          d="M250 196 q34 10 40 60 q2 20 -18 30 l-24 -18 q14 -8 12 -26 q-2 -22 -20 -30z"
+          d="M200 150 q32 14 36 74 l2 56 q0 20 -18 28 l-20 -16 q13 -8 11 -26 l-2 -50 q-3 -42 -27 -62z"
           fill="url(#suit)"
         />
 
         {/* laptop */}
-        <g transform="rotate(-4 200 300)">
-          <rect x="132" y="298" width="136" height="14" rx="4" fill="#2c3450" />
-          <rect x="140" y="238" width="120" height="64" rx="6" fill="#1b2138" />
-          <rect x="147" y="245" width="106" height="50" rx="4" fill="url(#screen)" />
+        <g transform="rotate(-4 150 300)">
+          <rect x="72" y="300" width="156" height="16" rx="4" fill="#2c3450" />
+          <rect x="84" y="236" width="132" height="68" rx="6" fill="#1b2138" />
+          <rect x="91" y="243" width="118" height="54" rx="4" fill="url(#screen)" />
           <text
-            x="200"
-            y="277"
+            x="150"
+            y="278"
             textAnchor="middle"
             fontFamily="ui-monospace, monospace"
-            fontSize="26"
+            fontSize="28"
             fontWeight="700"
             fill="#9db8ff"
           >
             &lt;/&gt;
           </text>
-          <rect x="147" y="245" width="106" height="50" rx="4" fill="#4468ff" fillOpacity="0.12" />
+          <rect x="91" y="243" width="118" height="54" rx="4" fill="#4468ff" fillOpacity="0.12" />
         </g>
         {/* gloves */}
-        <circle cx="150" cy="300" r="14" fill="#eef1fb" />
-        <circle cx="250" cy="300" r="14" fill="#eef1fb" />
+        <circle cx="76" cy="304" r="16" fill="#eef1fb" />
+        <circle cx="224" cy="304" r="16" fill="#eef1fb" />
 
         {/* helmet */}
-        <circle cx="200" cy="112" r="66" fill="url(#suit)" />
-        <circle cx="200" cy="112" r="66" fill="none" stroke="#c7cee6" strokeWidth="4" />
-        <circle cx="200" cy="112" r="48" fill="url(#visor)" />
+        <circle cx="150" cy="76" r="56" fill="url(#suit)" />
+        <circle cx="150" cy="76" r="56" fill="none" stroke="#c7cee6" strokeWidth="4" />
+        <circle cx="150" cy="76" r="41" fill="url(#visor)" />
         <path
-          d="M170 92 q14 -20 44 -14 q-26 4 -34 24 q-6 14 0 28 q-16 -14 -10 -38z"
+          d="M124 58 q12 -18 40 -13 q-24 4 -31 22 q-6 13 0 26 q-15 -13 -9 -35z"
           fill="#4468ff"
           fillOpacity="0.55"
         />
-        <circle cx="184" cy="96" r="7" fill="#ffffff" fillOpacity="0.85" />
-
-        {/* helmet antenna */}
-        <line x1="200" y1="44" x2="200" y2="30" stroke="#c7cee6" strokeWidth="4" strokeLinecap="round" />
-        <circle cx="200" cy="26" r="5" fill="#4468ff" />
+        <circle cx="135" cy="61" r="6.5" fill="#ffffff" fillOpacity="0.85" />
+        <line x1="150" y1="20" x2="150" y2="8" stroke="#c7cee6" strokeWidth="4" strokeLinecap="round" />
+        <circle cx="150" cy="5" r="5" fill="#4468ff" />
       </svg>
     </motion.div>
   );
