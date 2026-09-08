@@ -102,6 +102,7 @@ export const projects: Project[] = [
       { name: "langchain", color: "pink-text-gradient" },
     ],
     monogram: "NS",
+    image: "/projects/nammastocks.png",
     liveLink: "https://nammastocks.vercel.app",
     sourceCodeLink: "https://github.com/Shaurya55555/NammaStocks",
   },

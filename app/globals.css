@@ -22,29 +22,29 @@
   scroll-behavior: smooth;
 }
 
+/* deep-space backdrop lives on <html> so it always sits behind the whole page;
+   the fixed star canvas renders transparently on top of it, content above that */
+html {
+  background-color: #02030c;
+  background-image:
+    radial-gradient(60% 50% at 18% 12%, rgba(50, 92, 235, 0.22), transparent 60%),
+    radial-gradient(55% 45% at 85% 28%, rgba(28, 46, 130, 0.24), transparent 60%),
+    radial-gradient(70% 60% at 50% 100%, rgba(15, 26, 74, 0.4), transparent 65%);
+  background-attachment: fixed;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
-  background: #02030c;
   color: #fff;
   color-scheme: dark;
   font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
 }
 
-/* deep-space backdrop: nebula glow behind everything, stars canvas sits above this */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    radial-gradient(60% 50% at 18% 12%, rgba(50, 92, 235, 0.20), transparent 60%),
-    radial-gradient(55% 45% at 85% 30%, rgba(28, 46, 130, 0.22), transparent 60%),
-    radial-gradient(70% 60% at 50% 100%, rgba(15, 26, 74, 0.35), transparent 65%),
-    #02030c;
+body {
+  background: transparent;
 }
 
 ::selection {
