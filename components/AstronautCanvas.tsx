@@ -8,53 +8,18 @@ import * as THREE from "three";
 
 const MODEL_URL = "/models/astronaut.glb";
 
-// Palette
-const C_SUIT = new THREE.Color("#f2f4fb");
-const C_ROCKET = new THREE.Color("#efe9dc");
-const C_VISOR = new THREE.Color("#0b0c14");
-const C_RED = new THREE.Color("#e8402f");
-const C_BLUE = new THREE.Color("#2aa8e0");
-const C_FLAME = new THREE.Color("#ffb43a");
-const C_DARK = new THREE.Color("#2a2d3a");
+// Palette: white figure, black glass visor only.
+const C_SUIT = new THREE.Color("#f4f6fb");
+const C_VISOR = new THREE.Color("#0a0b12");
 
-// Classify a triangle centroid into a colour. Orientation of this model:
-// Y up, front (visor) faces +Z, rocket nose toward +X, flame toward -X.
+// Classify a triangle centroid. Model orientation: Y up, the face looks toward
+// +Z. The head sits near (-0.16, 0.61, 0.0). Everything is the white suit
+// except a front-facing disc on the head, which is the black visor glass.
 function classify(x: number, y: number, z: number): THREE.Color {
-  // rocket flame + thruster band (far -X tip)
-  if (x < -0.86) return C_FLAME;
-  if (x < -0.72) return C_DARK;
-  // rocket nose cone (far +X tip)
-  if (x > 0.62) return C_RED;
-
-  const isAstronaut =
-    y > 0.03 && Math.abs(x + 0.06) < 0.46 && z > -0.5 && z < 0.5 && y < 0.92;
-
-  if (isAstronaut) {
-    // visor: front of the head sphere
-    const dx = x + 0.04;
-    const dy = y - 0.585;
-    const dz = z - 0.05;
-    if (dx * dx + dy * dy + dz * dz < 0.07 && dz > -0.03) return C_VISOR;
-    // belt buckle
-    if (y > 0.15 && y < 0.27 && z > 0.15 && z < 0.33 && Math.abs(x + 0.05) < 0.11)
-      return C_RED;
-    // backpack (behind)
-    if (z < -0.16 && y > 0.22 && y < 0.58 && Math.abs(x + 0.06) < 0.22)
-      return C_DARK;
-    return C_SUIT;
-  }
-
-  // porthole window on the +Z face of the rocket body
-  if (
-    z > 0.3 &&
-    y > -0.36 &&
-    y < -0.02 &&
-    (x + 0.16) * (x + 0.16) + (y + 0.19) * (y + 0.19) < 0.024
-  )
-    return C_BLUE;
-  // fins: swept shapes at the back and sides
-  if ((x < -0.44 && y > -0.02) || Math.abs(z) > 0.47) return C_RED;
-  return C_ROCKET;
+  const dx = x + 0.16;
+  const dy = y - 0.61;
+  if (y > 0.42 && z > 0.04 && dx * dx + dy * dy < 0.033) return C_VISOR;
+  return C_SUIT;
 }
 
 function Model() {
