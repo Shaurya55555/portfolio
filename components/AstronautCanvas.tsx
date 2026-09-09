@@ -1,9 +1,9 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useEffect, useRef, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Center, Environment, Float, Lightformer, useGLTF } from "@react-three/drei";
-import type { Group } from "three";
+import { Center, Environment, Lightformer, useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 
 const MODEL_URL = "/models/astronaut.glb";
 
@@ -12,37 +12,84 @@ function Model() {
   return <primitive object={scene} />;
 }
 
-function Rig() {
-  const spin = useRef<Group>(null);
-  useFrame((state) => {
-    if (spin.current) {
-      const t = state.clock.elapsedTime;
-      spin.current.rotation.y = Math.sin(t * 0.32) * 0.55;
-      spin.current.rotation.z = Math.sin(t * 0.45) * 0.02;
-    }
+type Refs = {
+  scroll: MutableRefObject<number>;
+  pointer: MutableRefObject<{ x: number; y: number }>;
+};
+
+function Flyer({ scroll, pointer }: Refs) {
+  const g = useRef<THREE.Group>(null);
+
+  useFrame((state, delta) => {
+    const grp = g.current;
+    if (!grp) return;
+    const t = state.clock.elapsedTime;
+    const s = scroll.current; // 0..1 down the page
+
+    // wander across the viewport, and travel downward as the page scrolls
+    grp.position.x = Math.sin(t * 0.16) * 2.7 + Math.cos(t * 0.07) * 0.7;
+    grp.position.y = Math.sin(t * 0.24) * 0.8 + 2.4 - s * 5.6;
+    grp.position.z = Math.sin(t * 0.12) * 0.5;
+
+    // continuous 3D tumble + easing tilt toward the cursor
+    grp.rotation.y += delta * 0.42;
+    grp.rotation.x = THREE.MathUtils.lerp(
+      grp.rotation.x,
+      -pointer.current.y * 0.25 + 0.05,
+      0.045,
+    );
+    grp.rotation.z = THREE.MathUtils.lerp(
+      grp.rotation.z,
+      pointer.current.x * 0.2,
+      0.045,
+    );
   });
+
   return (
-    <group ref={spin}>
+    <group ref={g}>
       <Center>
-        <Model />
+        <group scale={0.62}>
+          <Model />
+        </group>
       </Center>
     </group>
   );
 }
 
 export default function AstronautCanvas({ className = "" }: { className?: string }) {
+  const scroll = useRef(0);
+  const pointer = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      scroll.current = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    };
+    const onMove = (e: MouseEvent) => {
+      pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("mousemove", onMove);
+    };
+  }, []);
+
   return (
     <div className={className}>
       <Canvas
-        dpr={[1, 2]}
-        camera={{ position: [0, 0.2, 5.4], fov: 34 }}
-        gl={{ alpha: true, antialias: true }}
+        dpr={[1, 1.6]}
+        camera={{ position: [0, 0, 9], fov: 34 }}
+        gl={{ alpha: true, antialias: true, toneMapping: THREE.ACESFilmicToneMapping }}
       >
-        <ambientLight intensity={0.65} />
+        <ambientLight intensity={0.7} />
         <hemisphereLight args={["#eef2ff", "#0b1024", 0.5]} />
-        <directionalLight position={[4, 6, 5]} intensity={2.1} />
-        <directionalLight position={[-5, 2, 3]} intensity={0.8} color="#cdd8ff" />
-        <directionalLight position={[0, 2, -6]} intensity={1} color="#4468ff" />
+        <directionalLight position={[4, 6, 5]} intensity={2.2} />
+        <directionalLight position={[-5, 2, 3]} intensity={0.9} color="#cdd8ff" />
+        <directionalLight position={[0, 2, -6]} intensity={1.1} color="#4468ff" />
 
         <Suspense fallback={null}>
           <Environment resolution={256}>
@@ -51,9 +98,7 @@ export default function AstronautCanvas({ className = "" }: { className?: string
             <Lightformer intensity={1} position={[4, 0, 3]} scale={[3, 4, 1]} color="#4468ff" />
           </Environment>
 
-          <Float speed={1.1} rotationIntensity={0.06} floatIntensity={0.5}>
-            <Rig />
-          </Float>
+          <Flyer scroll={scroll} pointer={pointer} />
         </Suspense>
       </Canvas>
     </div>
