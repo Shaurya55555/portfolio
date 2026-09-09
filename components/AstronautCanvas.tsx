@@ -2,173 +2,95 @@
 
 import { Suspense, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, RoundedBox } from "@react-three/drei";
+import { Center, Float, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
-const suit = { color: "#f5f7fe", roughness: 0.5, metalness: 0 } as const;
+const MODEL_URL = "/models/astronaut.glb";
 
-function Astronaut() {
-  const sway = useRef<THREE.Group>(null);
+function Model() {
+  const { scene } = useGLTF(MODEL_URL);
 
+  const prepared = useMemo(() => {
+    const root = scene.clone(true);
+
+    // clamp helper for the position-based tint
+    const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
+
+    root.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh) return;
+
+      const geo = mesh.geometry as THREE.BufferGeometry;
+      geo.computeVertexNormals();
+      geo.computeBoundingBox();
+      const bb = geo.boundingBox!;
+      const size = new THREE.Vector3();
+      bb.getSize(size);
+
+      // The file ships with no materials or UVs and is one merged mesh, so we
+      // paint it with vertex colours from position: mostly white suit, with a
+      // dark visor zone at the upper front of the head and small accent bands.
+      const pos = geo.attributes.position as THREE.BufferAttribute;
+      const colors = new Float32Array(pos.count * 3);
+      const white = new THREE.Color("#eef1f8");
+      const dark = new THREE.Color("#07080f");
+      const accent = new THREE.Color("#4468ff");
+
+      const headY = bb.min.y + size.y * 0.6; // above this is the helmet region
+      const frontZ = bb.min.z + size.z * 0.55; // toward the camera
+      const v = new THREE.Vector3();
+
+      for (let i = 0; i < pos.count; i++) {
+        v.fromBufferAttribute(pos, i);
+        let c = white;
+
+        // visor: upper + front, near the vertical centre line
+        const nx = Math.abs(v.x - (bb.min.x + size.x * 0.5)) / (size.x * 0.5);
+        if (v.y > headY && v.z > frontZ && nx < 0.7) {
+          const t = clamp01((v.y - headY) / (size.y * 0.4));
+          c = white.clone().lerp(dark, 0.35 + 0.6 * t);
+        } else if (
+          v.y > bb.min.y + size.y * 0.32 &&
+          v.y < bb.min.y + size.y * 0.4 &&
+          v.z > bb.min.z + size.z * 0.35
+        ) {
+          // thin accent band around the mid-torso
+          c = accent;
+        }
+
+        colors[i * 3] = c.r;
+        colors[i * 3 + 1] = c.g;
+        colors[i * 3 + 2] = c.b;
+      }
+      geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+      mesh.material = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.55,
+        metalness: 0.08,
+      });
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+    });
+
+    return root;
+  }, [scene]);
+
+  return <primitive object={prepared} />;
+}
+
+function Rig() {
+  const g = useRef<THREE.Group>(null);
   useFrame((state) => {
-    if (sway.current) {
-      const t = state.clock.elapsedTime;
-      sway.current.rotation.y = Math.sin(t * 0.4) * 0.38;
-      sway.current.rotation.z = Math.sin(t * 0.55) * 0.02;
+    if (g.current) {
+      g.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.35) * 0.45;
     }
   });
-
-  const screenTex = useMemo(() => {
-    if (typeof document === "undefined") return null;
-    const c = document.createElement("canvas");
-    c.width = 320;
-    c.height = 200;
-    const ctx = c.getContext("2d");
-    if (!ctx) return null;
-    ctx.fillStyle = "#0a1024";
-    ctx.fillRect(0, 0, 320, 200);
-    ctx.fillStyle = "#9db8ff";
-    ctx.font = "bold 108px ui-monospace, monospace";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("</>", 160, 110);
-    const tex = new THREE.CanvasTexture(c);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    return tex;
-  }, []);
-
   return (
-    <group ref={sway} position={[0, -0.15, 0]} rotation={[0.04, 0, 0]}>
-      {/* life-support backpack */}
-      <RoundedBox args={[0.9, 1.1, 0.42]} radius={0.12} smoothness={4} position={[0, 0.5, -0.42]}>
-        <meshStandardMaterial {...suit} color="#e6eaf7" roughness={0.55} />
-      </RoundedBox>
-
-      {/* torso */}
-      <mesh position={[0, 0.4, 0]}>
-        <capsuleGeometry args={[0.37, 0.66, 16, 32]} />
-        <meshStandardMaterial {...suit} />
-      </mesh>
-
-      {/* shoulder pads */}
-      {[-1, 1].map((s) => (
-        <mesh key={s} position={[s * 0.4, 0.7, 0]}>
-          <sphereGeometry args={[0.19, 24, 24]} />
-          <meshStandardMaterial {...suit} />
-        </mesh>
-      ))}
-
-      {/* waist belt + buckle */}
-      <mesh position={[0, 0.06, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.37, 0.05, 12, 32]} />
-        <meshStandardMaterial color="#2a3358" roughness={0.6} />
-      </mesh>
-      <mesh position={[0, 0.06, 0.36]}>
-        <boxGeometry args={[0.16, 0.13, 0.06]} />
-        <meshStandardMaterial color="#ff5c5c" emissive="#ff5c5c" emissiveIntensity={0.25} />
-      </mesh>
-
-      {/* chest square */}
-      <mesh position={[0, 0.6, 0.34]}>
-        <boxGeometry args={[0.16, 0.16, 0.05]} />
-        <meshStandardMaterial color="#4468ff" emissive="#4468ff" emissiveIntensity={0.4} />
-      </mesh>
-
-      {/* neck ring */}
-      <mesh position={[0, 0.86, 0]}>
-        <cylinderGeometry args={[0.22, 0.22, 0.13, 24]} />
-        <meshStandardMaterial color="#d7dcee" roughness={0.5} metalness={0.15} />
-      </mesh>
-
-      {/* helmet */}
-      <mesh position={[0, 1.22, 0]}>
-        <sphereGeometry args={[0.42, 44, 44]} />
-        <meshStandardMaterial {...suit} roughness={0.35} />
-      </mesh>
-      {/* visor frame */}
-      <mesh position={[0, 1.19, 0.13]}>
-        <torusGeometry args={[0.31, 0.045, 14, 34]} />
-        <meshStandardMaterial {...suit} roughness={0.4} />
-      </mesh>
-      {/* black glass visor */}
-      <mesh position={[0, 1.19, 0.14]}>
-        <sphereGeometry args={[0.31, 40, 40]} />
-        <meshStandardMaterial color="#05060d" roughness={0.06} metalness={0.7} />
-      </mesh>
-      {/* two visor glares */}
-      <mesh position={[-0.12, 1.3, 0.4]}>
-        <sphereGeometry args={[0.055, 16, 16]} />
-        <meshBasicMaterial color="#ffffff" />
-      </mesh>
-      <mesh position={[-0.02, 1.24, 0.42]}>
-        <sphereGeometry args={[0.028, 14, 14]} />
-        <meshBasicMaterial color="#ffffff" />
-      </mesh>
-
-      {/* antenna */}
-      <mesh position={[0.18, 1.6, -0.04]} rotation={[0, 0, -0.32]}>
-        <cylinderGeometry args={[0.014, 0.014, 0.24, 8]} />
-        <meshStandardMaterial color="#c3cbe6" />
-      </mesh>
-      <mesh position={[0.24, 1.72, -0.04]}>
-        <sphereGeometry args={[0.05, 16, 16]} />
-        <meshStandardMaterial color="#4468ff" emissive="#4468ff" emissiveIntensity={1.3} />
-      </mesh>
-
-      {/* arms bent forward onto the laptop */}
-      {[-1, 1].map((s) => (
-        <group key={s} position={[s * 0.42, 0.58, 0.04]} rotation={[-1.0, 0, s * 0.12]}>
-          <mesh position={[0, -0.28, 0]}>
-            <capsuleGeometry args={[0.125, 0.44, 12, 20]} />
-            <meshStandardMaterial {...suit} />
-          </mesh>
-          <mesh position={[0, -0.52, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.12, 0.03, 10, 20]} />
-            <meshStandardMaterial color="#d7dcee" roughness={0.5} />
-          </mesh>
-          <mesh position={[0, -0.6, 0.02]}>
-            <sphereGeometry args={[0.14, 22, 22]} />
-            <meshStandardMaterial color="#ffffff" roughness={0.4} />
-          </mesh>
-        </group>
-      ))}
-
-      {/* legs */}
-      {[-1, 1].map((s) => (
-        <group key={s} position={[s * 0.17, -0.5, 0]}>
-          <mesh>
-            <capsuleGeometry args={[0.15, 0.6, 12, 20]} />
-            <meshStandardMaterial {...suit} />
-          </mesh>
-          <mesh position={[0, -0.02, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.15, 0.025, 10, 20]} />
-            <meshStandardMaterial color="#d7dcee" roughness={0.5} />
-          </mesh>
-          <RoundedBox args={[0.24, 0.18, 0.4]} radius={0.07} smoothness={4} position={[0, -0.5, 0.09]}>
-            <meshStandardMaterial {...suit} color="#e6eaf7" />
-          </RoundedBox>
-        </group>
-      ))}
-
-      {/* laptop */}
-      <group position={[0, 0.2, 0.5]} rotation={[0.14, 0, 0]}>
-        <RoundedBox args={[0.92, 0.05, 0.58]} radius={0.02} smoothness={3}>
-          <meshStandardMaterial color="#2c3450" roughness={0.5} metalness={0.25} />
-        </RoundedBox>
-        <group position={[0, 0.27, -0.27]} rotation={[-0.52, 0, 0]}>
-          <RoundedBox args={[0.92, 0.54, 0.04]} radius={0.02} smoothness={3}>
-            <meshStandardMaterial color="#1b2138" roughness={0.5} />
-          </RoundedBox>
-          <mesh position={[0, 0, 0.031]}>
-            <planeGeometry args={[0.8, 0.44]} />
-            {screenTex ? (
-              <meshBasicMaterial map={screenTex} toneMapped={false} />
-            ) : (
-              <meshBasicMaterial color="#0a1024" toneMapped={false} />
-            )}
-          </mesh>
-        </group>
-      </group>
+    <group ref={g} scale={2.2}>
+      <Center>
+        <Model />
+      </Center>
     </group>
   );
 }
@@ -179,7 +101,7 @@ export default function AstronautCanvas({ className = "" }: { className?: string
       <Canvas
         flat
         dpr={[1, 2]}
-        camera={{ position: [0, 0.35, 5.4], fov: 32 }}
+        camera={{ position: [0, 0.4, 5.2], fov: 34 }}
         gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={1} />
@@ -188,11 +110,13 @@ export default function AstronautCanvas({ className = "" }: { className?: string
         <directionalLight position={[-4, 2, 3]} intensity={0.9} color="#cdd8ff" />
         <directionalLight position={[0, 2, -5]} intensity={1.2} color="#4468ff" />
         <Suspense fallback={null}>
-          <Float speed={1.5} rotationIntensity={0.12} floatIntensity={0.7}>
-            <Astronaut />
+          <Float speed={1.4} rotationIntensity={0.12} floatIntensity={0.7}>
+            <Rig />
           </Float>
         </Suspense>
       </Canvas>
     </div>
   );
 }
+
+useGLTF.preload(MODEL_URL);
