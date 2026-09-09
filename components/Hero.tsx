@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Astronaut from "./Astronaut";
+import AstronautCanvas from "./AstronautCanvas";
 import { person, heroCopy } from "@/lib/data";
 
 export default function Hero() {
   return (
     <section className="relative mx-auto h-screen w-full">
-      <Astronaut className="pointer-events-none absolute bottom-[4%] right-2 hidden w-[150px] md:block lg:right-10 lg:w-[190px] xl:right-20 xl:w-[220px]" />
+      <AstronautCanvas className="pointer-events-none absolute bottom-[2%] right-0 hidden h-[360px] w-[240px] md:block lg:right-6 lg:h-[460px] lg:w-[320px] xl:right-16 xl:h-[520px] xl:w-[380px]" />
 
       <div className="absolute inset-0 top-[120px] mx-auto flex max-w-7xl flex-row items-start gap-5 px-6 sm:px-16">
         <div className="mt-5 flex flex-col items-center justify-center">
