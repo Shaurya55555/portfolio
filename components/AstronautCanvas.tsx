@@ -26,9 +26,10 @@ function Flyer({ scroll, pointer }: Refs) {
     const t = state.clock.elapsedTime;
     const s = scroll.current; // 0..1 down the page
 
-    // wander across the viewport, and travel downward as the page scrolls
-    grp.position.x = Math.sin(t * 0.16) * 2.7 + Math.cos(t * 0.07) * 0.7;
-    grp.position.y = Math.sin(t * 0.24) * 0.8 + 2.4 - s * 5.6;
+    // roam the right side of the hero; rise up and out of frame once the
+    // visitor scrolls past it
+    grp.position.x = 1.2 + Math.sin(t * 0.15) * 1.9 + Math.cos(t * 0.06) * 0.4;
+    grp.position.y = 0.1 + Math.sin(t * 0.22) * 1.15 + s * 7.5;
     grp.position.z = Math.sin(t * 0.12) * 0.5;
 
     // continuous 3D tumble + easing tilt toward the cursor
@@ -48,7 +49,7 @@ function Flyer({ scroll, pointer }: Refs) {
   return (
     <group ref={g}>
       <Center>
-        <group scale={0.62}>
+        <group scale={0.72}>
           <Model />
         </group>
       </Center>
