@@ -8,33 +8,18 @@ import * as THREE from "three";
 
 const MODEL_URL = "/models/astronaut.glb";
 
-// Palette. Model orientation: Y up, face toward +Z, rocket nose toward +X,
-// flame toward -X, head near (-0.16, 0.61, 0.0). Colours are assigned per
-// triangle by where the triangle sits on the merged mesh.
-const C_SUIT = new THREE.Color("#f3f5fb");
-const C_ROCKET = new THREE.Color("#edeff5");
+// The upload is one fused mesh with no materials or UVs, so per-part colour
+// only ever looks like paint splotches. Keep it clean: white figure, and a
+// black glass disc on the front of the head. Model orientation: Y up, face
+// toward +Z, head near (-0.16, 0.61, 0.0).
+const C_SUIT = new THREE.Color("#f4f6fb");
 const C_VISOR = new THREE.Color("#0a0b12");
-const C_RED = new THREE.Color("#e5392b");
-const C_FLAME = new THREE.Color("#ff9e33");
-const C_DARK = new THREE.Color("#20222e");
 
 function classify(x: number, y: number, z: number): THREE.Color {
-  if (x < -0.85) return C_FLAME; // exhaust flame
-  if (x < -0.73) return C_DARK; // nozzle ring
-  if (x > 0.6) return C_RED; // nose cone
-
-  const isAstronaut =
-    y > 0.05 && x > -0.5 && x < 0.35 && z > -0.5 && z < 0.5 && y < 0.95;
-  if (isAstronaut) {
-    const dx = x + 0.16;
-    const dy = y - 0.61;
-    if (y > 0.42 && z > 0.06 && dx * dx + dy * dy < 0.03) return C_VISOR;
-    return C_SUIT;
-  }
-
-  if (Math.abs(z) > 0.47) return C_RED; // side fins
-  if (x < -0.52 && y > -0.08) return C_RED; // tail fin by the flame
-  return C_ROCKET;
+  const dx = x + 0.16;
+  const dy = y - 0.61;
+  if (y > 0.42 && z > 0.05 && dx * dx + dy * dy < 0.032) return C_VISOR;
+  return C_SUIT;
 }
 
 function Model() {
