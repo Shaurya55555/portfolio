@@ -6,6 +6,8 @@ import { Center, Environment, Lightformer, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 const MODEL_URL = "/models/astronaut.glb";
+// It roams from load through this section, then flies out of frame.
+const EXIT_AFTER_SECTION = "tech";
 
 type Control = {
   px: number; // cursor x, -1..1
@@ -13,7 +15,8 @@ type Control = {
   grabbed: boolean;
   ry: number; // drag-accumulated yaw
   rx: number; // drag-accumulated pitch
-  scroll: number; // 0..1 down the page
+  past: number; // 0 while in range, ramps to 1 once scrolled past the section
+  active: boolean; // is the grab zone reachable (still in range)
 };
 
 function Model() {
@@ -24,6 +27,7 @@ function Model() {
 function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
   const g = useRef<THREE.Group>(null);
   const tumble = useRef(0);
+  const intro = useRef(0);
 
   useFrame((state, delta) => {
     const grp = g.current;
@@ -31,13 +35,18 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
     const t = state.clock.elapsedTime;
     const c = ctl.current;
 
-    // roam the right side of the hero; rise out of frame on scroll; nudge
-    // toward the cursor
-    grp.position.x = 1.2 + Math.sin(t * 0.15) * 1.9 + Math.cos(t * 0.06) * 0.4 + c.px * 0.6;
-    grp.position.y = 0.1 + Math.sin(t * 0.22) * 1.1 + c.scroll * 7.5 + c.py * 0.4;
-    grp.position.z = Math.sin(t * 0.12) * 0.45;
+    // intro: ease in from the lower-left corner on first load
+    intro.current = Math.min(1, intro.current + delta * 0.45);
+    const e = 1 - Math.pow(1 - intro.current, 3);
 
-    // yaw: auto tumble + cursor sweep + drag, drag decays once released
+    const roamX = Math.sin(t * 0.14) * 3.0 + Math.cos(t * 0.05) * 0.8 + c.px * 0.6;
+    const roamY = -0.2 + Math.sin(t * 0.2) * 1.55 + c.py * 0.4;
+
+    grp.position.x = THREE.MathUtils.lerp(-3.6, roamX, e);
+    grp.position.y = THREE.MathUtils.lerp(-2.6, roamY, e) + c.past * 9;
+    grp.position.z = Math.sin(t * 0.12) * 0.4;
+
+    // yaw: auto tumble + cursor sweep + drag; drag decays once released
     if (!c.grabbed) {
       tumble.current += delta * 0.4;
       c.ry *= 0.96;
@@ -69,35 +78,40 @@ export default function AstronautCanvas({ className = "" }: { className?: string
     grabbed: false,
     ry: 0,
     rx: 0,
-    scroll: 0,
+    past: 0,
+    active: true,
   });
 
   useEffect(() => {
     let last: { x: number; y: number } | null = null;
 
     const inZone = (x: number, y: number) =>
-      ctl.current.scroll < 0.3 &&
-      x > window.innerWidth * 0.4 &&
-      y > 90 &&
-      y < window.innerHeight * 0.95;
+      ctl.current.active && y > 90 && y < window.innerHeight * 0.95;
 
     const onScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      ctl.current.scroll = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      const el = document.getElementById(EXIT_AFTER_SECTION);
+      if (el) {
+        const bottom = el.offsetTop + el.offsetHeight;
+        ctl.current.past = Math.min(
+          1,
+          Math.max(0, (window.scrollY + 120 - bottom) / 280),
+        );
+      }
+      ctl.current.active = ctl.current.past < 0.15;
     };
-    const onMove = (e: PointerEvent) => {
-      ctl.current.px = (e.clientX / window.innerWidth) * 2 - 1;
-      ctl.current.py = -((e.clientY / window.innerHeight) * 2 - 1);
+    const onMove = (ev: PointerEvent) => {
+      ctl.current.px = (ev.clientX / window.innerWidth) * 2 - 1;
+      ctl.current.py = -((ev.clientY / window.innerHeight) * 2 - 1);
       if (ctl.current.grabbed && last) {
-        ctl.current.ry += (e.clientX - last.x) * 0.008;
-        ctl.current.rx += (e.clientY - last.y) * 0.008;
-        last = { x: e.clientX, y: e.clientY };
+        ctl.current.ry += (ev.clientX - last.x) * 0.008;
+        ctl.current.rx += (ev.clientY - last.y) * 0.008;
+        last = { x: ev.clientX, y: ev.clientY };
       }
     };
-    const onDown = (e: PointerEvent) => {
-      if (inZone(e.clientX, e.clientY)) {
+    const onDown = (ev: PointerEvent) => {
+      if (inZone(ev.clientX, ev.clientY)) {
         ctl.current.grabbed = true;
-        last = { x: e.clientX, y: e.clientY };
+        last = { x: ev.clientX, y: ev.clientY };
       }
     };
     const onUp = () => {
