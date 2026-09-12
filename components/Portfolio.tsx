@@ -10,6 +10,7 @@ import Contact from "./Contact";
 import Footer from "./Footer";
 import StarsCanvas from "./canvas/Stars";
 import AstronautCanvas from "./AstronautCanvas";
+import ScrollProgress from "./ScrollProgress";
 
 export default function Portfolio() {
   return (
@@ -19,6 +20,8 @@ export default function Portfolio() {
 
       {/* 3D astronaut drifting across the page, behind the content */}
       <AstronautCanvas className="pointer-events-none fixed inset-0 z-0 h-screen w-screen" />
+
+      <ScrollProgress />
 
       <div className="relative z-[1]">
         <Navbar />

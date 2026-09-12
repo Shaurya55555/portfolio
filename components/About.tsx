@@ -26,7 +26,10 @@ function ServiceCard({
       className="w-full xs:w-[250px]"
     >
       <motion.div
-        variants={fadeIn("right", "spring", index * 0.5, 0.75)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.4 }}
+        variants={fadeIn("right", "spring", index * 0.15, 0.6)}
         className="green-pink-gradient w-full rounded-[20px] p-[1px] shadow-card"
       >
         <div className="flex min-h-[280px] flex-col items-center justify-evenly rounded-[20px] bg-tertiary px-12 py-5">

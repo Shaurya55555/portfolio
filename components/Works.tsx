@@ -12,7 +12,12 @@ import { projects, sectionCopy, type Project } from "@/lib/data";
 function ProjectCard({ index, ...project }: { index: number } & Project) {
   const external = project.liveLink || project.demoLink;
   return (
-    <motion.div variants={fadeIn("up", "spring", index * 0.4, 0.75)}>
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={fadeIn("up", "spring", (index % 3) * 0.15, 0.6)}
+    >
       <Tilt
         glareEnable
         tiltMaxAngleX={20}

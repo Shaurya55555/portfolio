@@ -9,7 +9,7 @@ import { slideIn } from "@/lib/motion";
 import { person, sectionCopy } from "@/lib/data";
 
 function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ email: "", message: "" });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -20,12 +20,8 @@ function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(
-      `Portfolio message from ${form.name || "someone"}`
-    );
-    const body = encodeURIComponent(
-      `${form.message}\n\nFrom: ${form.name}\nReply to: ${form.email}`
-    );
+    const subject = encodeURIComponent("Portfolio message");
+    const body = encodeURIComponent(`${form.message}\n\nReply to: ${form.email}`);
     window.location.href = `mailto:${person.email}?subject=${subject}&body=${body}`;
   };
 
@@ -36,24 +32,9 @@ function Contact() {
         className="flex-[0.75] rounded-2xl bg-black-100 p-8"
       >
         <Header p={sectionCopy.contact.p} h2={sectionCopy.contact.h2} useMotion={false} />
-        <p className="mt-2 text-[14px] text-secondary">
-          {person.availability} This form opens your mail client with the
-          message drafted to {person.email}.
-        </p>
+        <p className="mt-2 text-[14px] text-secondary">Leave a message, I&apos;ll reply by email.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
-          <label className="flex flex-col">
-            <span className="mb-3 font-medium text-white">Your name</span>
-            <input
-              type="text"
-              name="name"
-              required
-              value={form.name}
-              onChange={handleChange}
-              placeholder="What should I call you?"
-              className="rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none placeholder:text-secondary"
-            />
-          </label>
           <label className="flex flex-col">
             <span className="mb-3 font-medium text-white">Your email</span>
             <input
@@ -62,14 +43,14 @@ function Contact() {
               required
               value={form.email}
               onChange={handleChange}
-              placeholder="Where can I reach you?"
+              placeholder="you@example.com"
               className="rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none placeholder:text-secondary"
             />
           </label>
           <label className="flex flex-col">
-            <span className="mb-3 font-medium text-white">Your message</span>
+            <span className="mb-3 font-medium text-white">Message</span>
             <textarea
-              rows={6}
+              rows={5}
               name="message"
               required
               value={form.message}
@@ -80,7 +61,7 @@ function Contact() {
           </label>
           <button
             type="submit"
-            className="w-fit rounded-xl bg-tertiary px-8 py-3 font-bold text-white shadow-card outline-none"
+            className="w-fit rounded-xl bg-tertiary px-8 py-3 font-bold text-white shadow-card transition-transform duration-200 outline-none hover:scale-105"
           >
             Send
           </button>

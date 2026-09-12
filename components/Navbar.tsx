@@ -41,8 +41,7 @@ export default function Navbar() {
             window.scrollTo(0, 0);
           }}
         >
-          <span className="h-9 w-9 rounded-full bg-[#4468ff]" />
-          <p className="cursor-pointer text-[18px] font-bold text-white">
+          <p className="cursor-pointer text-[18px] font-bold text-white transition-colors hover:text-[#9db8ff]">
             {person.name}
           </p>
         </a>
@@ -51,12 +50,17 @@ export default function Navbar() {
           {navLinks.map((nav) => (
             <li
               key={nav.id}
-              className={`${
+              className={`relative cursor-pointer pb-1 text-[18px] font-medium transition-colors ${
                 active === nav.id ? "text-white" : "text-secondary"
-              } cursor-pointer text-[18px] font-medium hover:text-white`}
+              } hover:text-white`}
               onClick={() => setActive(nav.id)}
             >
               <a href={`#${nav.id}`}>{nav.title}</a>
+              <span
+                className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#4468ff] transition-all duration-300 ${
+                  active === nav.id ? "w-full" : "w-0"
+                }`}
+              />
             </li>
           ))}
           <li className="cursor-pointer text-[18px] font-medium text-secondary hover:text-white">
