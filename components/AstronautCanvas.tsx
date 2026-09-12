@@ -37,14 +37,18 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
     intro.current = Math.min(1, intro.current + delta * 0.45);
     const e = 1 - Math.pow(1 - intro.current, 3);
 
-    // a small loop in the lower-left of the hero, clear of the heading and
-    // the scroll cue
-    const roamX = -1.0 + Math.sin(t * 0.15) * 1.3 + Math.cos(t * 0.06) * 0.3 + c.px * 0.4;
-    const roamY = -0.6 + Math.sin(t * 0.2) * 0.9 + c.py * 0.25;
+    // a clean circular orbit centred just below the hero subtext, clear of
+    // the heading and the scroll cue
+    const orbitAngle = t * 0.35;
+    const orbitCx = -1.0;
+    const orbitCy = -0.95;
+    const orbitR = 0.9;
+    const roamX = orbitCx + Math.cos(orbitAngle) * orbitR + c.px * 0.3;
+    const roamY = orbitCy + Math.sin(orbitAngle) * orbitR + c.py * 0.2;
 
     grp.position.x = THREE.MathUtils.lerp(-3.2, roamX, e);
     grp.position.y = THREE.MathUtils.lerp(-2.2, roamY, e) + c.past * 9;
-    grp.position.z = Math.sin(t * 0.12) * 0.4;
+    grp.position.z = Math.sin(orbitAngle) * 0.35;
 
     // yaw: auto tumble + cursor sweep + drag; drag decays once released
     if (!c.grabbed) {
