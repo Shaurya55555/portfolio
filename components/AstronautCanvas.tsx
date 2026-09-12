@@ -6,8 +6,6 @@ import { Center, Environment, Lightformer, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 const MODEL_URL = "/models/astronaut.glb";
-// It roams from load through this section, then flies out of frame.
-const EXIT_AFTER_SECTION = "tech";
 
 type Control = {
   px: number; // cursor x, -1..1
@@ -39,11 +37,13 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
     intro.current = Math.min(1, intro.current + delta * 0.45);
     const e = 1 - Math.pow(1 - intro.current, 3);
 
-    const roamX = Math.sin(t * 0.14) * 3.0 + Math.cos(t * 0.05) * 0.8 + c.px * 0.6;
-    const roamY = -0.2 + Math.sin(t * 0.2) * 1.55 + c.py * 0.4;
+    // a small loop in the lower-left of the hero, clear of the heading and
+    // the scroll cue
+    const roamX = -1.0 + Math.sin(t * 0.15) * 1.3 + Math.cos(t * 0.06) * 0.3 + c.px * 0.4;
+    const roamY = -0.6 + Math.sin(t * 0.2) * 0.9 + c.py * 0.25;
 
-    grp.position.x = THREE.MathUtils.lerp(-3.6, roamX, e);
-    grp.position.y = THREE.MathUtils.lerp(-2.6, roamY, e) + c.past * 9;
+    grp.position.x = THREE.MathUtils.lerp(-3.2, roamX, e);
+    grp.position.y = THREE.MathUtils.lerp(-2.2, roamY, e) + c.past * 9;
     grp.position.z = Math.sin(t * 0.12) * 0.4;
 
     // yaw: auto tumble + cursor sweep + drag; drag decays once released
@@ -88,15 +88,14 @@ export default function AstronautCanvas({ className = "" }: { className?: string
     const inZone = (x: number, y: number) =>
       ctl.current.active && y > 90 && y < window.innerHeight * 0.95;
 
+    // confined to the first page: gone well before the visitor scrolls a
+    // full viewport height, so it never shows over the other sections
     const onScroll = () => {
-      const el = document.getElementById(EXIT_AFTER_SECTION);
-      if (el) {
-        const bottom = el.offsetTop + el.offsetHeight;
-        ctl.current.past = Math.min(
-          1,
-          Math.max(0, (window.scrollY + 120 - bottom) / 280),
-        );
-      }
+      const vh = window.innerHeight;
+      ctl.current.past = Math.min(
+        1,
+        Math.max(0, (window.scrollY - vh * 0.5) / (vh * 0.35)),
+      );
       ctl.current.active = ctl.current.past < 0.15;
     };
     const onMove = (ev: PointerEvent) => {

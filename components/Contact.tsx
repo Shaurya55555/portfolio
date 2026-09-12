@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import EarthCanvas from "./canvas/Earth";
 import SectionWrapper from "./SectionWrapper";
 import Header from "./Header";
+import InView from "./InView";
 import { slideIn } from "@/lib/motion";
 import { person, sectionCopy } from "@/lib/data";
+
+const EarthCanvas = dynamic(() => import("./canvas/Earth"), { ssr: false });
 
 function Contact() {
   const [form, setForm] = useState({ email: "", message: "" });
@@ -72,7 +75,9 @@ function Contact() {
         variants={slideIn("right", "tween", 0.2, 1)}
         className="h-[350px] md:h-[550px] xl:h-auto xl:flex-1"
       >
-        <EarthCanvas />
+        <InView className="h-full w-full" rootMargin="250px">
+          <EarthCanvas />
+        </InView>
       </motion.div>
     </div>
   );

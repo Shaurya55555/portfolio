@@ -1,16 +1,19 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import BallCanvas from "./canvas/Ball";
 import SectionWrapper from "./SectionWrapper";
 import Header from "./Header";
+import InView from "./InView";
 import { technologies } from "@/lib/data";
+
+const BallCanvas = dynamic(() => import("./canvas/Ball"), { ssr: false });
 
 function Tech() {
   return (
     <>
       <Header p="What I work with" h2="Tech." />
-      <div className="mt-14 flex flex-row flex-wrap justify-center gap-10">
+      <InView className="mt-14 flex flex-row flex-wrap justify-center gap-10" rootMargin="250px">
         {technologies.map((technology, index) => (
           <motion.div
             key={technology.name}
@@ -26,7 +29,7 @@ function Tech() {
             </span>
           </motion.div>
         ))}
-      </div>
+      </InView>
     </>
   );
 }
