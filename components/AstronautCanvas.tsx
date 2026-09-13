@@ -24,7 +24,6 @@ function Model() {
 
 function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
   const g = useRef<THREE.Group>(null);
-  const tumble = useRef(0);
   const intro = useRef(0);
 
   useFrame((state, delta) => {
@@ -39,11 +38,12 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
 
     // a wide, flat elliptical orbit centred just below the hero subtext,
     // clear of the heading and the scroll cue
-    const orbitAngle = t * 0.35;
+    const orbitSpeed = 0.35;
+    const orbitAngle = t * orbitSpeed;
     const orbitCx = -1.0;
     const orbitCy = -0.95;
-    const orbitRx = 1.7;
-    const orbitRy = 0.42;
+    const orbitRx = 2.4;
+    const orbitRy = 0.6;
     const roamX = orbitCx + Math.cos(orbitAngle) * orbitRx + c.px * 0.3;
     const roamY = orbitCy + Math.sin(orbitAngle) * orbitRy + c.py * 0.2;
 
@@ -51,18 +51,28 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
     grp.position.y = THREE.MathUtils.lerp(-2.2, roamY, e) + c.past * 9;
     grp.position.z = Math.sin(orbitAngle) * 0.3;
 
-    // yaw: auto tumble + cursor sweep + drag; drag decays once released
+    // heading (direction of travel) along the ellipse, used to bank the
+    // model into the curve so it reads as following the path rather than
+    // spinning on its own
+    const velX = -orbitRx * Math.sin(orbitAngle) * orbitSpeed;
+    const velY = orbitRy * Math.cos(orbitAngle) * orbitSpeed;
+    const heading = Math.atan2(velY, velX);
+
+    // keep the same face toward the viewer (no free spin) - yaw only
+    // responds to the cursor sweep and to dragging; drag decays once
+    // released
     if (!c.grabbed) {
-      tumble.current += delta * 0.4;
       c.ry *= 0.96;
       c.rx *= 0.96;
     }
-    grp.rotation.y = tumble.current + c.ry + (c.grabbed ? 0 : c.px * 0.5);
+    grp.rotation.y = c.ry + (c.grabbed ? 0 : c.px * 0.35);
 
+    // bank into the curve: bounded roll toward the direction of travel so
+    // it visibly leans as it goes around each turn of the ellipse
+    const bankTarget = c.grabbed ? 0 : heading * 0.55;
     const targetX = 0.05 + c.rx + (c.grabbed ? 0 : -c.py * 0.28);
-    const targetZ = c.grabbed ? 0 : c.px * 0.14;
     grp.rotation.x = THREE.MathUtils.lerp(grp.rotation.x, targetX, 0.12);
-    grp.rotation.z = THREE.MathUtils.lerp(grp.rotation.z, targetZ, 0.12);
+    grp.rotation.z = THREE.MathUtils.lerp(grp.rotation.z, bankTarget, 0.06);
   });
 
   return (
