@@ -51,28 +51,19 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
     grp.position.y = THREE.MathUtils.lerp(-2.2, roamY, e) + c.past * 9;
     grp.position.z = Math.sin(orbitAngle) * 0.3;
 
-    // heading (direction of travel) along the ellipse, used to bank the
-    // model into the curve so it reads as following the path rather than
-    // spinning on its own
-    const velX = -orbitRx * Math.sin(orbitAngle) * orbitSpeed;
-    const velY = orbitRy * Math.cos(orbitAngle) * orbitSpeed;
-    const heading = Math.atan2(velY, velX);
-
-    // keep the same face toward the viewer (no free spin) - yaw only
-    // responds to the cursor sweep and to dragging; drag decays once
-    // released
+    // no auto-spin or banking - it always faces front. Rotation only comes
+    // from the cursor (a small live tilt) and from dragging; drag decays
+    // once released
     if (!c.grabbed) {
       c.ry *= 0.96;
       c.rx *= 0.96;
     }
     grp.rotation.y = c.ry + (c.grabbed ? 0 : c.px * 0.35);
 
-    // bank into the curve: bounded roll toward the direction of travel so
-    // it visibly leans as it goes around each turn of the ellipse
-    const bankTarget = c.grabbed ? 0 : heading * 0.55;
     const targetX = 0.05 + c.rx + (c.grabbed ? 0 : -c.py * 0.28);
+    const targetZ = c.grabbed ? 0 : c.px * 0.14;
     grp.rotation.x = THREE.MathUtils.lerp(grp.rotation.x, targetX, 0.12);
-    grp.rotation.z = THREE.MathUtils.lerp(grp.rotation.z, bankTarget, 0.06);
+    grp.rotation.z = THREE.MathUtils.lerp(grp.rotation.z, targetZ, 0.12);
   });
 
   return (
