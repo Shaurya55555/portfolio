@@ -37,7 +37,7 @@ function Stars(props: Record<string, unknown>) {
 export default function StarsCanvas() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0 h-screen w-screen">
-      <Canvas camera={{ position: [0, 0, 1] }}>
+      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 1] }}>
         <Suspense fallback={null}>
           <Stars />
         </Suspense>

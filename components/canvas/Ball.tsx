@@ -33,7 +33,7 @@ function Ball({ imgUrl }: { imgUrl: string }) {
 
 export default function BallCanvas({ icon }: { icon: string }) {
   return (
-    <Canvas frameloop="demand" dpr={[1, 2]} gl={{ preserveDrawingBuffer: true }}>
+    <Canvas frameloop="demand" dpr={1} gl={{ preserveDrawingBuffer: true, antialias: false }}>
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls enablePan={false} enableZoom={false} />
         <Ball imgUrl={icon} />
