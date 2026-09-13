@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "./Navbar";
 import Hero from "./Hero";
@@ -19,13 +20,33 @@ const AstronautCanvas = dynamic(() => import("./AstronautCanvas"), {
 });
 
 export default function Portfolio() {
+  // Mount the WebGL layers only once the page has had a chance to paint,
+  // instead of racing shader compilation / GLTF parsing against the very
+  // first frame — that race is what read as the page "breaking" on load.
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(() => setReady(true), { timeout: 1200 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(() => setReady(true), 250);
+    return () => window.clearTimeout(id);
+  }, []);
+
   return (
     <>
       {/* full-page space backdrop, fixed behind all content */}
-      <StarsCanvas />
+      {ready && <StarsCanvas />}
 
       {/* 3D astronaut, confined to the hero */}
-      <AstronautCanvas className="pointer-events-none fixed inset-0 z-0 h-screen w-screen" />
+      {ready && (
+        <AstronautCanvas className="pointer-events-none fixed inset-0 z-0 h-screen w-screen" />
+      )}
 
       <ScrollProgress />
 

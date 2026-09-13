@@ -37,18 +37,19 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
     intro.current = Math.min(1, intro.current + delta * 0.45);
     const e = 1 - Math.pow(1 - intro.current, 3);
 
-    // a clean circular orbit centred just below the hero subtext, clear of
-    // the heading and the scroll cue
+    // a wide, flat elliptical orbit centred just below the hero subtext,
+    // clear of the heading and the scroll cue
     const orbitAngle = t * 0.35;
     const orbitCx = -1.0;
     const orbitCy = -0.95;
-    const orbitR = 0.9;
-    const roamX = orbitCx + Math.cos(orbitAngle) * orbitR + c.px * 0.3;
-    const roamY = orbitCy + Math.sin(orbitAngle) * orbitR + c.py * 0.2;
+    const orbitRx = 1.7;
+    const orbitRy = 0.42;
+    const roamX = orbitCx + Math.cos(orbitAngle) * orbitRx + c.px * 0.3;
+    const roamY = orbitCy + Math.sin(orbitAngle) * orbitRy + c.py * 0.2;
 
     grp.position.x = THREE.MathUtils.lerp(-3.2, roamX, e);
     grp.position.y = THREE.MathUtils.lerp(-2.2, roamY, e) + c.past * 9;
-    grp.position.z = Math.sin(orbitAngle) * 0.35;
+    grp.position.z = Math.sin(orbitAngle) * 0.3;
 
     // yaw: auto tumble + cursor sweep + drag; drag decays once released
     if (!c.grabbed) {
