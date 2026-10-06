@@ -42,12 +42,21 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Shaurya Bajpai",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Shaurya Bajpai, Full-Stack Software Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Shaurya Bajpai, Software Engineer",
     description:
       "Full-stack engineer working across web, backend, and applied AI. Two internships, hackathon wins, and deployed side projects.",
+    images: ["/og-image.png"],
   },
 };
 
