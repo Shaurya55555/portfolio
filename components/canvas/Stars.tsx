@@ -24,7 +24,7 @@ function Stars(props: Record<string, unknown>) {
       <Points ref={ref} positions={sphere} stride={3} frustumCulled {...props}>
         <PointMaterial
           transparent
-          color="#e6fbff"
+          color="#fff1e6"
           size={0.0026}
           sizeAttenuation
           depthWrite={false}
