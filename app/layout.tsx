@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.png?v=peach",
         width: 1200,
         height: 630,
         alt: "Shaurya Bajpai, Full-Stack Software Engineer",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     title: "Shaurya Bajpai, Software Engineer",
     description:
       "Full-stack engineer working across web, backend, and applied AI. Two internships, hackathon wins, and deployed side projects.",
-    images: ["/og-image.png"],
+    images: ["/og-image.png?v=peach"],
   },
 };
 
