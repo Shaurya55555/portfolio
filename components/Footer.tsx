@@ -24,7 +24,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             aria-label={label}
             title={label}
-            className={`flex items-center justify-center rounded-full border border-white/10 bg-tertiary text-secondary transition-all duration-200 hover:-translate-y-1 hover:border-[#e07a4f]/60 hover:text-[#f3c3aa] hover:shadow-[0_0_18px_rgba(224, 122, 79,0.45)] ${
+            className={`flex items-center justify-center rounded-full border border-white/10 bg-tertiary text-secondary transition-all duration-200 hover:-translate-y-1 hover:border-[#ffc8a2]/60 hover:text-[#ffe9db] hover:shadow-[0_0_18px_rgba(255, 200, 162,0.45)] ${
               big ? "h-12 w-12 text-[24px]" : "h-10 w-10 text-[18px]"
             }`}
           >

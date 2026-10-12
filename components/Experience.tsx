@@ -45,7 +45,7 @@ function ExperienceItem({ experience }: { experience: Exp }) {
             {experience.date}
           </span>
         </div>
-        <p className="mt-1 text-[15px] font-semibold text-[#f3c3aa]">
+        <p className="mt-1 text-[15px] font-semibold text-[#ffe9db]">
           {experience.companyName}
         </p>
 
@@ -59,7 +59,7 @@ function ExperienceItem({ experience }: { experience: Exp }) {
               transition={{ duration: 0.35, delay: 0.05 * i }}
               className="flex gap-2.5 text-[14px] leading-relaxed text-white-100"
             >
-              <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#e07a4f]" />
+              <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#ffc8a2]" />
               <span>{point}</span>
             </motion.li>
           ))}
@@ -89,7 +89,7 @@ function Experience() {
         {/* fill that grows with scroll position */}
         <motion.div
           style={{ scaleY: scrollYProgress }}
-          className="absolute left-[19px] top-2 bottom-2 w-[3px] origin-top rounded-full bg-gradient-to-b from-[#e07a4f] to-[#f3c3aa] sm:left-[23px]"
+          className="absolute left-[19px] top-2 bottom-2 w-[3px] origin-top rounded-full bg-gradient-to-b from-[#ffc8a2] to-[#ffe9db] sm:left-[23px]"
         />
 
         <div className="flex flex-col gap-12">
