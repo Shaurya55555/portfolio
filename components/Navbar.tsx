@@ -64,7 +64,7 @@ export default function Navbar() {
             >
               <a href={`#${nav.id}`}>{nav.title}</a>
               <span
-                className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#e8d5a8] transition-all duration-300 ${
+                className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#f5b755] transition-all duration-300 ${
                   active === nav.id ? "w-full" : "w-0"
                 }`}
               />

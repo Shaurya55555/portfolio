@@ -59,7 +59,7 @@ function ExperienceItem({ experience }: { experience: Exp }) {
               transition={{ duration: 0.35, delay: 0.05 * i }}
               className="flex gap-2.5 text-[14px] leading-relaxed text-white-100"
             >
-              <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#e8d5a8]" />
+              <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#f5b755]" />
               <span>{point}</span>
             </motion.li>
           ))}
@@ -89,7 +89,7 @@ function Experience() {
         {/* fill that grows with scroll position */}
         <motion.div
           style={{ scaleY: scrollYProgress }}
-          className="absolute left-[19px] top-2 bottom-2 w-[3px] origin-top rounded-full bg-gradient-to-b from-[#e8d5a8] to-[#f6ead0] sm:left-[23px]"
+          className="absolute left-[19px] top-2 bottom-2 w-[3px] origin-top rounded-full bg-gradient-to-b from-[#f5b755] to-[#f6ead0] sm:left-[23px]"
         />
 
         <div className="flex flex-col gap-12">
