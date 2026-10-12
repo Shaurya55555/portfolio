@@ -2,17 +2,17 @@
 
 @theme {
   --color-primary: #000000;
-  --color-secondary: #c2b79e;
-  --color-tertiary: #15110b;
-  --color-black-100: #0c0a07;
-  --color-black-200: #060504;
+  --color-secondary: #a9bcc2;
+  --color-tertiary: #0d1316;
+  --color-black-100: #080c0e;
+  --color-black-200: #040708;
   --color-white-100: #f3efe6;
-  --color-accent: #f5b755;
-  --color-accent-soft: #f6ead0;
+  --color-accent: #7fd6e0;
+  --color-accent-soft: #d9f4f7;
 
   --breakpoint-xs: 30rem;
 
-  --shadow-card: 0px 35px 120px -15px rgba(255, 170, 70, 0.14);
+  --shadow-card: 0px 35px 120px -15px rgba(127, 214, 224, 0.12);
 
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
@@ -30,7 +30,7 @@ html {
     /* the sun: bright core, soft corona, long warm falloff */
     radial-gradient(circle at 106% 16%, #fff6df 0, #ffe0a0 2.5%, rgba(255, 176, 72, 0.55) 9%, rgba(255, 140, 40, 0.2) 24%, transparent 52%),
     radial-gradient(70% 60% at 100% 14%, rgba(255, 160, 60, 0.16), transparent 70%),
-    radial-gradient(60% 45% at 0% 100%, rgba(245, 183, 85, 0.06), transparent 65%);
+    radial-gradient(60% 45% at 0% 100%, rgba(127, 214, 224, 0.06), transparent 65%);
   background-attachment: fixed;
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 ::selection {
-  background: #f5b755;
+  background: #7fd6e0;
   color: #000;
 }
 
@@ -60,7 +60,7 @@ body {
   background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3a3122;
+  background: #20343a;
   border-radius: 6px;
 }
 
@@ -76,12 +76,12 @@ body {
 }
 
 .violet-gradient {
-  background: #f5b755;
-  background: linear-gradient(-90deg, #f5b755 0%, rgba(245, 183, 85, 0) 100%);
+  background: #7fd6e0;
+  background: linear-gradient(-90deg, #7fd6e0 0%, rgba(127, 214, 224, 0) 100%);
 }
 
 .green-pink-gradient {
-  background: linear-gradient(90.13deg, #9a6212 1.9%, #f5b755 97.5%);
+  background: linear-gradient(90.13deg, #2a7f89 1.9%, #7fd6e0 97.5%);
 }
 
 .orange-text-gradient {
@@ -99,7 +99,7 @@ body {
 }
 
 .blue-text-gradient {
-  background: linear-gradient(to top, #d9b877, #f6ead0);
+  background: linear-gradient(to top, #d9b877, #d9f4f7);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -183,15 +183,15 @@ body {
 
 /* vertical timeline theme overrides */
 .vertical-timeline::before {
-  background: #2a2418 !important;
+  background: #1d2f34 !important;
 }
 @media only screen and (min-width: 1170px) {
   .vertical-timeline-element-date {
-    color: #b9ad94;
+    color: #a9bcc2;
   }
 }
 .vertical-timeline-element-date {
-  color: #b9ad94 !important;
+  color: #a9bcc2 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
