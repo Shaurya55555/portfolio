@@ -35,7 +35,7 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 z-20 flex w-full items-center px-6 py-5 transition-colors sm:px-16 ${
         scrolled
-          ? "border-b border-white/5 bg-[#050816]/80 backdrop-blur-md"
+          ? "border-b border-white/5 bg-[#000000]/80 backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -48,7 +48,7 @@ export default function Navbar() {
             window.scrollTo(0, 0);
           }}
         >
-          <p className="cursor-pointer text-[18px] font-bold text-white transition-colors hover:text-[#9db8ff]">
+          <p className="cursor-pointer text-[18px] font-bold text-white transition-colors hover:text-[#f6ead0]">
             {person.name}
           </p>
         </a>
@@ -64,7 +64,7 @@ export default function Navbar() {
             >
               <a href={`#${nav.id}`}>{nav.title}</a>
               <span
-                className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#4468ff] transition-all duration-300 ${
+                className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#e8d5a8] transition-all duration-300 ${
                   active === nav.id ? "w-full" : "w-0"
                 }`}
               />

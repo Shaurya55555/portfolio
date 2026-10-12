@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #050816;
-  --color-secondary: #9fb0d4;
-  --color-tertiary: #10152e;
-  --color-black-100: #0b1024;
-  --color-black-200: #070a1a;
-  --color-white-100: #f3f3f3;
-  --color-accent: #4468ff;
-  --color-accent-soft: #9db8ff;
+  --color-primary: #000000;
+  --color-secondary: #c2b79e;
+  --color-tertiary: #15110b;
+  --color-black-100: #0c0a07;
+  --color-black-200: #060504;
+  --color-white-100: #f3efe6;
+  --color-accent: #e8d5a8;
+  --color-accent-soft: #f6ead0;
 
   --breakpoint-xs: 30rem;
 
-  --shadow-card: 0px 35px 120px -15px #0a1740;
+  --shadow-card: 0px 35px 120px -15px rgba(255, 170, 70, 0.14);
 
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
@@ -25,11 +25,12 @@
 /* deep-space backdrop lives on <html> so it always sits behind the whole page;
    the fixed star canvas renders transparently on top of it, content above that */
 html {
-  background-color: #02030c;
+  background-color: #000000;
   background-image:
-    radial-gradient(60% 50% at 18% 12%, rgba(50, 92, 235, 0.22), transparent 60%),
-    radial-gradient(55% 45% at 85% 28%, rgba(28, 46, 130, 0.24), transparent 60%),
-    radial-gradient(70% 60% at 50% 100%, rgba(15, 26, 74, 0.4), transparent 65%);
+    /* the sun: bright core, soft corona, long warm falloff */
+    radial-gradient(circle at 106% 16%, #fff6df 0, #ffe0a0 2.5%, rgba(255, 176, 72, 0.55) 9%, rgba(255, 140, 40, 0.2) 24%, transparent 52%),
+    radial-gradient(70% 60% at 100% 14%, rgba(255, 160, 60, 0.16), transparent 70%),
+    radial-gradient(60% 45% at 0% 100%, rgba(232, 213, 168, 0.06), transparent 65%);
   background-attachment: fixed;
 }
 
@@ -48,18 +49,18 @@ body {
 }
 
 ::selection {
-  background: #1e3a8a;
-  color: #fff;
+  background: #e8d5a8;
+  color: #000;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #050816;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f1a3d;
+  background: #3a3122;
   border-radius: 6px;
 }
 
@@ -75,12 +76,12 @@ body {
 }
 
 .violet-gradient {
-  background: #4468ff;
-  background: linear-gradient(-90deg, #4468ff 0%, rgba(20, 30, 74, 0) 100%);
+  background: #e8d5a8;
+  background: linear-gradient(-90deg, #e8d5a8 0%, rgba(232, 213, 168, 0) 100%);
 }
 
 .green-pink-gradient {
-  background: linear-gradient(90.13deg, #1e3a8a 1.9%, #4468ff 97.5%);
+  background: linear-gradient(90.13deg, #8a6a2f 1.9%, #e8d5a8 97.5%);
 }
 
 .orange-text-gradient {
@@ -98,7 +99,7 @@ body {
 }
 
 .blue-text-gradient {
-  background: linear-gradient(to top, #2f80ed, #56ccf2);
+  background: linear-gradient(to top, #d9b877, #f6ead0);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -182,15 +183,15 @@ body {
 
 /* vertical timeline theme overrides */
 .vertical-timeline::before {
-  background: #232631 !important;
+  background: #2a2418 !important;
 }
 @media only screen and (min-width: 1170px) {
   .vertical-timeline-element-date {
-    color: #aaa6c3;
+    color: #b9ad94;
   }
 }
 .vertical-timeline-element-date {
-  color: #aaa6c3 !important;
+  color: #b9ad94 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

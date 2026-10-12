@@ -22,7 +22,7 @@ function ServiceCard({
       glareEnable
       tiltMaxAngleX={30}
       tiltMaxAngleY={30}
-      glareColor="#aaa6c3"
+      glareColor="#b9ad94"
       className="w-full xs:w-[250px]"
     >
       <motion.div

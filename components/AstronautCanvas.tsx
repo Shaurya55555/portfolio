@@ -145,16 +145,16 @@ export default function AstronautCanvas({ className = "" }: { className?: string
         gl={{ alpha: true, antialias: true, toneMapping: THREE.ACESFilmicToneMapping }}
       >
         <ambientLight intensity={0.7} />
-        <hemisphereLight args={["#eef2ff", "#0b1024", 0.5]} />
+        <hemisphereLight args={["#fff3dc", "#0a0805", 0.5]} />
         <directionalLight position={[4, 6, 5]} intensity={2.2} />
-        <directionalLight position={[-5, 2, 3]} intensity={0.9} color="#cdd8ff" />
-        <directionalLight position={[0, 2, -6]} intensity={1.1} color="#4468ff" />
+        <directionalLight position={[-5, 2, 3]} intensity={0.9} color="#ffe9bf" />
+        <directionalLight position={[0, 2, -6]} intensity={1.1} color="#ffb454" />
 
         <Suspense fallback={null}>
           <Environment resolution={256}>
             <Lightformer intensity={2} position={[0, 3, 2]} scale={[6, 3, 1]} color="#ffffff" />
-            <Lightformer intensity={1.1} position={[-4, 1, 2]} scale={[3, 4, 1]} color="#cdd8ff" />
-            <Lightformer intensity={1} position={[4, 0, 3]} scale={[3, 4, 1]} color="#4468ff" />
+            <Lightformer intensity={1.1} position={[-4, 1, 2]} scale={[3, 4, 1]} color="#ffe9bf" />
+            <Lightformer intensity={1} position={[4, 0, 3]} scale={[3, 4, 1]} color="#ffb454" />
           </Environment>
 
           <Flyer ctl={ctl} />

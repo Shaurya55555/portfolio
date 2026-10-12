@@ -22,7 +22,7 @@ function ProjectCard({ index, ...project }: { index: number } & Project) {
         glareEnable
         tiltMaxAngleX={20}
         tiltMaxAngleY={20}
-        glareColor="#aaa6c3"
+        glareColor="#b9ad94"
         className="w-full sm:w-[340px]"
       >
         <div className="group/card w-full rounded-2xl bg-tertiary p-5">
