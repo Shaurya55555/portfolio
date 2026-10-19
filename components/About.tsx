@@ -80,7 +80,7 @@ export default function About() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           {stats.map((s, i) => (
-            <Reveal key={s.value} delay={i * 0.12} from={i % 2 ? "left" : "up"} className="h-full">
+            <Reveal key={s.value} delay={i * 0.12} from={i % 2 ? "left" : "right"} className="h-full">
               <TiltCard className="h-full">
               <div className="h-full rounded-2xl border border-white/10 bg-panel/70 p-6 backdrop-blur-sm transition-colors duration-300 hover:border-accent/40">
                 <p className="text-[clamp(2rem,3.4vw,2.75rem)] font-semibold leading-none tracking-tight text-white">

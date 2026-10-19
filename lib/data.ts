@@ -237,26 +237,17 @@ export const proofLog = [
   "300+ DSA problems · C++",
 ];
 
-export const stackGroups: { label: string; items: string[] }[] = [
-  { label: "Languages", items: ["JavaScript", "TypeScript", "Python", "C++", "SQL"] },
-  { label: "Frontend", items: ["React.js", "Next.js", "Redux", "Tailwind CSS", "HTML5", "CSS3", "WebSockets"] },
-  { label: "Backend", items: ["Node.js", "Express.js", "FastAPI", "REST", "GraphQL"] },
-  { label: "Data", items: ["PostgreSQL", "MongoDB", "Redis", "Kafka"] },
-  { label: "Applied AI", items: ["LLM APIs", "LangChain", "RAG", "Tool calling", "SSE streaming"] },
-  { label: "Infra", items: ["Docker", "GitHub Actions", "Jenkins", "Nginx", "Git", "Linux"] },
+/** Logos shown as the floating 3D tech stones. */
+export const technologies = [
+  { name: "HTML 5", icon: "/tech/html.png" },
+  { name: "CSS 3", icon: "/tech/css.png" },
+  { name: "JavaScript", icon: "/tech/javascript.png" },
+  { name: "TypeScript", icon: "/tech/typescript.png" },
+  { name: "React JS", icon: "/tech/reactjs.png" },
+  { name: "Redux Toolkit", icon: "/tech/redux.png" },
+  { name: "Tailwind CSS", icon: "/tech/tailwind.png" },
+  { name: "Node JS", icon: "/tech/nodejs.png" },
+  { name: "MongoDB", icon: "/tech/mongodb.png" },
+  { name: "git", icon: "/tech/git.png" },
+  { name: "Docker", icon: "/tech/docker.png" },
 ];
-
-/** Logos that exist in /public/tech, keyed by chip label. */
-export const stackIcons: Record<string, string> = {
-  JavaScript: "/tech/javascript.png",
-  TypeScript: "/tech/typescript.png",
-  "React.js": "/tech/reactjs.png",
-  Redux: "/tech/redux.png",
-  "Tailwind CSS": "/tech/tailwind.png",
-  HTML5: "/tech/html.png",
-  CSS3: "/tech/css.png",
-  "Node.js": "/tech/nodejs.png",
-  MongoDB: "/tech/mongodb.png",
-  Docker: "/tech/docker.png",
-  Git: "/tech/git.png",
-};

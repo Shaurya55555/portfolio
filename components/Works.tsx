@@ -234,7 +234,7 @@ export default function Works() {
         </p>
       </SectionHead>
 
-      <Reveal delay={0.1} from="up" className="mt-12">
+      <Reveal delay={0.1} from="right" className="mt-12">
         <Window
           title={`projects/${labels[active].toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
           right={

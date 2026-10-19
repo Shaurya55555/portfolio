@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import type { ReactNode } from "react";
-import { fadeIn, textVariant } from "@/lib/motion";
+import { fadeIn } from "@/lib/motion";
 
 /** Small mono label above a heading, with a leading dot. */
 export function Kicker({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -74,7 +74,7 @@ export function Reveal({
   children,
   delay = 0,
   className = "",
-  from = "up",
+  from = "right",
 }: {
   children: ReactNode;
   delay?: number;
@@ -95,7 +95,7 @@ export function Reveal({
   );
 }
 
-/** Section heading block: drops in from above, like the original headers. */
+/** Section heading block: slides in from the left (horizontal, no vertical drop). */
 export function SectionHead({
   children,
   className = "",
@@ -106,7 +106,10 @@ export function SectionHead({
   return (
     <motion.div
       className={className}
-      variants={textVariant()}
+      variants={{
+        hidden: { x: -80, opacity: 0 },
+        show: { x: 0, opacity: 1, transition: { type: "spring", duration: 1, bounce: 0.2 } },
+      }}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.4 }}

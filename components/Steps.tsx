@@ -20,7 +20,7 @@ export default function Steps() {
 
       <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         {steps.map((s, i) => (
-          <Reveal key={s.n} delay={i * 0.14} from="up" className="h-full">
+          <Reveal key={s.n} delay={i * 0.14} from={i % 2 ? "left" : "right"} className="h-full">
             <TiltCard className="h-full">
             <article className="group flex h-full flex-col rounded-2xl border border-white/10 bg-panel/70 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/40">
               <div className="flex items-center justify-between">

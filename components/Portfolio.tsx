@@ -11,7 +11,7 @@ import Steps from "./Steps";
 import Experience from "./Experience";
 import Works from "./Works";
 import Proof from "./Proof";
-import Stack from "./Stack";
+import Tech from "./Tech";
 import Contact from "./Contact";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
@@ -65,7 +65,7 @@ export default function Portfolio() {
         <Experience />
         <Works />
         <Proof />
-        <Stack />
+        <Tech />
         <Contact />
         <Footer />
       </div>
