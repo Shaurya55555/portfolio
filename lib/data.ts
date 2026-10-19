@@ -37,26 +37,6 @@ export const dockLinks = [
   { id: "contact", label: "Contact" },
 ];
 
-export const marqueeItems = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "Node.js",
-  "Express",
-  "FastAPI",
-  "PostgreSQL",
-  "MongoDB",
-  "GraphQL",
-  "Kafka",
-  "Docker",
-  "GitHub Actions",
-  "Jenkins",
-  "LangChain",
-  "Redis",
-  "Python",
-  "C++",
-];
-
 /** Words wrapped in *asterisks* are highlighted in the scroll-reveal statement. */
 export const statement =
   "I'm a *full-stack* engineer who takes a feature from the *schema* to the *interface* to *production*, and wires *language* *models* into products people actually use.";

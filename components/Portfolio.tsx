@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { MotionConfig } from "framer-motion";
 import Navbar from "./Navbar";
 import Hero from "./Hero";
-import Marquee from "./Marquee";
 import About from "./About";
 import Steps from "./Steps";
 import Experience from "./Experience";
@@ -59,7 +58,6 @@ export default function Portfolio() {
       <div className="relative z-[1]">
         <Navbar />
         <Hero />
-        <Marquee />
         <About />
         <Steps />
         <Experience />

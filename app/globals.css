@@ -95,23 +95,6 @@ body {
 
 /* ---------- editorial sections ---------- */
 
-/* infinite ticker under the hero */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-.animate-marquee {
-  animation: marquee 52s linear infinite;
-}
-.marquee-mask {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-
 /* terminal caret */
 @keyframes caret {
   50% {
@@ -123,7 +106,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
   .animate-caret {
     animation: none;
   }
