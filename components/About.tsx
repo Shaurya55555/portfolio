@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { Accent, Kicker, Reveal, Section } from "./ui";
+import { Accent, Kicker, Reveal, Section, SectionHead, TiltCard } from "./ui";
 import { rightNow, person, stats, statement } from "@/lib/data";
 
 type Token = { word: string; hl: boolean };
@@ -44,7 +44,9 @@ export default function About() {
 
   return (
     <Section id="about">
-      <Kicker>The position</Kicker>
+      <SectionHead>
+        <Kicker>The position</Kicker>
+      </SectionHead>
 
       <p
         ref={ref}
@@ -58,31 +60,35 @@ export default function About() {
       </p>
 
       <div className="mt-16 grid gap-6 lg:grid-cols-[1fr_1.15fr]">
-        <Reveal>
-          <div className="h-full rounded-2xl border border-white/10 bg-black-100/70 p-7 backdrop-blur-sm">
+        <Reveal from="right" className="h-full">
+          <TiltCard className="h-full">
+          <div className="h-full rounded-2xl border border-white/10 bg-panel/70 p-7 backdrop-blur-sm">
             <Kicker>Right now</Kicker>
-            <p className="mt-4 text-[17px] leading-[1.65] text-white-100">{rightNow}</p>
-            <p className="mt-4 text-[15px] leading-[1.65] text-secondary">{person.availability}</p>
+            <p className="mt-4 text-[17px] leading-[1.65] text-ink">{rightNow}</p>
+            <p className="mt-4 text-[15px] leading-[1.65] text-muted">{person.availability}</p>
             <a
               href={person.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 font-mono text-[13px] text-accent transition-colors hover:text-accent-soft"
+              className="mt-6 inline-flex items-center gap-2 font-mono text-[13px] text-accent transition-colors hover:text-white"
             >
               Read the resume <span aria-hidden>↗</span>
             </a>
           </div>
+          </TiltCard>
         </Reveal>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {stats.map((s, i) => (
-            <Reveal key={s.value} delay={i * 0.08}>
-              <div className="h-full rounded-2xl border border-white/10 bg-black-100/70 p-6 backdrop-blur-sm transition-colors duration-300 hover:border-accent/40">
+            <Reveal key={s.value} delay={i * 0.12} from={i % 2 ? "left" : "up"} className="h-full">
+              <TiltCard className="h-full">
+              <div className="h-full rounded-2xl border border-white/10 bg-panel/70 p-6 backdrop-blur-sm transition-colors duration-300 hover:border-accent/40">
                 <p className="text-[clamp(2rem,3.4vw,2.75rem)] font-semibold leading-none tracking-tight text-white">
                   <Accent>{s.value}</Accent>
                 </p>
-                <p className="mt-3 text-[14px] leading-[1.55] text-secondary">{s.label}</p>
+                <p className="mt-3 text-[14px] leading-[1.55] text-muted">{s.label}</p>
               </div>
+              </TiltCard>
             </Reveal>
           ))}
         </div>

@@ -9,7 +9,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Accent, Chip, H2, Kicker, Reveal, Section, Window } from "./ui";
+import { Accent, Chip, H2, Kicker, Reveal, Section, SectionHead, Window } from "./ui";
 import { projects, type Project } from "@/lib/data";
 
 const shortName = (n: string) => n.replace(" Microservice", "").replace(", but Better", "");
@@ -90,7 +90,7 @@ function Scrubber({
       >
         <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-white/10" />
         <div
-          className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-gradient-to-r from-[#a8643a] to-accent transition-[width] duration-200 ease-out"
+          className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-gradient-to-r from-white/25 to-accent transition-[width] duration-200 ease-out"
           style={{ width: `${pct(value)}%` }}
         />
         {labels.map((l, i) => (
@@ -117,7 +117,7 @@ function Scrubber({
             type="button"
             onClick={() => onChange(i)}
             className={`absolute -translate-x-1/2 whitespace-nowrap font-mono text-[11px] transition-colors ${
-              i === value ? "text-accent-soft" : "text-secondary hover:text-white"
+              i === value ? "text-accent-soft" : "text-muted hover:text-white"
             }`}
             style={{ left: `${pct(i)}%` }}
           >
@@ -141,7 +141,7 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
             <span className="h-2 w-2 rounded-full bg-white/20" />
             <span className="h-2 w-2 rounded-full bg-white/20" />
             <span className="h-2 w-2 rounded-full bg-white/20" />
-            <p className="ml-2 min-w-0 flex-1 truncate rounded-md bg-black/60 px-3 py-1 font-mono text-[11px] text-secondary">
+            <p className="ml-2 min-w-0 flex-1 truncate rounded-md bg-black/60 px-3 py-1 font-mono text-[11px] text-muted">
               {host}
             </p>
           </div>
@@ -172,11 +172,11 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
         <h3 className="mt-2 text-[clamp(1.5rem,2.4vw,2rem)] font-semibold leading-tight tracking-tight text-white">
           {p.name}
         </h3>
-        <p className="mt-3 text-[14.5px] leading-[1.7] text-secondary">{p.description}</p>
+        <p className="mt-3 text-[14.5px] leading-[1.7] text-muted">{p.description}</p>
 
         <div className="mt-5 border-l-2 border-accent/60 pl-4">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">Note</p>
-          <p className="mt-1 text-[14px] leading-[1.6] text-white-100">{p.note}</p>
+          <p className="mt-1 text-[14px] leading-[1.6] text-ink">{p.note}</p>
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2">
@@ -213,23 +213,28 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
 /** Kendor-style "review" block: a scrubbable timeline that opens each project. */
 export default function Works() {
   const [active, setActive] = useState(0);
+  const dir = useRef(1);
   const labels = projects.map((p) => shortName(p.name));
-  const go = (i: number) => setActive(Math.min(projects.length - 1, Math.max(0, i)));
+  const go = (i: number) => {
+    const next = Math.min(projects.length - 1, Math.max(0, i));
+    dir.current = next >= active ? 1 : -1;
+    setActive(next);
+  };
 
   return (
     <Section id="projects">
-      <Reveal>
+      <SectionHead>
         <Kicker>The work</Kicker>
         <H2 className="max-w-3xl">
           Six projects. <Accent>Pick one.</Accent>
         </H2>
-        <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-secondary">
+        <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-muted">
           Drag the playhead, tap a marker, or use the arrow keys. Each project has the
           stack, the links and an honest note on scope.
         </p>
-      </Reveal>
+      </SectionHead>
 
-      <Reveal delay={0.1} className="mt-12">
+      <Reveal delay={0.1} from="up" className="mt-12">
         <Window
           title={`projects/${labels[active].toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
           right={
@@ -263,10 +268,10 @@ export default function Works() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.22, ease: "easeOut" }}
+                initial={{ opacity: 0, x: 60 * dir.current }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -60 * dir.current }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
               >
                 <ProjectPanel p={projects[active]} index={active} />
               </motion.div>

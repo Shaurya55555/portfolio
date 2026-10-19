@@ -12,7 +12,7 @@ export default function Marquee() {
         {row.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="whitespace-nowrap rounded-full border border-white/10 bg-tertiary/70 px-4 py-1.5 font-mono text-[13px] text-secondary"
+            className="whitespace-nowrap rounded-full border border-white/10 bg-panel-2/70 px-4 py-1.5 font-mono text-[13px] text-muted"
           >
             {item}
           </span>

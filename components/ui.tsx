@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Tilt from "react-parallax-tilt";
 import type { ReactNode } from "react";
+import { fadeIn, textVariant } from "@/lib/motion";
 
 /** Small mono label above a heading, with a leading dot. */
 export function Kicker({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -47,7 +49,7 @@ export function Window({
 }) {
   return (
     <div
-      className={`overflow-hidden rounded-2xl border border-white/10 bg-black-100/80 shadow-card backdrop-blur-sm ${className}`}
+      className={`overflow-hidden rounded-2xl border border-white/10 bg-panel/80 shadow-[0_30px_80px_-24px_rgba(0,0,0,0.9)] backdrop-blur-sm ${className}`}
     >
       <div className="flex items-center gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-2.5">
         <div className="flex gap-1.5">
@@ -55,34 +57,88 @@ export function Window({
           <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
           <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
         </div>
-        <p className="min-w-0 flex-1 truncate font-mono text-[12px] text-secondary">{title}</p>
-        {right ? <div className="flex-shrink-0 font-mono text-[12px] text-secondary">{right}</div> : null}
+        <p className="min-w-0 flex-1 truncate font-mono text-[12px] text-muted">{title}</p>
+        {right ? <div className="flex-shrink-0 font-mono text-[12px] text-muted">{right}</div> : null}
       </div>
       <div className={bodyClassName}>{children}</div>
     </div>
   );
 }
 
-/** Fade + rise on scroll into view. */
+/**
+ * Slide + fade on scroll into view, using the site's original spring variants.
+ * `from` is where it travels from: "up" rises from below, "right" slides in
+ * from the left, "left" slides in from the right, "down" drops from above.
+ */
 export function Reveal({
   children,
   delay = 0,
   className = "",
+  from = "up",
 }: {
   children: ReactNode;
   delay?: number;
+  className?: string;
+  from?: "up" | "down" | "left" | "right";
+}) {
+  const dir = from === "up" ? "up" : from === "down" ? "down" : from === "left" ? "left" : "right";
+  return (
+    <motion.div
+      className={className}
+      variants={fadeIn(dir, "spring", delay, 0.8)}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.15 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/** Section heading block: drops in from above, like the original headers. */
+export function SectionHead({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
   className?: string;
 }) {
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 26 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-70px" }}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
+      variants={textVariant()}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.4 }}
     >
       {children}
     </motion.div>
+  );
+}
+
+/** Hover tilt with a soft glare, as on the original cards. */
+export function TiltCard({
+  children,
+  className = "",
+  max = 12,
+}: {
+  children: ReactNode;
+  className?: string;
+  max?: number;
+}) {
+  return (
+    <Tilt
+      glareEnable
+      glareMaxOpacity={0.12}
+      glareColor="#ffffff"
+      tiltMaxAngleX={max}
+      tiltMaxAngleY={max}
+      scale={1.015}
+      transitionSpeed={900}
+      className={className}
+    >
+      {children}
+    </Tilt>
   );
 }
 
@@ -110,7 +166,7 @@ export function Section({
 export function Chip({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-white/10 bg-tertiary/70 px-3 py-1.5 font-mono text-[13px] text-secondary ${className}`}
+      className={`inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-white/10 bg-panel-2/70 px-3 py-1.5 font-mono text-[13px] text-muted ${className}`}
     >
       {children}
     </span>

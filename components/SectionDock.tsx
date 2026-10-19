@@ -59,7 +59,7 @@ export default function SectionDock() {
                 className={`rounded-full px-3.5 py-1.5 font-mono text-[12px] transition-colors ${
                   active === l.id
                     ? "bg-accent text-black"
-                    : "text-secondary hover:text-white"
+                    : "text-muted hover:text-white"
                 }`}
               >
                 {l.label}
@@ -68,7 +68,7 @@ export default function SectionDock() {
             <span className="absolute inset-x-5 bottom-[3px] h-[2px] overflow-hidden rounded-full bg-white/10">
               <motion.span
                 style={{ scaleX: progress }}
-                className="block h-full w-full origin-left bg-gradient-to-r from-[#a8643a] to-accent"
+                className="block h-full w-full origin-left bg-gradient-to-r from-white/25 to-accent"
               />
             </span>
           </motion.nav>

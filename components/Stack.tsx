@@ -2,27 +2,27 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Accent, H2, Kicker, Reveal, Section, Window } from "./ui";
+import { Accent, H2, Kicker, Reveal, Section, SectionHead, Window } from "./ui";
 import { stackGroups, stackIcons } from "@/lib/data";
 
 /** Kendor-style "stacks" block: a terminal card of grouped chips. */
 export default function Stack() {
   return (
     <Section id="stack">
-      <Reveal>
+      <SectionHead>
         <Kicker>The stack</Kicker>
         <H2 className="max-w-4xl">
           My real stack. <Accent>Not a keyword list.</Accent>
         </H2>
-        <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-secondary">
+        <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-muted">
           Everything here shipped in a project or an internship above.
         </p>
-      </Reveal>
+      </SectionHead>
 
       <Reveal delay={0.1} className="mt-12">
         <Window title="stack --list" right="6 groups" bodyClassName="p-5 sm:p-7">
-          <p className="font-mono text-[13px] text-white-100/80">
-            $ stack --list <span className="text-secondary"># 5 languages · 3 databases · 2 CI systems</span>
+          <p className="font-mono text-[13px] text-ink/80">
+            $ stack --list <span className="text-muted"># 5 languages · 3 databases · 2 CI systems</span>
           </p>
 
           <div className="mt-6 divide-y divide-white/10">
@@ -31,7 +31,7 @@ export default function Stack() {
                 key={g.label}
                 className="grid gap-3 py-4 sm:grid-cols-[150px_1fr] sm:items-center"
               >
-                <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-secondary">
+                <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-muted">
                   {g.label}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -42,7 +42,7 @@ export default function Stack() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true, margin: "-30px" }}
                       transition={{ duration: 0.3, delay: gi * 0.04 + i * 0.03 }}
-                      className="inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-white/10 bg-tertiary/70 px-3 py-1.5 font-mono text-[13px] text-white-100 transition-colors hover:border-accent/50"
+                      className="inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-white/10 bg-panel-2/70 px-3 py-1.5 font-mono text-[13px] text-ink transition-colors hover:border-accent/50"
                     >
                       {stackIcons[item] ? (
                         <Image

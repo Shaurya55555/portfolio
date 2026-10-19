@@ -1,7 +1,7 @@
 import { navLinks, person, projects } from "@/lib/data";
 
 const col = "flex flex-col gap-2.5 text-[14px]";
-const linkCls = "text-secondary transition-colors hover:text-accent-soft";
+const linkCls = "text-muted transition-colors hover:text-white";
 const head = "mb-4 font-mono text-[12px] uppercase tracking-[0.18em] text-accent";
 
 export default function Footer() {
@@ -18,7 +18,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 sm:px-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <p className="text-[20px] font-semibold tracking-tight text-white">{person.name}</p>
-          <p className="mt-3 max-w-xs text-[14px] leading-[1.65] text-secondary">
+          <p className="mt-3 max-w-xs text-[14px] leading-[1.65] text-muted">
             Full-stack engineer who wires language models into products people actually use.
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 px-6 py-6 font-mono text-[12px] text-secondary sm:flex-row sm:items-center sm:px-16">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 px-6 py-6 font-mono text-[12px] text-muted sm:flex-row sm:items-center sm:px-16">
           <p>
             &copy; {new Date().getFullYear()} {person.name}
           </p>

@@ -1,137 +1,220 @@
 "use client";
 
-import { useState } from "react";
-import { Kicker, Reveal, Section, Window } from "./ui";
+import { useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
+import { Accent, H2, Kicker, Section, SectionHead, Window } from "./ui";
+import InView from "./InView";
+import { slideIn, staggerContainer } from "@/lib/motion";
 import { person } from "@/lib/data";
 
-const links = [
-  { label: "Email", value: person.email, href: `mailto:${person.email}` },
-  { label: "LinkedIn", value: "in/shaurya-bajpai", href: person.linkedin },
-  { label: "GitHub", value: "Shaurya55555", href: person.github },
-  { label: "LeetCode", value: "u/shaurya55555", href: person.leetcode },
-];
+// The planet only mounts when the section is near the viewport, as before.
+const EarthCanvas = dynamic(() => import("./canvas/Earth"), { ssr: false });
 
 const field =
-  "w-full rounded-lg border border-white/10 bg-tertiary/80 px-4 py-3 text-[15px] font-medium text-white outline-none transition-colors placeholder:text-secondary focus:border-accent/60";
+  "w-full rounded-lg border bg-panel-2/80 px-4 py-3.5 text-[15px] font-medium text-white outline-none transition-colors placeholder:text-muted/70 focus:border-accent/70";
 
-/** Kendor-style closing block: big headline, two CTAs, a compose window and link cards. */
+const quick = [
+  { label: "LinkedIn", href: person.linkedin },
+  { label: "GitHub", href: person.github },
+  { label: "LeetCode", href: person.leetcode },
+  { label: "Resume", href: person.resume },
+];
+
+type Status = "idle" | "sent";
+
 export default function Contact() {
-  const [form, setForm] = useState({ email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [touched, setTouched] = useState({ email: false, message: false });
+  const [status, setStatus] = useState<Status>("idle");
+  const [copied, setCopied] = useState(false);
+  const emailRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
+  const messageOk = form.message.trim().length >= 5;
+  const canSend = emailOk && messageOk;
+
+  const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
+    if (status === "sent") setStatus("idle");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent("Portfolio message");
-    const body = encodeURIComponent(`${form.message}\n\nReply to: ${form.email}`);
+    setTouched({ email: true, message: true });
+    if (!canSend) {
+      if (!emailOk) emailRef.current?.focus();
+      return;
+    }
+    const who = form.name.trim() || "someone";
+    const subject = encodeURIComponent(`Portfolio message from ${who}`);
+    const body = encodeURIComponent(
+      `${form.message.trim()}\n\n${who}\nReply to: ${form.email.trim()}`,
+    );
     window.location.href = `mailto:${person.email}?subject=${subject}&body=${body}`;
+    setStatus("sent");
   };
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(person.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard blocked: the address is still shown on screen */
+    }
+  };
+
+  const emailBad = touched.email && !emailOk;
+  const messageBad = touched.message && !messageOk;
 
   return (
     <Section id="contact">
-      <Reveal className="text-center">
-        <div className="flex justify-center">
-          <Kicker>Your turn</Kicker>
-        </div>
-        <h2 className="mx-auto mt-5 max-w-5xl text-balance text-[clamp(2.6rem,6.8vw,5.5rem)] font-semibold leading-[1] tracking-tight text-white">
-          Let&apos;s ship <em className="font-serif font-normal italic text-accent-soft">something real.</em>
-        </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-[1.65] text-secondary">
-          {person.availability}
+      <SectionHead>
+        <Kicker>Get in touch</Kicker>
+        <H2>
+          Contact. <Accent>Say hello.</Accent>
+        </H2>
+        <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-muted">
+          {person.availability} Leave a message and I&apos;ll reply by email.
         </p>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href={`mailto:${person.email}`}
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-[15px] font-semibold text-black transition-all hover:-translate-y-0.5 hover:bg-accent-soft hover:shadow-[0_0_30px_rgba(255,200,162,0.45)]"
-          >
-            Email me <span aria-hidden>↗</span>
-          </a>
-          <a
-            href={person.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-[15px] font-medium text-white transition-all hover:-translate-y-0.5 hover:border-accent/60"
-          >
-            Download resume <span aria-hidden>↓</span>
-          </a>
-        </div>
-        <p className="mt-5 font-mono text-[12px] text-secondary">
-          Reply by email · Resume as PDF · Source on GitHub
-        </p>
-      </Reveal>
+      </SectionHead>
 
-      <div className="mt-16 grid gap-6 lg:grid-cols-2">
-        <Reveal>
-          <Window title="new-message" right="to: shaurya" bodyClassName="p-5 sm:p-6">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {/* the trigger sits on this stationary wrapper; the two columns only carry
+          the slide variants, so they can start fully off-screen */}
+      <motion.div
+        variants={staggerContainer()}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.15 }}
+        className="mt-12 flex flex-col-reverse gap-10 overflow-hidden xl:flex-row"
+      >
+        <motion.div variants={slideIn("left", "tween", 0.2, 1)} className="flex-[0.8]">
+          <Window title="new-message" right={`to: ${person.firstName.toLowerCase()}`} bodyClassName="p-5 sm:p-7">
+            <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
               <label className="flex flex-col gap-2">
-                <span className="font-mono text-[12px] text-secondary">your email</span>
+                <span className="text-[14px] font-medium text-ink">
+                  Your name <span className="font-normal text-muted">(optional)</span>
+                </span>
                 <input
-                  type="email"
-                  name="email"
-                  required
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                  className={field}
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  value={form.name}
+                  onChange={onChange}
+                  placeholder="What should I call you?"
+                  className={`${field} border-white/10`}
                 />
               </label>
+
               <label className="flex flex-col gap-2">
-                <span className="font-mono text-[12px] text-secondary">message</span>
+                <span className="text-[14px] font-medium text-ink">Your email</span>
+                <input
+                  ref={emailRef}
+                  type="email"
+                  name="email"
+                  inputMode="email"
+                  autoComplete="email"
+                  required
+                  value={form.email}
+                  onChange={onChange}
+                  onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+                  placeholder="you@example.com"
+                  aria-invalid={emailBad}
+                  aria-describedby="email-hint"
+                  className={`${field} ${emailBad ? "border-red-400/70" : "border-white/10"}`}
+                />
+                <span
+                  id="email-hint"
+                  className={`text-[12px] ${emailBad ? "text-red-300" : "text-muted"}`}
+                >
+                  {emailBad ? "Please enter a valid email so I can reply." : "So I know where to reply."}
+                </span>
+              </label>
+
+              <label className="flex flex-col gap-2">
+                <span className="text-[14px] font-medium text-ink">Message</span>
                 <textarea
                   rows={5}
                   name="message"
                   required
                   value={form.message}
-                  onChange={handleChange}
-                  placeholder="What would you like to say?"
-                  className={field}
+                  onChange={onChange}
+                  onBlur={() => setTouched((t) => ({ ...t, message: true }))}
+                  placeholder="A role, a project, or just hello."
+                  aria-invalid={messageBad}
+                  className={`${field} resize-y ${messageBad ? "border-red-400/70" : "border-white/10"}`}
                 />
+                {messageBad && (
+                  <span className="text-[12px] text-red-300">Write a short message first.</span>
+                )}
               </label>
-              <button
-                type="submit"
-                className="w-fit rounded-full bg-accent px-7 py-3 text-[15px] font-semibold text-black transition-all hover:-translate-y-0.5 hover:bg-accent-soft"
-              >
-                Send
-              </button>
-              <p className="font-mono text-[11px] text-secondary">
-                Opens your mail app with the message drafted to me.
-              </p>
-            </form>
-          </Window>
-        </Reveal>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          {links.map((l, i) => (
-            <Reveal key={l.label} delay={i * 0.07} className="h-full">
-              <a
-                href={l.href}
-                target={l.href.startsWith("mailto:") ? undefined : "_blank"}
-                rel="noopener noreferrer"
-                className="group flex h-full min-h-[132px] flex-col justify-between rounded-2xl border border-white/10 bg-black-100/70 p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/50"
-              >
-                <div className="flex items-center justify-between">
-                  <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-accent">
-                    {l.label}
-                  </p>
-                  <span
-                    aria-hidden
-                    className="text-secondary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="submit"
+                  className={`inline-flex items-center gap-2 rounded-full px-7 py-3 text-[15px] font-semibold transition-all ${
+                    canSend
+                      ? "bg-accent text-black hover:-translate-y-0.5 hover:scale-105 hover:bg-accent-soft"
+                      : "cursor-pointer bg-white/10 text-muted hover:bg-white/15"
+                  }`}
+                >
+                  Send message <span aria-hidden>↗</span>
+                </button>
+                <span className="text-[12px] text-muted">Opens your mail app with the message ready.</span>
+              </div>
+
+              <div aria-live="polite" className="min-h-[1px]">
+                {status === "sent" && (
+                  <div className="rounded-lg border border-accent/30 bg-accent/10 p-4 text-[14px] leading-[1.6] text-ink">
+                    Your mail app should have opened with the message drafted. If nothing
+                    happened, email me directly at{" "}
+                    <span className="font-medium text-white">{person.email}</span>.
+                  </div>
+                )}
+              </div>
+            </form>
+
+            <div className="mt-6 border-t border-white/10 pt-5">
+              <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-accent">
+                Prefer another way
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:border-accent/60"
+                >
+                  {copied ? "Copied ✓" : "Copy my email"}
+                </button>
+                {quick.map((l) => (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:border-accent/60"
                   >
-                    ↗
-                  </span>
-                </div>
-                <p className="mt-6 text-[14px] font-medium text-white [overflow-wrap:anywhere]">{l.value}</p>
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </div>
+                    {l.label} <span aria-hidden className="text-muted">↗</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </Window>
+        </motion.div>
+
+        <motion.div
+          variants={slideIn("right", "tween", 0.2, 1)}
+          className="h-[320px] md:h-[480px] xl:h-auto xl:min-h-[520px] xl:flex-1"
+        >
+          <InView className="h-full w-full" rootMargin="250px">
+            <EarthCanvas />
+          </InView>
+        </motion.div>
+      </motion.div>
     </Section>
   );
 }

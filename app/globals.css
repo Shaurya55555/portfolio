@@ -10,6 +10,12 @@
   --color-accent: #ffc8a2;
   --color-accent-soft: #ffe9db;
 
+  /* neutral palette for the pure-black pages below the hero */
+  --color-muted: #a3a3ab;
+  --color-ink: #ececf0;
+  --color-panel: #0a0a0b;
+  --color-panel-2: #141417;
+
   --breakpoint-xs: 30rem;
 
   --shadow-card: 0px 35px 120px -15px rgba(255, 170, 70, 0.14);
@@ -33,7 +39,12 @@ html {
     radial-gradient(circle at 106% 16%, #fff6df 0, #ffe0a0 2.5%, rgba(255, 176, 72, 0.55) 9%, rgba(255, 140, 40, 0.2) 24%, transparent 52%),
     radial-gradient(70% 60% at 100% 14%, rgba(255, 160, 60, 0.16), transparent 70%),
     radial-gradient(60% 45% at 0% 100%, rgba(255, 200, 162, 0.06), transparent 65%);
-  background-attachment: fixed;
+  /* the sun belongs to the first page only: it is one viewport tall and
+     scrolls away with the page, leaving plain black space below */
+  background-repeat: no-repeat;
+  background-size: 100% 100vh;
+  background-position: top left;
+  background-attachment: scroll;
 }
 
 html,
