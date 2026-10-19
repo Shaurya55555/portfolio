@@ -127,17 +127,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    name: "NammaStocks",
-    description:
-      "Stock analytics web app with Stockie, an AI assistant that acts through tool calls and answers from live market data. I built the tool-call loop, token-by-token SSE streaming, a retrieval-augmented prompt, and a pluggable OpenAI / Anthropic / Gemini / Ollama provider layer.",
-    note: "The model returns structured actions, the app executes them, and the result goes back into the model for the final answer.",
-    tags: ["React", "FastAPI", "LangChain"],
-    monogram: "NS",
-    image: "/projects/nammastocks.png",
-    liveLink: "https://nammastocks.vercel.app",
-    sourceCodeLink: "https://github.com/Shaurya55555/NammaStocks",
-  },
-  {
     name: "OARFIN",
     description:
       "Emergency response platform: scrapes disaster news with Playwright, filters each item through a Gemini yes/no relevance classifier, and routes people to the nearest shelter by merging Overpass and FEMA data with failover. Runner-up at LNMIIT HackCrux.",
@@ -147,6 +136,17 @@ export const projects: Project[] = [
     image: "/projects/oarfin.png",
     liveLink: "https://oarfin-website-nine.vercel.app",
     sourceCodeLink: "https://github.com/Shaurya55555/Oarfin",
+  },
+  {
+    name: "NammaStocks",
+    description:
+      "Stock analytics web app with Stockie, an AI assistant that acts through tool calls and answers from live market data. I built the tool-call loop, token-by-token SSE streaming, a retrieval-augmented prompt, and a pluggable OpenAI / Anthropic / Gemini / Ollama provider layer.",
+    note: "The model returns structured actions, the app executes them, and the result goes back into the model for the final answer.",
+    tags: ["React", "FastAPI", "LangChain"],
+    monogram: "NS",
+    image: "/projects/nammastocks.png",
+    liveLink: "https://nammastocks.vercel.app",
+    sourceCodeLink: "https://github.com/Shaurya55555/NammaStocks",
   },
   {
     name: "Ecom Microservice GraphQL",
@@ -231,3 +231,7 @@ export const technologies = [
   { name: "git", icon: "/tech/git.png" },
   { name: "Docker", icon: "/tech/docker.png" },
 ];
+
+export const sectionCopy = {
+  contact: { p: "Get in touch", h2: "Contact." },
+};
