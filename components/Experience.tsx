@@ -1,111 +1,104 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll } from "framer-motion";
-import SectionWrapper from "./SectionWrapper";
-import Header from "./Header";
-import { experiences, sectionCopy } from "@/lib/data";
+import { motion } from "framer-motion";
+import { Accent, Chip, H2, Kicker, Reveal, Section, Window } from "./ui";
+import { experiences } from "@/lib/data";
 
 type Exp = (typeof experiences)[number];
 
-function ExperienceItem({ experience }: { experience: Exp }) {
+function slug(s: string) {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+function Role({ exp, index }: { exp: Exp; index: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -28 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="relative pl-16 sm:pl-20"
-    >
-      {/* node on the line */}
-      <motion.div
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 0.4, delay: 0.15, type: "spring", bounce: 0.5 }}
-        className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-full ring-4 ring-primary sm:h-12 sm:w-12"
-        style={{ background: experience.iconBg }}
+    <Reveal delay={index * 0.08}>
+      <Window
+        title={`~/experience/${slug(exp.companyName)}`}
+        right={exp.date}
+        bodyClassName="p-5 sm:p-6"
       >
-        <Image
-          src={experience.icon}
-          alt={experience.companyName}
-          width={44}
-          height={44}
-          className="h-[60%] w-[60%] object-contain"
-        />
-      </motion.div>
-
-      <div className="rounded-2xl bg-black-100 p-6 shadow-card transition-transform duration-300 hover:-translate-y-1">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-[19px] font-bold text-white sm:text-[22px]">
-            {experience.title}
-          </h3>
-          <span className="whitespace-nowrap rounded-full bg-tertiary px-3 py-1 text-[12px] font-medium text-secondary">
-            {experience.date}
-          </span>
+        <div className="flex items-center gap-4">
+          <div
+            className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl"
+            style={{ background: exp.iconBg }}
+          >
+            <Image
+              src={exp.icon}
+              alt={exp.companyName}
+              width={44}
+              height={44}
+              className="h-[68%] w-[68%] object-contain"
+            />
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-[19px] font-semibold leading-tight tracking-tight text-white sm:text-[21px]">
+              {exp.title}
+            </h3>
+            <p className="mt-0.5 text-[15px] font-medium text-accent-soft">{exp.companyName}</p>
+          </div>
         </div>
-        <p className="mt-1 text-[15px] font-semibold text-[#ffe9db]">
-          {experience.companyName}
-        </p>
 
-        <ul className="mt-4 space-y-2.5">
-          {experience.points.map((point, i) => (
+        <p className="mt-6 font-mono text-[12px] text-secondary">$ cat highlights.md</p>
+        <ul className="mt-3 space-y-2.5">
+          {exp.points.map((p, i) => (
             <motion.li
               key={i}
-              initial={{ opacity: 0, x: -12 }}
+              initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.35, delay: 0.05 * i }}
-              className="flex gap-2.5 text-[14px] leading-relaxed text-white-100"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.4, delay: 0.05 * i }}
+              className="flex gap-3 text-[14px] leading-[1.6] text-white-100"
             >
-              <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#ffc8a2]" />
-              <span>{point}</span>
+              <span className="mt-[2px] font-mono text-accent" aria-hidden>
+                ✓
+              </span>
+              <span>{p}</span>
             </motion.li>
           ))}
         </ul>
-      </div>
-    </motion.div>
+
+        <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-white/10 pt-4">
+          <span className="mr-1 font-mono text-[12px] text-secondary">Running</span>
+          {exp.stack.map((t) => (
+            <Chip key={t}>{t}</Chip>
+          ))}
+        </div>
+      </Window>
+    </Reveal>
   );
 }
 
-function Experience() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    offset: ["start 80%", "end 55%"],
-  });
-
+/** Kendor-style "environment" split: sticky copy on the left, terminal windows on the right. */
+export default function Experience() {
   return (
-    <>
-      <Header {...sectionCopy.experience} />
-      <p className="mt-3 max-w-xl text-[14px] text-secondary">
-        The line fills in as you scroll, point to point.
-      </p>
+    <Section id="work">
+      <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <Reveal>
+            <Kicker>The experience</Kicker>
+            <H2>
+              Where I&apos;ve <Accent>shipped.</Accent>
+            </H2>
+            <p className="mt-5 max-w-md text-[17px] leading-[1.65] text-secondary">
+              Two internships, one on the backend and one on the frontend. Real users, real
+              deploys, and production issues traced to the root cause.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-2">
+              <Chip>2 internships</Chip>
+              <Chip>Backend + Frontend</Chip>
+              <Chip>Aug 2024 to Jan 2026</Chip>
+            </div>
+          </Reveal>
+        </div>
 
-      <div ref={trackRef} className="relative mt-16">
-        {/* dim track */}
-        <div className="absolute left-[19px] top-2 bottom-2 w-[3px] rounded-full bg-white/10 sm:left-[23px]" />
-        {/* fill that grows with scroll position */}
-        <motion.div
-          style={{ scaleY: scrollYProgress }}
-          className="absolute left-[19px] top-2 bottom-2 w-[3px] origin-top rounded-full bg-gradient-to-b from-[#ffc8a2] to-[#ffe9db] sm:left-[23px]"
-        />
-
-        <div className="flex flex-col gap-12">
-          {experiences.map((experience, i) => (
-            <ExperienceItem key={i} experience={experience} />
+        <div className="flex flex-col gap-6">
+          {experiences.map((exp, i) => (
+            <Role key={exp.companyName} exp={exp} index={i} />
           ))}
         </div>
       </div>
-    </>
-  );
-}
-
-export default function ExperienceSection() {
-  return (
-    <SectionWrapper id="work">
-      <Experience />
-    </SectionWrapper>
+    </Section>
   );
 }

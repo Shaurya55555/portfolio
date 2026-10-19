@@ -1,124 +1,279 @@
 "use client";
 
 import Image from "next/image";
-import Tilt from "react-parallax-tilt";
-import { motion } from "framer-motion";
-import { FiExternalLink } from "react-icons/fi";
-import SectionWrapper from "./SectionWrapper";
-import Header from "./Header";
-import { fadeIn } from "@/lib/motion";
-import { projects, sectionCopy, type Project } from "@/lib/data";
+import {
+  useCallback,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Accent, Chip, H2, Kicker, Reveal, Section, Window } from "./ui";
+import { projects, type Project } from "@/lib/data";
 
-function ProjectCard({ index, ...project }: { index: number } & Project) {
-  const external = project.liveLink || project.demoLink;
+const shortName = (n: string) => n.replace(" Microservice", "").replace(", but Better", "");
+
+function Scrubber({
+  value,
+  labels,
+  onChange,
+}: {
+  value: number;
+  labels: string[];
+  onChange: (i: number) => void;
+}) {
+  const count = labels.length;
+  const track = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+
+  const pick = useCallback(
+    (clientX: number) => {
+      const el = track.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const t = Math.min(1, Math.max(0, (clientX - r.left) / r.width));
+      onChange(Math.round(t * (count - 1)));
+    },
+    [count, onChange],
+  );
+
+  const down = (e: ReactPointerEvent<HTMLDivElement>) => {
+    dragging.current = true;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    pick(e.clientX);
+  };
+  const move = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (dragging.current) pick(e.clientX);
+  };
+  const up = (e: ReactPointerEvent<HTMLDivElement>) => {
+    dragging.current = false;
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+  };
+  const key = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      e.preventDefault();
+      onChange(Math.min(count - 1, value + 1));
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      e.preventDefault();
+      onChange(Math.max(0, value - 1));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      onChange(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      onChange(count - 1);
+    }
+  };
+
+  const pct = (i: number) => (i / (count - 1)) * 100;
+
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.3 }}
-      variants={fadeIn("up", "spring", (index % 3) * 0.15, 0.6)}
-    >
-      <Tilt
-        glareEnable
-        tiltMaxAngleX={20}
-        tiltMaxAngleY={20}
-        glareColor="#c9b8a8"
-        className="w-full sm:w-[340px]"
+    <div className="px-9 pb-3 pt-4 sm:px-14">
+      <div
+        ref={track}
+        role="slider"
+        tabIndex={0}
+        aria-label="Project"
+        aria-valuemin={1}
+        aria-valuemax={count}
+        aria-valuenow={value + 1}
+        aria-valuetext={labels[value]}
+        onPointerDown={down}
+        onPointerMove={move}
+        onPointerUp={up}
+        onPointerCancel={up}
+        onKeyDown={key}
+        className="relative h-10 cursor-pointer touch-none select-none rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
       >
-        <div className="group/card w-full rounded-2xl bg-tertiary p-5">
-          <div className="relative h-[200px] w-full overflow-hidden rounded-2xl bg-black">
-            {project.image ? (
+        <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-white/10" />
+        <div
+          className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-gradient-to-r from-[#a8643a] to-accent transition-[width] duration-200 ease-out"
+          style={{ width: `${pct(value)}%` }}
+        />
+        {labels.map((l, i) => (
+          <span
+            key={l}
+            aria-hidden
+            className={`absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors ${
+              i <= value ? "bg-accent" : "bg-white/25"
+            }`}
+            style={{ left: `${pct(i)}%` }}
+          />
+        ))}
+        <span
+          aria-hidden
+          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_18px_rgba(255,200,162,0.65)] transition-[left] duration-200 ease-out"
+          style={{ left: `${pct(value)}%` }}
+        />
+      </div>
+
+      <div className="relative mt-0.5 hidden h-6 md:block">
+        {labels.map((l, i) => (
+          <button
+            key={l}
+            type="button"
+            onClick={() => onChange(i)}
+            className={`absolute -translate-x-1/2 whitespace-nowrap font-mono text-[11px] transition-colors ${
+              i === value ? "text-accent-soft" : "text-secondary hover:text-white"
+            }`}
+            style={{ left: `${pct(i)}%` }}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProjectPanel({ p, index }: { p: Project; index: number }) {
+  const external = p.liveLink || p.demoLink;
+  const host = (external || p.sourceCodeLink).replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+  return (
+    <div className="grid md:grid-cols-[1.15fr_0.85fr]">
+      <div className="border-b border-white/10 p-4 sm:p-5 md:border-b-0 md:border-r">
+        <div className="overflow-hidden rounded-xl border border-white/10 bg-black">
+          <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.04] px-3 py-2">
+            <span className="h-2 w-2 rounded-full bg-white/20" />
+            <span className="h-2 w-2 rounded-full bg-white/20" />
+            <span className="h-2 w-2 rounded-full bg-white/20" />
+            <p className="ml-2 min-w-0 flex-1 truncate rounded-md bg-black/60 px-3 py-1 font-mono text-[11px] text-secondary">
+              {host}
+            </p>
+          </div>
+          <div className="relative aspect-[16/10] w-full">
+            {p.image ? (
               <Image
-                src={project.image}
-                alt={`${project.name} homepage`}
+                src={p.image}
+                alt={`${p.name} homepage`}
                 fill
-                sizes="340px"
+                sizes="(min-width: 1024px) 560px, 100vw"
                 className="object-cover object-top"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center">
-                <span className="text-[22px] font-bold tracking-wide text-white">
-                  {project.name}
+              <div className="flex h-full w-full items-center justify-center p-6 text-center">
+                <span className="text-[clamp(1.4rem,2.6vw,2rem)] font-semibold tracking-tight text-white">
+                  {p.name}
                 </span>
               </div>
             )}
-
-            <div className="card-img_hover absolute inset-0 m-3 flex justify-end gap-2">
-              <a
-                href={project.sourceCodeLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${project.name} source`}
-                className="black-gradient flex h-10 w-10 items-center justify-center rounded-full"
-              >
-                <Image
-                  src="/github.png"
-                  alt="github"
-                  width={20}
-                  height={20}
-                  className="h-1/2 w-1/2 object-contain"
-                />
-              </a>
-              {external && (
-                <a
-                  href={external}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${project.name} live`}
-                  className="black-gradient flex h-10 w-10 items-center justify-center rounded-full text-white"
-                >
-                  <FiExternalLink size={16} />
-                </a>
-              )}
-            </div>
-          </div>
-
-          <div className="mt-5">
-            <h3 className="text-[24px] font-bold text-white">{project.name}</h3>
-            <p className="mt-2 text-[14px] leading-[22px] text-secondary">
-              {project.description}
-            </p>
-          </div>
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <p key={tag.name} className={`text-[14px] ${tag.color}`}>
-                #{tag.name}
-              </p>
-            ))}
           </div>
         </div>
-      </Tilt>
-    </motion.div>
+      </div>
+
+      <div className="flex flex-col p-5 sm:p-7">
+        <p className="font-mono text-[12px] text-accent">
+          {String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+        </p>
+        <h3 className="mt-2 text-[clamp(1.5rem,2.4vw,2rem)] font-semibold leading-tight tracking-tight text-white">
+          {p.name}
+        </h3>
+        <p className="mt-3 text-[14.5px] leading-[1.7] text-secondary">{p.description}</p>
+
+        <div className="mt-5 border-l-2 border-accent/60 pl-4">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">Note</p>
+          <p className="mt-1 text-[14px] leading-[1.6] text-white-100">{p.note}</p>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-2">
+          {p.tags.map((t) => (
+            <Chip key={t}>{t}</Chip>
+          ))}
+        </div>
+
+        <div className="mt-auto flex flex-wrap gap-3 pt-7">
+          {external && (
+            <a
+              href={external}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-[14px] font-semibold text-black transition-all hover:-translate-y-0.5 hover:bg-accent-soft"
+            >
+              {p.liveLink ? "Live site" : "Demo"} <span aria-hidden>↗</span>
+            </a>
+          )}
+          <a
+            href={p.sourceCodeLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-[14px] font-medium text-white transition-all hover:-translate-y-0.5 hover:border-accent/60"
+          >
+            Source <span aria-hidden>↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
 
-function Works() {
+/** Kendor-style "review" block: a scrubbable timeline that opens each project. */
+export default function Works() {
+  const [active, setActive] = useState(0);
+  const labels = projects.map((p) => shortName(p.name));
+  const go = (i: number) => setActive(Math.min(projects.length - 1, Math.max(0, i)));
+
   return (
-    <>
-      <Header p={sectionCopy.works.p} h2={sectionCopy.works.h2} />
-      <div className="flex w-full">
-        <motion.p
-          variants={fadeIn("", "", 0.1, 1)}
-          className="mt-3 max-w-3xl text-[17px] leading-[30px] text-secondary"
+    <Section id="projects">
+      <Reveal>
+        <Kicker>The work</Kicker>
+        <H2 className="max-w-3xl">
+          Six projects. <Accent>Pick one.</Accent>
+        </H2>
+        <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-secondary">
+          Drag the playhead, tap a marker, or use the arrow keys. Each project has the
+          stack, the links and an honest note on scope.
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.1} className="mt-12">
+        <Window
+          title={`projects/${labels[active].toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+          right={
+            <span className="flex items-center gap-1">
+              <button
+                type="button"
+                aria-label="Previous project"
+                onClick={() => go(active - 1)}
+                disabled={active === 0}
+                className="rounded px-2 py-0.5 text-white transition-colors hover:bg-white/10 disabled:opacity-30"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                aria-label="Next project"
+                onClick={() => go(active + 1)}
+                disabled={active === projects.length - 1}
+                className="rounded px-2 py-0.5 text-white transition-colors hover:bg-white/10 disabled:opacity-30"
+              >
+                →
+              </button>
+            </span>
+          }
         >
-          {sectionCopy.works.content}
-        </motion.p>
-      </div>
+          <div className="border-b border-white/10">
+            <Scrubber value={active} labels={labels} onChange={go} />
+          </div>
 
-      <div className="mt-20 flex flex-wrap justify-center gap-7">
-        {projects.map((project, index) => (
-          <ProjectCard key={project.name} index={index} {...project} />
-        ))}
-      </div>
-    </>
-  );
-}
-
-export default function WorksSection() {
-  return (
-    <SectionWrapper id="projects">
-      <Works />
-    </SectionWrapper>
+          <div className="min-h-[460px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+              >
+                <ProjectPanel p={projects[active]} index={active} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </Window>
+      </Reveal>
+    </Section>
   );
 }

@@ -21,7 +21,7 @@ export default function Page() {
       <article style={srOnly}>
         <h1>{person.name}</h1>
         <p>
-          {person.role}. Based in {person.location}. {person.availability}
+          {person.role}. {person.availability}
         </p>
 
         <h2>About</h2>

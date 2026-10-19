@@ -2,15 +2,20 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { MotionConfig } from "framer-motion";
 import Navbar from "./Navbar";
 import Hero from "./Hero";
+import Marquee from "./Marquee";
 import About from "./About";
+import Steps from "./Steps";
 import Experience from "./Experience";
-import Tech from "./Tech";
 import Works from "./Works";
+import Proof from "./Proof";
+import Stack from "./Stack";
 import Contact from "./Contact";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
+import SectionDock from "./SectionDock";
 
 // Code-split the 3D/WebGL layers out of the main bundle so the text, nav
 // and layout can paint immediately instead of waiting on three.js.
@@ -39,7 +44,7 @@ export default function Portfolio() {
   }, []);
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       {/* full-page space backdrop, fixed behind all content */}
       {ready && <StarsCanvas />}
 
@@ -49,17 +54,21 @@ export default function Portfolio() {
       )}
 
       <ScrollProgress />
+      <SectionDock />
 
       <div className="relative z-[1]">
         <Navbar />
         <Hero />
+        <Marquee />
         <About />
+        <Steps />
         <Experience />
-        <Tech />
         <Works />
+        <Proof />
+        <Stack />
         <Contact />
         <Footer />
       </div>
-    </>
+    </MotionConfig>
   );
 }
