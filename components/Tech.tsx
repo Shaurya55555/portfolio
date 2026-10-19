@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Accent, H2, Kicker, Section, SectionHead } from "./ui";
 import InView from "./InView";
+import { useScene } from "./HorizontalScene";
 import { technologies } from "@/lib/data";
 
 const BallCanvas = dynamic(() => import("./canvas/Ball"), { ssr: false });
@@ -44,19 +45,24 @@ function TechBall({
 
 /** The floating 3D tech stones, as on the original site. */
 export default function Tech() {
+  const scene = useScene();
   return (
     <Section id="stack">
+      <div className={scene ? "flex items-center gap-14" : ""}>
+      <div className={scene ? "w-[300px] flex-none" : ""}>
       <SectionHead>
         <Kicker>What I work with</Kicker>
         <H2>
           Tech. <Accent>In orbit.</Accent>
         </H2>
       </SectionHead>
-      <InView className="mt-14 flex flex-row flex-wrap justify-center gap-10" rootMargin="250px">
+      </div>
+      <InView className={scene ? "flex w-[600px] flex-none flex-row flex-wrap justify-center gap-x-8 gap-y-6" : "mt-14 flex flex-row flex-wrap justify-center gap-10"} rootMargin="250px">
         {technologies.map((t, i) => (
           <TechBall key={t.name} name={t.name} icon={t.icon} index={i} />
         ))}
       </InView>
+      </div>
     </Section>
   );
 }

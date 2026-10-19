@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 import type { ReactNode } from "react";
 import { fadeIn } from "@/lib/motion";
+import { STATION_W, useScene } from "./HorizontalScene";
 
 /** Small mono label above a heading, with a leading dot. */
 export function Kicker({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -49,7 +50,7 @@ export function Window({
 }) {
   return (
     <div
-      className={`overflow-hidden rounded-2xl border border-white/10 bg-panel/80 shadow-[0_30px_80px_-24px_rgba(0,0,0,0.9)] backdrop-blur-sm ${className}`}
+      className={`overflow-hidden rounded-2xl border border-white/10 bg-panel/90 shadow-[0_30px_80px_-24px_rgba(0,0,0,0.9)] ${className}`}
     >
       <div className="flex items-center gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-2.5">
         <div className="flex gap-1.5">
@@ -155,6 +156,20 @@ export function Section({
   children: ReactNode;
   className?: string;
 }) {
+  const scene = useScene();
+  if (scene) {
+    // inside the horizontal scene a section is a fixed-width station
+    return (
+      <section
+        id={id}
+        data-station
+        style={{ width: STATION_W[id] }}
+        className={`relative flex-none ${className}`}
+      >
+        {children}
+      </section>
+    );
+  }
   return (
     <section
       id={id}

@@ -10,6 +10,7 @@ import {
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Accent, Chip, H2, Kicker, Reveal, Section, SectionHead, Window } from "./ui";
+import { useScene } from "./HorizontalScene";
 import { projects, type Project } from "@/lib/data";
 
 const shortName = (n: string) => n.replace(" Microservice", "").replace(", but Better", "");
@@ -212,6 +213,7 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
 
 /** Kendor-style "review" block: a scrubbable timeline that opens each project. */
 export default function Works() {
+  const scene = useScene();
   const [active, setActive] = useState(0);
   const dir = useRef(1);
   const labels = projects.map((p) => shortName(p.name));
@@ -221,11 +223,10 @@ export default function Works() {
     setActive(next);
   };
 
-  return (
-    <Section id="projects">
+  const heading = (
       <SectionHead>
         <Kicker>The work</Kicker>
-        <H2 className="max-w-3xl">
+        <H2 className={scene ? "" : "max-w-3xl"}>
           Six projects. <Accent>Pick one.</Accent>
         </H2>
         <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-muted">
@@ -233,8 +234,9 @@ export default function Works() {
           stack, the links and an honest note on scope.
         </p>
       </SectionHead>
-
-      <Reveal delay={0.1} from="right" className="mt-12">
+  );
+  const windowEl = (
+      <Reveal delay={0.1} from="right" className={scene ? "" : "mt-12"}>
         <Window
           title={`projects/${labels[active].toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
           right={
@@ -279,6 +281,23 @@ export default function Works() {
           </div>
         </Window>
       </Reveal>
+  );
+
+  if (scene) {
+    return (
+      <Section id="projects">
+        <div className="flex items-center gap-10">
+          <div className="w-[300px] flex-none">{heading}</div>
+          <div className="min-w-0 flex-1">{windowEl}</div>
+        </div>
+      </Section>
+    );
+  }
+
+  return (
+    <Section id="projects">
+      {heading}
+      {windowEl}
     </Section>
   );
 }

@@ -1,10 +1,12 @@
 "use client";
 
 import { Accent, H2, Kicker, Reveal, Section, SectionHead, TiltCard } from "./ui";
+import { useScene } from "./HorizontalScene";
 import { steps } from "@/lib/data";
 
 /** Kendor-style "four steps" grid: numbered cards, each with a tiny log. */
 export default function Steps() {
+  const scene = useScene();
   return (
     <Section id="build">
       <SectionHead>
@@ -18,11 +20,11 @@ export default function Steps() {
         </p>
       </SectionHead>
 
-      <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className={`grid gap-5 ${scene ? "mt-10 grid-cols-4" : "mt-14 md:grid-cols-2 xl:grid-cols-4"}`}>
         {steps.map((s, i) => (
           <Reveal key={s.n} delay={i * 0.14} from={i % 2 ? "left" : "right"} className="h-full">
             <TiltCard className="h-full">
-            <article className="group flex h-full flex-col rounded-2xl border border-white/10 bg-panel/70 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/40">
+            <article className="group flex h-full flex-col rounded-2xl border border-white/10 bg-panel/85 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[13px] text-accent">{s.n}</span>
                 <span className="h-px flex-1 translate-y-[1px] bg-gradient-to-r from-white/15 to-transparent pl-3" />

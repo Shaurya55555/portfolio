@@ -1,28 +1,33 @@
 "use client";
 
 import { Accent, H2, Kicker, Reveal, Section, SectionHead, TiltCard, Window } from "./ui";
+import { useScene } from "./HorizontalScene";
 import { proof, proofLog } from "@/lib/data";
 
 /** Kendor-style "policy" block: option cards on the left, a terminal log on the right. */
 export default function Proof() {
+  const scene = useScene();
   return (
     <Section id="proof">
+      <div className={scene ? "flex items-center gap-10" : ""}>
+      <div className={scene ? "w-[320px] flex-none" : ""}>
       <SectionHead>
         <Kicker>The record</Kicker>
-        <H2 className="max-w-3xl">
+        <H2 className={scene ? "" : "max-w-3xl"}>
           Proof, <Accent>not promises.</Accent>
         </H2>
         <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-muted">
           Hackathons, problem solving and coursework, with the details attached.
         </p>
       </SectionHead>
+      </div>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="flex flex-col gap-4">
+      <div className={scene ? "flex flex-none items-stretch gap-5" : "mt-14 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]"}>
+        <div className={scene ? "flex gap-4" : "flex flex-col gap-4"}>
           {proof.map((c, i) => (
-            <Reveal key={c.kicker} delay={i * 0.12} from="right">
+            <Reveal key={c.kicker} delay={i * 0.12} from="right" className={scene ? "w-[290px]" : ""}>
               <TiltCard>
-              <article className="rounded-2xl border border-white/10 bg-panel/70 p-6 backdrop-blur-sm transition-colors duration-300 hover:border-accent/40">
+              <article className="rounded-2xl border border-white/10 bg-panel/85 p-6 transition-colors duration-300 hover:border-accent/40">
                 <p className="font-mono text-[12px] uppercase tracking-[0.16em] text-accent">
                   {c.kicker}
                 </p>
@@ -46,7 +51,7 @@ export default function Proof() {
           ))}
         </div>
 
-        <Reveal delay={0.2} from="left" className="lg:sticky lg:top-28 lg:self-start">
+        <Reveal delay={0.2} from="left" className={scene ? "w-[360px] flex-none" : "lg:sticky lg:top-28 lg:self-start"}>
           <Window title="record.log" right={<span className="text-accent">● clean</span>} bodyClassName="p-5 font-mono text-[13px] leading-[1.8]">
             <p className="text-ink/80">$ cat record.txt</p>
             {proofLog.map((line) => (
@@ -70,6 +75,7 @@ export default function Proof() {
             </div>
           </Window>
         </Reveal>
+      </div>
       </div>
     </Section>
   );

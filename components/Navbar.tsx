@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { sceneStore } from "@/lib/sceneStore";
 import { HiMenu, HiX } from "react-icons/hi";
 import { navLinks, person } from "@/lib/data";
 
@@ -8,6 +9,8 @@ export default function Navbar() {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const sceneActive = useSyncExternalStore(sceneStore.subscribe, sceneStore.get, () => null);
+  const current = sceneActive ?? active;
 
   useEffect(() => {
     const sections = document.querySelectorAll<HTMLElement>("section[id]");
@@ -16,6 +19,8 @@ export default function Navbar() {
     const measure = () => {
       ticking = false;
       setScrolled(window.scrollY > 100);
+      // inside the sideways scene the active station comes from the scene store
+      if (document.querySelector("[data-station]")) return;
       sections.forEach((el) => {
         const h = el.offsetHeight;
         const top = el.getBoundingClientRect().top - h * 0.2;
@@ -58,14 +63,14 @@ export default function Navbar() {
             <li
               key={nav.id}
               className={`relative cursor-pointer pb-1 text-[18px] font-medium transition-colors ${
-                active === nav.id ? "text-white" : "text-secondary"
+                current === nav.id ? "text-white" : "text-secondary"
               } hover:text-white`}
               onClick={() => setActive(nav.id)}
             >
               <a href={`#${nav.id}`}>{nav.title}</a>
               <span
                 className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#ffc8a2] transition-all duration-300 ${
-                  active === nav.id ? "w-full" : "w-0"
+                  current === nav.id ? "w-full" : "w-0"
                 }`}
               />
             </li>
@@ -96,7 +101,7 @@ export default function Navbar() {
                 <li
                   key={nav.id}
                   className={`cursor-pointer text-[16px] font-medium ${
-                    active === nav.id ? "text-white" : "text-secondary"
+                    current === nav.id ? "text-white" : "text-secondary"
                   }`}
                   onClick={() => {
                     setToggle(false);

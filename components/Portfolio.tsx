@@ -15,6 +15,8 @@ import Contact from "./Contact";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
 import SectionDock from "./SectionDock";
+import HorizontalScene from "./HorizontalScene";
+import { useMatchMedia } from "@/lib/useMatchMedia";
 
 // Code-split the 3D/WebGL layers out of the main bundle so the text, nav
 // and layout can paint immediately instead of waiting on three.js.
@@ -28,6 +30,10 @@ export default function Portfolio() {
   // instead of racing shader compilation / GLTF parsing against the very
   // first frame — that race is what read as the page "breaking" on load.
   const [ready, setReady] = useState(false);
+  // desktop + motion allowed: the sections run as a pinned sideways scene
+  const horizontal = useMatchMedia(
+    "(min-width: 1024px) and (min-height: 560px) and (prefers-reduced-motion: no-preference)",
+  );
 
   useEffect(() => {
     const w = window as Window & {
@@ -53,18 +59,32 @@ export default function Portfolio() {
       )}
 
       <ScrollProgress />
-      <SectionDock />
+      {!horizontal && <SectionDock />}
 
       <div className="relative z-[1]">
         <Navbar />
         <Hero />
-        <About />
-        <Steps />
-        <Experience />
-        <Works />
-        <Proof />
-        <Tech />
-        <Contact />
+        {horizontal ? (
+          <HorizontalScene>
+            <About />
+            <Steps />
+            <Experience />
+            <Works />
+            <Proof />
+            <Tech />
+            <Contact />
+          </HorizontalScene>
+        ) : (
+          <>
+            <About />
+            <Steps />
+            <Experience />
+            <Works />
+            <Proof />
+            <Tech />
+            <Contact />
+          </>
+        )}
         <Footer />
       </div>
     </MotionConfig>
