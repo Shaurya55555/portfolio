@@ -30,7 +30,12 @@ export default function SectionDock() {
     );
     els.forEach((el) => io.observe(el));
 
-    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.55);
+    const onScroll = () => {
+      const toBottom =
+        document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+      // hidden over the hero and again over the footer so it never overlaps text
+      setShow(window.scrollY > window.innerHeight * 0.55 && toBottom > 150);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
