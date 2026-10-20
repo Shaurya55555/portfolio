@@ -6,7 +6,7 @@ import { motion, useScroll, useSpring, useTransform, useVelocity } from "framer-
 export default function Warp() {
   const { scrollY } = useScroll();
   const v = useSpring(useVelocity(scrollY), { stiffness: 120, damping: 30 });
-  const opacity = useTransform(v, (x) => Math.min(0.22, Math.abs(x) / 9000));
+  const opacity = useTransform(v, (x) => Math.min(0.12, Math.abs(x) / 14000));
   return (
     <motion.div
       aria-hidden

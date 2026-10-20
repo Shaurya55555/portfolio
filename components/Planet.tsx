@@ -73,7 +73,7 @@ export function PlanetBackdrop({ id }: { id: PlanetKey }) {
   const scale = useTransform(p, [0, 0.3, 0.7, 1], [0.6, 1, 1, 0.75]);
   const opacity = useTransform(p, [0, 0.22, 0.78, 1], [0, 1, 1, 0]);
   const side =
-    spec.side === "right" ? "right-[-9rem] md:right-[-5rem]" : "left-[-9rem] md:left-[-5rem]";
+    spec.side === "right" ? "right-[-10rem] md:right-[-13rem] lg:right-[-12rem]" : "left-[-10rem] md:left-[-13rem] lg:left-[-12rem]";
 
   return (
     <div ref={ref} aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -81,7 +81,7 @@ export function PlanetBackdrop({ id }: { id: PlanetKey }) {
         style={{ y, scale, opacity, top: spec.top }}
         className={`absolute ${side} flex flex-col items-center`}
       >
-        <div className="h-[230px] w-[230px] opacity-50 sm:h-[300px] sm:w-[300px] md:h-[400px] md:w-[400px] md:opacity-70 lg:h-[460px] lg:w-[460px]">
+        <div className="h-[230px] w-[230px] opacity-35 sm:h-[300px] sm:w-[300px] md:h-[400px] md:w-[400px] md:opacity-55 lg:h-[440px] lg:w-[440px]">
           <World spec={spec} />
         </div>
         <p className="mt-6 hidden font-mono text-[11px] uppercase tracking-[0.3em] text-muted md:block">
