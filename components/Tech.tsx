@@ -31,7 +31,7 @@ function TechBall({
     <motion.div
       initial={{ opacity: 0, scale: 0.6 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, amount: 0.5 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, delay: (index % 6) * 0.06 }}
       className="group relative h-28 w-28"
     >

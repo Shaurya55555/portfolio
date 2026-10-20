@@ -18,7 +18,7 @@ function Node({ exp }: { exp: Exp }) {
     <motion.div
       initial={{ scale: 0 }}
       whileInView={{ scale: 1 }}
-      viewport={{ once: true, amount: 0.6 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.45, delay: 0.15, type: "spring", bounce: 0.5 }}
       className="absolute left-0 top-0 z-10 flex h-10 w-10 items-center justify-center rounded-full ring-4 ring-black sm:h-12 sm:w-12"
       style={{ background: exp.iconBg }}
@@ -54,7 +54,7 @@ function RoleWindow({ exp, compact }: { exp: Exp; compact?: boolean }) {
             key={i}
             initial={{ opacity: 0, x: -14 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.7 }}
+            viewport={{ once: true, amount: 0.35 }}
             transition={{ duration: 0.4, delay: 0.06 * i }}
             className={`flex gap-3 leading-[1.55] text-ink ${compact ? "text-[13px]" : "text-[14px]"}`}
           >

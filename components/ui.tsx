@@ -89,7 +89,7 @@ export function Reveal({
       variants={fadeIn(dir, "spring", delay, 0.8)}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.15 }}
+      viewport={{ once: true, amount: 0.1 }}
     >
       {children}
     </motion.div>
@@ -113,7 +113,7 @@ export function SectionHead({
       }}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.4 }}
+      viewport={{ once: true, amount: 0.25 }}
     >
       {children}
     </motion.div>
@@ -173,7 +173,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`relative z-0 mx-auto max-w-7xl scroll-mt-20 px-6 py-20 sm:px-16 sm:py-28 ${className}`}
+      className={`relative z-0 mx-auto max-w-7xl scroll-mt-20 px-6 py-12 sm:px-16 sm:py-16 ${className}`}
     >
       {children}
     </section>

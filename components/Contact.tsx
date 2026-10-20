@@ -93,7 +93,7 @@ export default function ContactSection() {
         variants={staggerContainer()}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
+        viewport={{ once: true, amount: 0.15 }}
         id="contact"
         data-station
         style={{ width: STATION_W.contact }}

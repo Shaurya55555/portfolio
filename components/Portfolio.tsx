@@ -14,7 +14,7 @@ import Tech from "./Tech";
 import Contact from "./Contact";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
-import SectionDock from "./SectionDock";
+import SmoothScroll from "./SmoothScroll";
 
 // Code-split the 3D/WebGL layers out of the main bundle so the text, nav
 // and layout can paint immediately instead of waiting on three.js.
@@ -63,7 +63,7 @@ export default function Portfolio() {
       )}
 
       <ScrollProgress />
-      <SectionDock />
+      <SmoothScroll />
 
       <div className="relative z-[1]">
         <Navbar />
