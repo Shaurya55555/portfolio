@@ -295,7 +295,7 @@ export default function Works() {
   }
 
   return (
-    <Section id="projects">
+    <Section id="projects" planet="projects">
       {heading}
       {windowEl}
     </Section>

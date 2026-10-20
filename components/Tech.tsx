@@ -47,7 +47,7 @@ function TechBall({
 export default function Tech() {
   const scene = useScene();
   return (
-    <Section id="stack">
+    <Section id="stack" planet="stack">
       <div className={scene ? "flex items-center gap-14" : ""}>
       <div className={scene ? "w-[300px] flex-none" : ""}>
       <SectionHead>

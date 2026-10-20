@@ -45,7 +45,7 @@ export default function About() {
   const tokens = tokenize(statement);
 
   return (
-    <Section id="about">
+    <Section id="about" planet="about">
       <SectionHead>
         <Kicker>The position</Kicker>
       </SectionHead>

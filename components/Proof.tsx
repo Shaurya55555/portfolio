@@ -8,7 +8,7 @@ import { proof, proofLog } from "@/lib/data";
 export default function Proof() {
   const scene = useScene();
   return (
-    <Section id="proof">
+    <Section id="proof" planet="proof">
       <div className={scene ? "flex items-center gap-10" : ""}>
       <div className={scene ? "w-[320px] flex-none" : ""}>
       <SectionHead>

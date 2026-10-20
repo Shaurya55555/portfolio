@@ -159,7 +159,7 @@ export default function Experience() {
   }
 
   return (
-    <Section id="work">
+    <Section id="work" planet="work">
       <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
         <div className="min-w-0 lg:sticky lg:top-28 lg:self-start">
           <Intro />

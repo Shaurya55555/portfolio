@@ -128,3 +128,18 @@ html.lenis body {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
+/* planets: slow surface drift */
+@keyframes planet-drift {
+  to {
+    transform: translateY(60px);
+  }
+}
+.planet-bands {
+  animation: planet-drift 22s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .planet-bands {
+    animation: none;
+  }
+}

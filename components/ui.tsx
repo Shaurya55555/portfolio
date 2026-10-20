@@ -5,6 +5,7 @@ import Tilt from "react-parallax-tilt";
 import type { ReactNode } from "react";
 import { fadeIn } from "@/lib/motion";
 import { STATION_W, useScene } from "./HorizontalScene";
+import { PlanetBackdrop, type PlanetKey } from "./Planet";
 
 /** Small mono label above a heading, with a leading dot. */
 export function Kicker({ children, className = "" }: { children: ReactNode; className?: string }) {
@@ -151,10 +152,12 @@ export function Section({
   id,
   children,
   className = "",
+  planet,
 }: {
   id: string;
   children: ReactNode;
   className?: string;
+  planet?: PlanetKey;
 }) {
   const scene = useScene();
   if (scene) {
@@ -175,6 +178,7 @@ export function Section({
       id={id}
       className={`relative z-0 mx-auto max-w-7xl scroll-mt-20 px-6 py-12 sm:px-16 sm:py-16 ${className}`}
     >
+      {planet && <PlanetBackdrop id={planet} />}
       {children}
     </section>
   );

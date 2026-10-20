@@ -15,6 +15,8 @@ import Contact from "./Contact";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
 import SmoothScroll from "./SmoothScroll";
+import Warp from "./Warp";
+import { Travel } from "./Planet";
 
 // Code-split the 3D/WebGL layers out of the main bundle so the text, nav
 // and layout can paint immediately instead of waiting on three.js.
@@ -64,16 +66,23 @@ export default function Portfolio() {
 
       <ScrollProgress />
       <SmoothScroll />
+      <Warp />
 
       <div className="relative z-[1]">
         <Navbar />
         <Hero />
         <About />
+        <Travel to="How I work" />
         <Steps />
+        <Travel to="Experience" />
         <Experience />
+        <Travel to="Projects" />
         <Works />
+        <Travel to="Proof" />
         <Proof />
+        <Travel to="Tech stack" />
         <Tech />
+        <Travel to="Earth, contact" />
         <Contact />
         <Footer />
       </div>

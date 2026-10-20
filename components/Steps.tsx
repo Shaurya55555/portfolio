@@ -8,7 +8,7 @@ import { steps } from "@/lib/data";
 export default function Steps() {
   const scene = useScene();
   return (
-    <Section id="build">
+    <Section id="build" planet="build">
       <SectionHead>
         <Kicker>How I work</Kicker>
         <H2 className="max-w-3xl">
