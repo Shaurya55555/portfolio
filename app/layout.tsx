@@ -87,6 +87,15 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
+      <head>
+        {/* start fetching the astronaut before any JS has run */}
+        <link
+          rel="preload"
+          as="fetch"
+          href="/models/astronaut.glb"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

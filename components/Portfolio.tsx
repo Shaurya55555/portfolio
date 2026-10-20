@@ -30,10 +30,17 @@ export default function Portfolio() {
   // instead of racing shader compilation / GLTF parsing against the very
   // first frame — that race is what read as the page "breaking" on load.
   const [ready, setReady] = useState(false);
+  const [astro, setAstro] = useState(false);
   // desktop + motion allowed: the sections run as a pinned sideways scene
   const horizontal = useMatchMedia(
-    "(min-width: 1024px) and (min-height: 560px) and (prefers-reduced-motion: no-preference)",
+    "(min-width: 1024px) and (min-height: 560px)",
   );
+
+  // the astronaut is the hero: start it on the next frame, not on idle
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setAstro(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     const w = window as Window & {
@@ -54,7 +61,7 @@ export default function Portfolio() {
       {ready && <StarsCanvas />}
 
       {/* 3D astronaut, confined to the hero */}
-      {ready && (
+      {astro && (
         <AstronautCanvas className="pointer-events-none fixed inset-0 z-0 h-screen w-screen" />
       )}
 

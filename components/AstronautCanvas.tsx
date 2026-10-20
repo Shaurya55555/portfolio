@@ -1,8 +1,8 @@
 "use client";
 
-import { Suspense, useEffect, useRef, type MutableRefObject } from "react";
+import { Suspense, useEffect, useRef, useState, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Center, Environment, Lightformer, useGLTF } from "@react-three/drei";
+import { Center, Environment, Lightformer, Preload, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 const MODEL_URL = "/models/astronaut.glb";
@@ -22,9 +22,15 @@ function Model() {
   return <primitive object={scene} />;
 }
 
-function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
+function Flyer({ ctl, onReady }: { ctl: MutableRefObject<Control>; onReady: () => void }) {
   const g = useRef<THREE.Group>(null);
   const intro = useRef(0);
+
+  // the model is parsed and uploaded by the time this mounts
+  useEffect(() => {
+    const id = requestAnimationFrame(onReady);
+    return () => cancelAnimationFrame(id);
+  }, [onReady]);
 
   useFrame((state, delta) => {
     const grp = g.current;
@@ -33,8 +39,10 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
     const c = ctl.current;
 
     // intro: ease in from the lower-left corner on first load
-    intro.current = Math.min(1, intro.current + delta * 0.45);
-    const e = 1 - Math.pow(1 - intro.current, 3);
+    // delta is clamped so a long first frame (parse / shader compile) can't
+    // skip the intro; the ease is a gentle quart-out
+    intro.current = Math.min(1, intro.current + Math.min(delta, 1 / 30) * 0.4);
+    const e = 1 - Math.pow(1 - intro.current, 4);
 
     // a wide, flat elliptical orbit centred just below the hero subtext,
     // clear of the heading and the scroll cue
@@ -78,6 +86,7 @@ function Flyer({ ctl }: { ctl: MutableRefObject<Control> }) {
 }
 
 export default function AstronautCanvas({ className = "" }: { className?: string }) {
+  const [shown, setShown] = useState(false);
   const ctl = useRef<Control>({
     px: 0,
     py: 0,
@@ -138,7 +147,13 @@ export default function AstronautCanvas({ className = "" }: { className?: string
   }, []);
 
   return (
-    <div className={className}>
+    <div
+      className={className}
+      style={{
+        opacity: shown ? 1 : 0,
+        transition: "opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1)",
+      }}
+    >
       <Canvas
         dpr={[1, 1.6]}
         camera={{ position: [0, 0, 9], fov: 34 }}
@@ -157,7 +172,8 @@ export default function AstronautCanvas({ className = "" }: { className?: string
             <Lightformer intensity={1} position={[4, 0, 3]} scale={[3, 4, 1]} color="#ffb454" />
           </Environment>
 
-          <Flyer ctl={ctl} />
+          <Flyer ctl={ctl} onReady={() => setShown(true)} />
+          <Preload all />
         </Suspense>
       </Canvas>
     </div>

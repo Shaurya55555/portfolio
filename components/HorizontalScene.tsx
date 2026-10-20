@@ -17,6 +17,7 @@ import {
   useMotionValue,
   useMotionValueEvent,
   useScroll,
+  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -127,7 +128,10 @@ export default function HorizontalScene({ children }: { children: ReactNode }) {
     target: rootRef,
     offset: ["start start", "end end"],
   });
-  const x = useTransform(p, (v) => -clamp01((v - EDGE) / SPAN) * dRef.current);
+  // the page's own scroll is stepped (wheel notches); a soft spring turns it
+  // into one continuous glide, and makes dock jumps travel instead of snap
+  const ps = useSpring(p, { stiffness: 70, damping: 22, mass: 0.6, restDelta: 0.00005 });
+  const x = useTransform(ps, (v) => -clamp01((v - EDGE) / SPAN) * dRef.current);
 
   // ---- which station is centred ----
   const computeActive = useCallback(
@@ -191,11 +195,11 @@ export default function HorizontalScene({ children }: { children: ReactNode }) {
   );
 
   const goTo = useCallback(
-    (id: string, smooth = true) => {
+    (id: string, _smooth = true) => {
       if (!(id in STATION_W)) return;
       window.scrollTo({
         top: rootTop() + progressFor(id) * D,
-        behavior: smooth ? "smooth" : "instant",
+        behavior: "instant", // the spring does the travelling
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -293,7 +297,7 @@ export default function HorizontalScene({ children }: { children: ReactNode }) {
       </div>
 
       <SceneDock
-        p={p}
+        p={ps}
         D={D}
         active={active}
         stations={stationP}
