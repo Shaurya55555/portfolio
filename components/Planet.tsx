@@ -81,12 +81,12 @@ export function PlanetBackdrop({ id }: { id: PlanetKey }) {
         style={{ y, scale, opacity, top: spec.top }}
         className={`absolute ${side} flex flex-col items-center`}
       >
+        <p className="mb-5 hidden font-mono text-[11px] uppercase tracking-[0.3em] text-muted md:block">
+          Planet {spec.n} · {spec.name}
+        </p>
         <div className="h-[230px] w-[230px] opacity-35 sm:h-[300px] sm:w-[300px] md:h-[400px] md:w-[400px] md:opacity-55 lg:h-[440px] lg:w-[440px]">
           <World spec={spec} />
         </div>
-        <p className="mt-6 hidden font-mono text-[11px] uppercase tracking-[0.3em] text-muted md:block">
-          Planet {spec.n} · {spec.name}
-        </p>
       </motion.div>
     </div>
   );
