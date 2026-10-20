@@ -15,15 +15,15 @@ import Contact from "./Contact";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
 import SectionDock from "./SectionDock";
-import HorizontalScene from "./HorizontalScene";
-import { useMatchMedia } from "@/lib/useMatchMedia";
 
 // Code-split the 3D/WebGL layers out of the main bundle so the text, nav
 // and layout can paint immediately instead of waiting on three.js.
 const StarsCanvas = dynamic(() => import("./canvas/Stars"), { ssr: false });
-const AstronautCanvas = dynamic(() => import("./AstronautCanvas"), {
-  ssr: false,
-});
+const loadAstronaut = () => import("./AstronautCanvas");
+const AstronautCanvas = dynamic(loadAstronaut, { ssr: false });
+// begin fetching the 3D chunk now, in parallel with hydration, instead of
+// after it
+if (typeof window !== "undefined") void loadAstronaut();
 
 export default function Portfolio() {
   // Mount the WebGL layers only once the page has had a chance to paint,
@@ -31,10 +31,7 @@ export default function Portfolio() {
   // first frame — that race is what read as the page "breaking" on load.
   const [ready, setReady] = useState(false);
   const [astro, setAstro] = useState(false);
-  // desktop + motion allowed: the sections run as a pinned sideways scene
-  const horizontal = useMatchMedia(
-    "(min-width: 1024px) and (min-height: 560px)",
-  );
+  const [astroShown, setAstroShown] = useState(false);
 
   // the astronaut is the hero: start it on the next frame, not on idle
   useEffect(() => {
@@ -58,40 +55,26 @@ export default function Portfolio() {
   return (
     <MotionConfig reducedMotion="user">
       {/* full-page space backdrop, fixed behind all content */}
-      {ready && <StarsCanvas />}
+      {ready && astroShown && <StarsCanvas />}
 
       {/* 3D astronaut, confined to the hero */}
       {astro && (
-        <AstronautCanvas className="pointer-events-none fixed inset-0 z-0 h-screen w-screen" />
+        <AstronautCanvas onShown={() => setAstroShown(true)} className="pointer-events-none fixed inset-0 z-0 h-screen w-screen" />
       )}
 
       <ScrollProgress />
-      {!horizontal && <SectionDock />}
+      <SectionDock />
 
       <div className="relative z-[1]">
         <Navbar />
         <Hero />
-        {horizontal ? (
-          <HorizontalScene>
-            <About />
-            <Steps />
-            <Experience />
-            <Works />
-            <Proof />
-            <Tech />
-            <Contact />
-          </HorizontalScene>
-        ) : (
-          <>
-            <About />
-            <Steps />
-            <Experience />
-            <Works />
-            <Proof />
-            <Tech />
-            <Contact />
-          </>
-        )}
+        <About />
+        <Steps />
+        <Experience />
+        <Works />
+        <Proof />
+        <Tech />
+        <Contact />
         <Footer />
       </div>
     </MotionConfig>

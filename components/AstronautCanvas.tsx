@@ -41,7 +41,7 @@ function Flyer({ ctl, onReady }: { ctl: MutableRefObject<Control>; onReady: () =
     // intro: ease in from the lower-left corner on first load
     // delta is clamped so a long first frame (parse / shader compile) can't
     // skip the intro; the ease is a gentle quart-out
-    intro.current = Math.min(1, intro.current + Math.min(delta, 1 / 30) * 0.4);
+    intro.current = Math.min(1, intro.current + Math.min(delta, 1 / 30) * 0.8);
     const e = 1 - Math.pow(1 - intro.current, 4);
 
     // a wide, flat elliptical orbit centred just below the hero subtext,
@@ -85,7 +85,13 @@ function Flyer({ ctl, onReady }: { ctl: MutableRefObject<Control>; onReady: () =
   );
 }
 
-export default function AstronautCanvas({ className = "" }: { className?: string }) {
+export default function AstronautCanvas({
+  className = "",
+  onShown,
+}: {
+  className?: string;
+  onShown?: () => void;
+}) {
   const [shown, setShown] = useState(false);
   const ctl = useRef<Control>({
     px: 0,
@@ -151,11 +157,11 @@ export default function AstronautCanvas({ className = "" }: { className?: string
       className={className}
       style={{
         opacity: shown ? 1 : 0,
-        transition: "opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        transition: "opacity 0.7s ease-out",
       }}
     >
       <Canvas
-        dpr={[1, 1.6]}
+        dpr={[1, 1.5]}
         camera={{ position: [0, 0, 9], fov: 34 }}
         gl={{ alpha: true, antialias: true, toneMapping: THREE.ACESFilmicToneMapping }}
       >
@@ -166,13 +172,16 @@ export default function AstronautCanvas({ className = "" }: { className?: string
         <directionalLight position={[0, 2, -6]} intensity={1.1} color="#ffb454" />
 
         <Suspense fallback={null}>
-          <Environment resolution={256}>
+          <Environment resolution={64}>
             <Lightformer intensity={2} position={[0, 3, 2]} scale={[6, 3, 1]} color="#ffffff" />
             <Lightformer intensity={1.1} position={[-4, 1, 2]} scale={[3, 4, 1]} color="#fff1e6" />
             <Lightformer intensity={1} position={[4, 0, 3]} scale={[3, 4, 1]} color="#ffb454" />
           </Environment>
 
-          <Flyer ctl={ctl} onReady={() => setShown(true)} />
+          <Flyer ctl={ctl} onReady={() => {
+            setShown(true);
+            onShown?.();
+          }} />
           <Preload all />
         </Suspense>
       </Canvas>
