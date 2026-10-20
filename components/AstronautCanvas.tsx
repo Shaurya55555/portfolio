@@ -93,6 +93,7 @@ export default function AstronautCanvas({
   onShown?: () => void;
 }) {
   const [shown, setShown] = useState(false);
+  const fadeRef = useRef<HTMLDivElement>(null);
   const ctl = useRef<Control>({
     px: 0,
     py: 0,
@@ -115,9 +116,10 @@ export default function AstronautCanvas({
       const vh = window.innerHeight;
       ctl.current.past = Math.min(
         1,
-        Math.max(0, (window.scrollY - vh * 0.5) / (vh * 0.35)),
+        Math.max(0, (window.scrollY - vh * 0.08) / (vh * 0.3)),
       );
       ctl.current.active = ctl.current.past < 0.15;
+      if (fadeRef.current) fadeRef.current.style.opacity = String(Math.max(0, 1 - ctl.current.past * 1.4));
     };
     const onMove = (ev: PointerEvent) => {
       ctl.current.px = (ev.clientX / window.innerWidth) * 2 - 1;
@@ -160,6 +162,7 @@ export default function AstronautCanvas({
         transition: "opacity 0.7s ease-out",
       }}
     >
+      <div ref={fadeRef} className="h-full w-full">
       <Canvas
         dpr={[1, 1.5]}
         camera={{ position: [0, 0, 9], fov: 34 }}
@@ -185,6 +188,7 @@ export default function AstronautCanvas({
           <Preload all />
         </Suspense>
       </Canvas>
+      </div>
     </div>
   );
 }

@@ -83,7 +83,7 @@ function Role({ exp }: { exp: Exp }) {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative pl-16 sm:pl-20"
+      className="relative min-w-0 pl-14 sm:pl-20"
     >
       <Node exp={exp} />
       <RoleWindow exp={exp} />
@@ -161,11 +161,11 @@ export default function Experience() {
   return (
     <Section id="work">
       <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-        <div className="lg:sticky lg:top-28 lg:self-start">
+        <div className="min-w-0 lg:sticky lg:top-28 lg:self-start">
           <Intro />
         </div>
 
-        <div ref={trackRef} className="relative">
+        <div ref={trackRef} className="relative min-w-0">
           {/* dim track */}
           <div className="absolute bottom-2 left-[19px] top-2 w-[3px] rounded-full bg-white/10 sm:left-[23px]" />
           {/* fill that grows with scroll position */}
