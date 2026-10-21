@@ -25,7 +25,7 @@ export default function StatusBadge() {
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
       </span>
-      Open to work{time && ` · Jaipur ${time}`}
+      Open to work{time && ` · Bengaluru ${time}`}
     </p>
   );
 }
