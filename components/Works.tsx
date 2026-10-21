@@ -111,7 +111,7 @@ function Scrubber({
         ))}
         <span
           aria-hidden
-          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_18px_rgba(185,198,214,0.65)] transition-[left] duration-200 ease-out"
+          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_18px_rgba(139,92,246,0.65)] transition-[left] duration-200 ease-out"
           style={{ left: `${pct(value)}%` }}
         />
       </div>
@@ -197,7 +197,7 @@ function ProjectPanel({ p, index }: { p: Project; index: number }) {
               href={external}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-[14px] font-semibold text-black transition-all hover:-translate-y-0.5 hover:bg-accent-soft"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-[14px] font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#9d74f8]"
             >
               {p.liveLink ? "Live site" : "Demo"} <span aria-hidden>↗</span>
             </a>

@@ -428,7 +428,7 @@ function SceneDock({
                 <motion.span
                   aria-hidden
                   style={{ left: knobLeft }}
-                  className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_14px_rgba(185,198,214,0.6)]"
+                  className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_14px_rgba(139,92,246,0.6)]"
                 />
               </div>
             </div>

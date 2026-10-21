@@ -200,13 +200,13 @@ export default function AstronautCanvas({
         <hemisphereLight args={["#fff3dc", "#0a0805", 0.5]} />
         <directionalLight position={[4, 6, 5]} intensity={2.2} />
         <directionalLight position={[-5, 2, 3]} intensity={0.9} color="#fff1e6" />
-        <directionalLight position={[0, 2, -6]} intensity={1.1} color="#b9c6d6" />
+        <directionalLight position={[0, 2, -6]} intensity={1.1} color="#8b5cf6" />
 
         <Suspense fallback={null}>
           <Environment resolution={64}>
             <Lightformer intensity={2} position={[0, 3, 2]} scale={[6, 3, 1]} color="#ffffff" />
             <Lightformer intensity={1.1} position={[-4, 1, 2]} scale={[3, 4, 1]} color="#fff1e6" />
-            <Lightformer intensity={1} position={[4, 0, 3]} scale={[3, 4, 1]} color="#b9c6d6" />
+            <Lightformer intensity={1} position={[4, 0, 3]} scale={[3, 4, 1]} color="#8b5cf6" />
           </Environment>
 
           <Flyer ctl={ctl} onReady={() => {

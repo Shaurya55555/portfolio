@@ -7,8 +7,8 @@
   --color-black-100: #0c0a07;
   --color-black-200: #060504;
   --color-white-100: #f3efe6;
-  --color-accent: #b9c6d6;
-  --color-accent-soft: #e3eaf3;
+  --color-accent: #8b5cf6;
+  --color-accent-soft: #d4c4fb;
 
   /* neutral palette for the pure-black pages below the hero */
   --color-muted: #a3a3ab;
@@ -55,7 +55,7 @@ body {
 }
 
 ::selection {
-  background: #b9c6d6;
+  background: #8b5cf6;
   color: #000;
 }
 
@@ -76,8 +76,8 @@ body {
 }
 
 .violet-gradient {
-  background: #b9c6d6;
-  background: linear-gradient(-90deg, #b9c6d6 0%, rgba(185,198,214, 0) 100%);
+  background: #8b5cf6;
+  background: linear-gradient(-90deg, #8b5cf6 0%, rgba(139,92,246, 0) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {

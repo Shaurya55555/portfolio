@@ -29,7 +29,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             aria-label={label}
             title={label}
-            className={`flex items-center justify-center rounded-full border border-white/10 bg-tertiary text-secondary transition-all duration-200 hover:-translate-y-1 hover:border-[#b9c6d6]/60 hover:text-[#e3eaf3] hover:shadow-[0_0_18px_rgba(185,198,214,0.45)] ${
+            className={`flex items-center justify-center rounded-full border border-white/10 bg-tertiary text-secondary transition-all duration-200 hover:-translate-y-1 hover:border-[#8b5cf6]/60 hover:text-[#d4c4fb] hover:shadow-[0_0_18px_rgba(139,92,246,0.45)] ${
               big ? "h-12 w-12 text-[24px]" : "h-10 w-10 text-[18px]"
             }`}
           >
