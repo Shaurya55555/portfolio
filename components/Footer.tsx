@@ -1,6 +1,7 @@
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import { person } from "@/lib/data";
+import StatusBadge from "./StatusBadge";
 
 export default function Footer() {
   const links = [
@@ -11,10 +12,13 @@ export default function Footer() {
   ];
   return (
     <footer className="relative z-10 mx-auto flex max-w-7xl flex-col items-center gap-5 px-6 py-10 sm:flex-row sm:justify-between sm:px-16">
-      <p className="text-[14px] text-secondary">
-        &copy; {new Date().getFullYear()} {person.name}. Built with Next.js and
-        three.js.
-      </p>
+      <div className="flex flex-col items-center gap-2 sm:items-start">
+        <StatusBadge />
+        <p className="text-[14px] text-secondary">
+          &copy; {new Date().getFullYear()} {person.name}. Built with Next.js and
+          three.js.
+        </p>
+      </div>
       <div className="flex items-center gap-4">
         {links.map(({ href, label, Icon, big }) => (
           <a

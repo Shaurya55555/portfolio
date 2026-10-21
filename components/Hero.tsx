@@ -23,6 +23,22 @@ export default function Hero() {
           <p className="mt-4 max-w-xl text-[14px] leading-[24px] text-secondary sm:text-[16px]">
             {heroCopy.sub}
           </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a
+              href="#projects"
+              className="rounded-full bg-[#ffc8a2] px-6 py-2.5 text-[14px] font-semibold text-black transition-transform hover:scale-105"
+            >
+              View projects
+            </a>
+            <a
+              href={person.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-white/20 px-6 py-2.5 text-[14px] font-semibold text-white transition-colors hover:border-[#ffc8a2]"
+            >
+              Resume
+            </a>
+          </div>
         </div>
       </div>
 
