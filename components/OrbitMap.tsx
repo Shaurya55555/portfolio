@@ -64,9 +64,9 @@ export default function OrbitMap() {
   }, []);
 
   const wide = dim.w >= 768;
-  const cx = dim.w * (wide ? 0.66 : 0.5);
+  const cx = dim.w * (wide ? 0.74 : 0.5);
   const cy = dim.h * (wide ? 0.55 : 0.79);
-  const rx = wide ? Math.min(dim.w * 0.31, 560) : dim.w * 0.44;
+  const rx = wide ? Math.min(dim.w * 0.245, 520) : dim.w * 0.44;
   const ry = rx * (wide ? 0.4 : 0.5);
   const unit = wide ? 30 : 17;
   const px = (b: Body) => Math.max(wide ? 24 : 20, Math.round(unit * b.size));
