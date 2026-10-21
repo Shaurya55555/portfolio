@@ -13,7 +13,7 @@ export default function Warp() {
       style={{
         opacity,
         backgroundImage:
-          "repeating-linear-gradient(90deg, transparent 0 46px, rgba(255,232,214,0.55) 46px 47px, transparent 47px 131px, rgba(255,232,214,0.35) 131px 132px, transparent 132px 233px)",
+          "repeating-linear-gradient(90deg, transparent 0 46px, rgba(255,226,184,0.55) 46px 47px, transparent 47px 131px, rgba(255,226,184,0.35) 131px 132px, transparent 132px 233px)",
         maskImage: "radial-gradient(ellipse at center, transparent 30%, #000 100%)",
         WebkitMaskImage: "radial-gradient(ellipse at center, transparent 30%, #000 100%)",
       }}

@@ -13,7 +13,7 @@ export function Kicker({ children, className = "" }: { children: ReactNode; clas
     <p
       className={`flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.2em] text-accent ${className}`}
     >
-      <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,200,162,0.8)]" />
+      <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_10px_rgba(255,180,84,0.8)]" />
       {children}
     </p>
   );

@@ -13,7 +13,12 @@ import { Accent, Chip, H2, Kicker, Reveal, Section, SectionHead, Window } from "
 import { useScene } from "./HorizontalScene";
 import { projects, type Project } from "@/lib/data";
 
-const shortName = (n: string) => n.replace(" Microservice", "").replace(", but Better", "");
+const shortName = (n: string) =>
+  n
+    .replace(" Microservice", "")
+    .replace(", but Better", "")
+    .replace(" Voice Agent", "")
+    .replace(" Media Controller", "");
 
 function Scrubber({
   value,
@@ -106,7 +111,7 @@ function Scrubber({
         ))}
         <span
           aria-hidden
-          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_18px_rgba(255,200,162,0.65)] transition-[left] duration-200 ease-out"
+          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_18px_rgba(255,180,84,0.65)] transition-[left] duration-200 ease-out"
           style={{ left: `${pct(value)}%` }}
         />
       </div>
@@ -117,7 +122,7 @@ function Scrubber({
             key={l}
             type="button"
             onClick={() => onChange(i)}
-            className={`absolute -translate-x-1/2 whitespace-nowrap font-mono text-[11px] transition-colors ${
+            className={`absolute -translate-x-1/2 whitespace-nowrap font-mono text-[10px] transition-colors ${
               i === value ? "text-accent-soft" : "text-muted hover:text-white"
             }`}
             style={{ left: `${pct(i)}%` }}
@@ -227,7 +232,7 @@ export default function Works() {
       <SectionHead>
         <Kicker>The work</Kicker>
         <H2 className={scene ? "" : "max-w-3xl"}>
-          Six projects. <Accent>Pick one.</Accent>
+          {projects.length} projects. <Accent>Pick one.</Accent>
         </H2>
         <p className="mt-5 max-w-2xl text-[17px] leading-[1.65] text-muted">
           Drag the playhead, tap a marker, or use the arrow keys. Each project has the

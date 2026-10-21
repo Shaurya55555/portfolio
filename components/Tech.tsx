@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Accent, H2, Kicker, Section, SectionHead } from "./ui";
 import InView from "./InView";
 import { useScene } from "./HorizontalScene";
-import { technologies } from "@/lib/data";
+import { technologies, moreTech } from "@/lib/data";
 
 const BallCanvas = dynamic(() => import("./canvas/Ball"), { ssr: false });
 
@@ -62,6 +62,21 @@ export default function Tech() {
           <TechBall key={t.name} name={t.name} icon={t.icon} index={i} />
         ))}
       </InView>
+      <div className={scene ? "" : "mt-20"}>
+        <p className="text-center font-mono text-[11px] uppercase tracking-[0.25em] text-muted">Also ships with</p>
+        <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap justify-center gap-2.5">
+          {moreTech.map((t) => (
+            <li
+              key={t.name}
+              className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[13px] text-secondary transition-colors hover:border-accent/50 hover:text-white"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={t.icon} alt="" width={16} height={16} className="h-4 w-4" />
+              {t.name}
+            </li>
+          ))}
+        </ul>
+      </div>
       </div>
     </Section>
   );

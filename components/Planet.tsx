@@ -103,7 +103,7 @@ export function Travel({ to }: { to: ReactNode }) {
       <div className="absolute inset-0 [background:repeating-linear-gradient(to_bottom,rgba(255,255,255,0.22)_0_4px,transparent_4px_11px)]" />
       <motion.span
         style={{ top }}
-        className="absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_14px_3px_rgba(255,200,162,0.55)]"
+        className="absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_14px_3px_rgba(255,180,84,0.55)]"
       />
       <span className="absolute left-4 top-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.14em] text-muted sm:left-5 sm:text-[11px] sm:tracking-[0.25em]">
         Next stop · {to}

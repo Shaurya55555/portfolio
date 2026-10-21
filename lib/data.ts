@@ -188,6 +188,54 @@ export const projects: Project[] = [
     demoLink: "https://shaurya55555.github.io/TorrentEdge/",
     sourceCodeLink: "https://github.com/Shaurya55555/TorrentEdge",
   },
+  {
+    name: "ReconIQ",
+    description:
+      "A reconciliation agent that matches orders, gateway settlements and bank lines. Deterministic passes handle exact, fuzzy, split (1:N) and batch (N:1) matches, and an LLM is used only for bank narrations the rules cannot read. Anything left over becomes a reason-coded exception.",
+    note: "Rules first, an LLM only where the rules genuinely cannot decide. Built for the Razorpay AI Buildathon, finance controller track.",
+    tags: ["Python", "LLM", "Reconciliation"],
+    monogram: "RQ",
+    liveLink: "https://reconiq-mocha.vercel.app",
+    sourceCodeLink: "https://github.com/Shaurya55555/reconiq",
+  },
+  {
+    name: "Payeazie",
+    description:
+      "A payment operations app: asynchronous charge processing on Redis and BullMQ workers, a state-machine payment lifecycle with audit logging, refunds with eligibility rules, retry and stuck-payment recovery, and an internal dashboard for operators.",
+    note: "It runs against a mock gateway, so it models the workflow without moving real money.",
+    tags: ["Fastify", "PostgreSQL", "BullMQ"],
+    monogram: "PZ",
+    liveLink: "https://payeazie.netlify.app",
+    sourceCodeLink: "https://github.com/Shaurya55555/payeazie",
+  },
+  {
+    name: "Mini ATS",
+    description:
+      "An applicant tracking system with a drag and drop hiring pipeline, stage rules enforced in both the UI and the API, SQL full-text search, CSV import and export, and a metrics dashboard. 25 tests, including the API against a real Postgres.",
+    note: "Built for the EarlyJobs.ai full-stack intern assignment, with a demo video in the repo.",
+    tags: ["Next.js", "Postgres", "Zod"],
+    monogram: "AT",
+    liveLink: "https://earlyjobs-ats-five.vercel.app",
+    sourceCodeLink: "https://github.com/Shaurya55555/earlyjobs-ats",
+  },
+  {
+    name: "ElevateBox Voice Agent",
+    description:
+      "An outbound voice sales agent in Hindi, Telugu and English. Vapi runs the call with Deepgram speech and a Groq model, Gemini classifies each lead as Hot, Warm or Cold, and WhatsApp follow-ups go out through the Meta Cloud API with retries and a template fallback.",
+    note: "Tested with simulated calls and a mocked WhatsApp API. A live phone call is not done yet.",
+    tags: ["Vapi", "Python", "Gemini"],
+    monogram: "EV",
+    sourceCodeLink: "https://github.com/Shaurya55555/ElevateBox-VoiceAgent",
+  },
+  {
+    name: "Handsfree Media Controller",
+    description:
+      "A Chrome extension that controls video with hand gestures from the webcam. MediaPipe hand tracking runs on the device, a debouncer stops false triggers, and every gesture can be remapped to play, mute, speed or skip.",
+    note: "No video leaves the machine. Accuracy and latency are not benchmarked.",
+    tags: ["MediaPipe", "Chrome MV3", "JavaScript"],
+    monogram: "HF",
+    sourceCodeLink: "https://github.com/Shaurya55555/handsfree-media-controller",
+  },
 ];
 
 export const proof = [
@@ -230,6 +278,24 @@ export const technologies = [
   { name: "MongoDB", icon: "/tech/mongodb.png" },
   { name: "git", icon: "/tech/git.png" },
   { name: "Docker", icon: "/tech/docker.png" },
+];
+
+/** Flat logos for the wider toolbox (the 3D stones above are the core set). */
+export const moreTech = [
+  { name: "Next.js", icon: "/tech/x-nextdotjs.svg" },
+  { name: "Express", icon: "/tech/x-express.svg" },
+  { name: "Python", icon: "/tech/x-python.svg" },
+  { name: "FastAPI", icon: "/tech/x-fastapi.svg" },
+  { name: "C++", icon: "/tech/x-cplusplus.svg" },
+  { name: "PostgreSQL", icon: "/tech/x-postgresql.svg" },
+  { name: "Redis", icon: "/tech/x-redis.svg" },
+  { name: "GraphQL", icon: "/tech/x-graphql.svg" },
+  { name: "Kafka", icon: "/tech/x-apachekafka.svg" },
+  { name: "Nginx", icon: "/tech/x-nginx.svg" },
+  { name: "Jenkins", icon: "/tech/x-jenkins.svg" },
+  { name: "GitHub Actions", icon: "/tech/x-githubactions.svg" },
+  { name: "LangChain", icon: "/tech/x-langchain.svg" },
+  { name: "Gemini API", icon: "/tech/x-googlegemini.svg" },
 ];
 
 export const sectionCopy = {
