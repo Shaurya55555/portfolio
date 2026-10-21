@@ -32,7 +32,7 @@ const NODES: Node[] = RINGS.flatMap((r) =>
 );
 
 const R3 = 5.4; // outermost orbit radius, world units
-const CAM = new THREE.Vector3(0, 5, 11);
+const CAM = new THREE.Vector3(0, 6, 11);
 const TILT = Math.atan2(CAM.y, CAM.z); // faces the logos toward the camera
 
 /** The same round brick as the original stones: a flat-shaded icosahedron
@@ -40,7 +40,7 @@ const TILT = Math.atan2(CAM.y, CAM.z); // faces the logos toward the camera
 function Brick({ icon, lit }: { icon: string; lit: boolean }) {
   const [map] = useTexture([icon]);
   return (
-    <mesh rotation={[TILT, 0, 0]} scale={lit ? 0.72 : 0.58}>
+    <mesh rotation={[-TILT, 0, 0]} scale={lit ? 0.5 : 0.4}>
       <icosahedronGeometry args={[1, 1]} />
       <meshStandardMaterial color="#fff8eb" polygonOffset polygonOffsetFactor={-5} flatShading />
       <Decal position={[0, 0, 1]} rotation={[2 * Math.PI, 0, 6.25]} scale={1} map={map} />
@@ -105,7 +105,7 @@ function Scene({
 
       {/* core: a small sun */}
       <mesh>
-        <sphereGeometry args={[0.75, 48, 48]} />
+        <sphereGeometry args={[0.62, 48, 48]} />
         <SunMaterial />
       </mesh>
 
@@ -131,7 +131,7 @@ function Scene({
         >
           <Brick icon={ICONS[n.name]} lit={hover === i} />
           {hover === i && (
-            <Html center position={[0, -1.05, 0]} zIndexRange={[20, 0]} style={{ pointerEvents: "none" }}>
+            <Html center position={[0, -0.75, 0]} zIndexRange={[20, 0]} style={{ pointerEvents: "none" }}>
               <span className="whitespace-nowrap rounded-md border border-white/10 bg-black/85 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white">
                 {LABEL[n.name] ?? n.name}
               </span>
