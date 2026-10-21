@@ -16,6 +16,7 @@ import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
 import SmoothScroll from "./SmoothScroll";
 import Warp from "./Warp";
+import Explorer from "./Explorer";
 import { Travel } from "./Planet";
 
 // Code-split the 3D/WebGL layers out of the main bundle so the text, nav
@@ -67,6 +68,7 @@ export default function Portfolio() {
       <ScrollProgress />
       <SmoothScroll />
       <Warp />
+      <Explorer />
 
       <div className="relative z-[1]">
         <Navbar />
