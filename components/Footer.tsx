@@ -18,6 +18,7 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} {person.name}. Built with Next.js and
           three.js.
         </p>
+        <p className="text-[11px] text-muted">Planet images: NASA, ESA and Hubble, via Wikimedia Commons.</p>
       </div>
       <div className="flex items-center gap-4">
         {links.map(({ href, label, Icon, big }) => (

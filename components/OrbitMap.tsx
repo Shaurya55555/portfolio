@@ -3,51 +3,49 @@
 import { useEffect, useRef, useState } from "react";
 import { PLANETS, World, type PlanetKey, type Spec } from "./Planet";
 import { flyStore } from "@/lib/flyStore";
+import { person } from "@/lib/data";
 
 type Body = {
-  id: string;
-  spec: Spec;
+  id: string; // section id, or "resume"
+  planet: PlanetKey;
   title: string;
   detail: string;
-  ring: number; // orbit radius factor
+  ring: number; // orbit size as a fraction of the outermost orbit
+  size: number; // relative disc size
   a0: number; // start angle
-  speed: number;
 };
 
-const EARTH: Spec = {
-  name: "Earth",
-  n: "07",
-  c: ["#d6efff", "#2f6fd1", "#06142e"],
-  side: "right",
-  top: "0%",
-};
-
-const P = (k: PlanetKey) => PLANETS[k];
-
-/** Every section is a world. Each one carries a short detail so a visitor
- *  can read it from orbit and then drop straight in. */
+/** The real solar system, in real order from the sun. Each world is a
+ *  section, so a visitor can read a one-line detail from orbit and drop in. */
 const BODIES: Body[] = [
-  { id: "about", spec: P("about"), title: "About", detail: "Who I am, what I build, and how I think.", ring: 0.42, a0: 0.4, speed: 0.34 },
-  { id: "build", spec: P("build"), title: "How I work", detail: "The four steps from idea to a deployed product.", ring: 0.42, a0: 3.5, speed: 0.34 },
-  { id: "work", spec: P("work"), title: "Experience", detail: "Marine Edge and APJ Academy internships.", ring: 0.68, a0: 1.6, speed: 0.22 },
-  { id: "projects", spec: P("projects"), title: "Projects", detail: "OARFIN, NammaStocks, Ecom GraphQL and more, live.", ring: 0.68, a0: 4.7, speed: 0.22 },
-  { id: "proof", spec: P("proof"), title: "Proof", detail: "Hackathon result, DSA and certifications.", ring: 0.94, a0: 2.4, speed: 0.15 },
-  { id: "stack", spec: P("stack"), title: "Tech stack", detail: "Languages, frameworks and tools I ship with.", ring: 0.94, a0: 5.4, speed: 0.15 },
-  { id: "contact", spec: EARTH, title: "Contact", detail: "Send a message, or grab my email and resume.", ring: 1.18, a0: 0.9, speed: 0.11 },
+  { id: "about", planet: "about", title: "About", detail: "Who I am, what I build, and how I think.", ring: 0.26, size: 0.5, a0: 0.4 },
+  { id: "build", planet: "build", title: "How I work", detail: "The four steps from idea to a deployed product.", ring: 0.38, size: 0.85, a0: 2.6 },
+  { id: "contact", planet: "earth", title: "Contact", detail: "Send a message, or grab my email and resume.", ring: 0.5, size: 0.9, a0: 4.9 },
+  { id: "work", planet: "work", title: "Experience", detail: "Marine Edge and APJ Academy internships.", ring: 0.62, size: 0.65, a0: 1.3 },
+  { id: "projects", planet: "projects", title: "Projects", detail: "OARFIN, NammaStocks, Ecom GraphQL and more, live.", ring: 0.75, size: 2.0, a0: 3.7 },
+  { id: "proof", planet: "proof", title: "Proof", detail: "Hackathon result, DSA and certifications.", ring: 0.87, size: 1.6, a0: 5.7 },
+  { id: "stack", planet: "stack", title: "Tech stack", detail: "Languages, frameworks and tools I ship with.", ring: 0.96, size: 1.2, a0: 0.9 },
+  { id: "resume", planet: "neptune", title: "Resume", detail: "My one-page resume, as a PDF.", ring: 1, size: 1.15, a0: 3.2 },
 ];
 
+const RINGS = [...new Set(BODIES.map((b) => b.ring))];
+
 const goTo = (id: string) => {
+  if (id === "resume") {
+    window.open(person.resume, "_blank", "noopener");
+    return;
+  }
   const el = document.getElementById(id);
   if (!el) return;
   window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: "smooth" });
 };
 
-/** The first page as a small solar system. Planets orbit a sun; pick one and
- *  the astronaut flies over to it, then the page lands on that section. */
+/** The first page as the real solar system. The sun sits in the middle and
+ *  the planets orbit it in order; pick one and the astronaut flies over to
+ *  it, then the page lands on that section. */
 export default function OrbitMap() {
   const box = useRef<HTMLDivElement>(null);
   const els = useRef<(HTMLButtonElement | null)[]>([]);
-  const svg = useRef<SVGSVGElement>(null);
   const [dim, setDim] = useState({ w: 0, h: 0 });
   const [hover, setHover] = useState<number | null>(null);
   const hoverRef = useRef<number | null>(null);
@@ -66,11 +64,13 @@ export default function OrbitMap() {
   }, []);
 
   const wide = dim.w >= 768;
-  const cx = dim.w * (wide ? 0.7 : 0.5);
-  const cy = dim.h * (wide ? 0.56 : 0.79);
-  const rx = wide ? Math.min(dim.w * 0.27, 520) : dim.w * 0.4;
-  const ry = rx * (wide ? 0.36 : 0.5);
-  const base = wide ? 62 : 38;
+  const cx = dim.w * (wide ? 0.66 : 0.5);
+  const cy = dim.h * (wide ? 0.55 : 0.79);
+  const rx = wide ? Math.min(dim.w * 0.31, 560) : dim.w * 0.44;
+  const ry = rx * (wide ? 0.4 : 0.5);
+  const unit = wide ? 30 : 17;
+  const px = (b: Body) => Math.max(wide ? 24 : 20, Math.round(unit * b.size));
+  const sun = wide ? 84 : 46;
 
   useEffect(() => {
     if (!dim.w) return;
@@ -82,16 +82,17 @@ export default function OrbitMap() {
       last = now;
       const paused = flyStore.target !== null || hoverRef.current !== null;
       BODIES.forEach((b, i) => {
-        if (!still && !paused) angles.current[i] += dt * b.speed;
+        // Kepler: inner worlds go round faster
+        if (!still && !paused) angles.current[i] += dt * 0.0597 * Math.pow(b.ring, -1.5);
         const a = angles.current[i];
         const x = cx + Math.cos(a) * rx * b.ring;
         const y = cy + Math.sin(a) * ry * b.ring;
         const depth = (Math.sin(a) + 1) / 2; // 1 = in front
-        const s = 0.78 + depth * 0.34;
+        const s = 0.88 + depth * 0.24;
         const el = els.current[i];
         if (el) {
           el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${s})`;
-          el.style.zIndex = String(Math.round(depth * 10));
+          el.style.zIndex = String(Math.round(depth * 10) + 1);
           el.dataset.x = String(x);
           el.dataset.y = String(y);
         }
@@ -115,75 +116,81 @@ export default function OrbitMap() {
   };
 
   const h = hover !== null ? BODIES[hover] : null;
+  const hs: Spec | null = h ? PLANETS[h.planet] : null;
 
   return (
-    <div ref={box} className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-label="Solar system of sections">
+    <div ref={box} className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-label="The solar system, one planet per section">
       {dim.w > 0 && (
         <>
-          {/* sun */}
-          <div
-            aria-hidden
-            className="absolute rounded-full"
-            style={{
-              left: cx,
-              top: cy,
-              width: base * 1.5,
-              height: base * 1.5,
-              transform: "translate(-50%,-50%)",
-              background: "radial-gradient(circle, #fff3dc 0%, #ffc48a 38%, rgba(255,160,80,0.25) 62%, transparent 72%)",
-              boxShadow: "0 0 90px 30px rgba(255,170,90,0.28)",
-            }}
-          />
-          {/* orbit lines */}
-          <svg ref={svg} aria-hidden className="absolute inset-0 h-full w-full">
-            {[...new Set(BODIES.map((b) => b.ring))].map((r) => (
-              <ellipse key={r} cx={cx} cy={cy} rx={rx * r} ry={ry * r} fill="none" stroke="rgba(255,255,255,0.1)" strokeDasharray="2 7" />
+          {/* orbit lines, one per world */}
+          <svg aria-hidden className="absolute inset-0 h-full w-full">
+            {RINGS.map((r) => (
+              <ellipse key={r} cx={cx} cy={cy} rx={rx * r} ry={ry * r} fill="none" stroke="rgba(255,255,255,0.16)" strokeWidth="1" />
             ))}
           </svg>
 
-          {BODIES.map((b, i) => (
-            <button
-              key={b.id}
-              ref={(el) => {
-                els.current[i] = el;
-              }}
-              type="button"
-              onClick={() => enter(i)}
-              onPointerDown={(e) => e.stopPropagation()}
-              onPointerEnter={() => setHover(i)}
-              onPointerLeave={() => setHover((c) => (c === i ? null : c))}
-              onFocus={() => setHover(i)}
-              onBlur={() => setHover((c) => (c === i ? null : c))}
-              aria-label={`${b.title}: ${b.detail}`}
-              className="pointer-events-auto absolute left-0 top-0 cursor-pointer outline-none"
-              style={{ width: base, height: base, willChange: "transform" }}
-            >
-              <span
-                className={`block h-full w-full transition-transform duration-200 ${hover === i ? "scale-125" : ""}`}
+          {/* the sun, in the middle */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            aria-hidden
+            src="/solar/sun.webp"
+            alt=""
+            draggable={false}
+            className="absolute select-none"
+            style={{
+              left: cx,
+              top: cy,
+              width: sun,
+              transform: "translate(-50%,-50%)",
+              filter: "drop-shadow(0 0 28px rgba(255,150,50,0.75)) drop-shadow(0 0 70px rgba(255,120,30,0.35))",
+            }}
+          />
+
+          {BODIES.map((b, i) => {
+            const size = px(b);
+            return (
+              <button
+                key={b.id}
+                ref={(el) => {
+                  els.current[i] = el;
+                }}
+                type="button"
+                onClick={() => enter(i)}
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerEnter={() => setHover(i)}
+                onPointerLeave={() => setHover((c) => (c === i ? null : c))}
+                onFocus={() => setHover(i)}
+                onBlur={() => setHover((c) => (c === i ? null : c))}
+                aria-label={`${b.title}: ${b.detail}`}
+                className="pointer-events-auto absolute left-0 top-0 cursor-pointer outline-none"
+                style={{ width: size, height: size, willChange: "transform" }}
               >
-                <World spec={b.spec} />
-              </span>
-              <span
-                className={`absolute left-1/2 top-full mt-1.5 hidden -translate-x-1/2 whitespace-nowrap sm:block font-mono text-[9px] uppercase tracking-[0.18em] transition-colors sm:text-[10px] ${
-                  hover === i ? "text-accent" : "text-muted"
-                }`}
-              >
-                {b.title}
-              </span>
-            </button>
-          ))}
+                <span className={`block h-full w-full transition-transform duration-200 ${hover === i ? "scale-125" : ""}`}>
+                  <World spec={PLANETS[b.planet]} />
+                </span>
+                <span
+                  className={`absolute left-1/2 top-full mt-1 hidden -translate-x-1/2 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.18em] transition-colors sm:block sm:text-[10px] ${
+                    hover === i ? "text-accent" : "text-muted"
+                  }`}
+                  style={b.planet === "proof" ? { marginTop: size * 0.25 } : undefined}
+                >
+                  {b.title}
+                </span>
+              </button>
+            );
+          })}
 
           {/* detail card for the planet you are on */}
-          {h && (
+          {h && hs && (
             <div
               className="pointer-events-none absolute z-20 w-[220px] rounded-xl border border-white/10 bg-black/85 p-3.5 backdrop-blur-md"
               style={{
                 left: Math.min(Math.max(Number(els.current[hover!]?.dataset.x ?? cx) - 110, 8), dim.w - 228),
-                top: Math.max(8, Number(els.current[hover!]?.dataset.y ?? cy) - base - 96),
+                top: Math.max(8, Number(els.current[hover!]?.dataset.y ?? cy) - px(h) - 100),
               }}
             >
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
-                Planet {h.spec.n} · {h.spec.name}
+                {hs.name} · {h.title}
               </p>
               <p className="mt-1.5 text-[13px] leading-snug text-white">{h.detail}</p>
               <p className="mt-2 text-[11px] text-secondary">Click to fly there</p>

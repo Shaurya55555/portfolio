@@ -3,59 +3,57 @@
 import { useRef, type ReactNode } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-export type PlanetKey = "about" | "build" | "work" | "projects" | "proof" | "stack";
+export type PlanetKey =
+  | "about"
+  | "build"
+  | "work"
+  | "projects"
+  | "proof"
+  | "stack"
+  | "earth"
+  | "neptune";
 
 export type Spec = {
   name: string;
   n: string;
-  /** light, mid, shadow */
-  c: [string, string, string];
-  ring?: string;
+  /** real photograph, served from /public/solar */
+  img: string;
+  /** width / height of the image when the planet is not a plain disc (Saturn's rings) */
+  wide?: number;
   side: "left" | "right";
   top: string;
 };
 
-/** One world per section. Colours stay warm/cool and low-chroma so the
- *  neutral black page and the peach accent still lead. */
+/** The real solar system, one world per section. Images are NASA / ESA
+ *  photographs via Wikimedia Commons (see the footer credit). */
 export const PLANETS: Record<PlanetKey, Spec> = {
-  about: { name: "Solara", n: "01", c: ["#ffe2bd", "#d98a3d", "#3b1d09"], ring: "#f3c98f", side: "right", top: "2%" },
-  build: { name: "Glacia", n: "02", c: ["#d9ecff", "#5d8fc7", "#0e1c33"], side: "left", top: "4%" },
-  work: { name: "Ember", n: "03", c: ["#ffc4a8", "#c2452a", "#2a0b07"], side: "right", top: "8%" },
-  projects: { name: "Nebulon", n: "04", c: ["#e3d3ff", "#7a5bd1", "#150b33"], ring: "#bda6ff", side: "left", top: "0%" },
-  proof: { name: "Verdea", n: "05", c: ["#d4f5e2", "#3f9c78", "#08241b"], side: "right", top: "10%" },
-  stack: { name: "Aquor", n: "06", c: ["#cdf3ff", "#2f93b8", "#06202c"], ring: "#8fd8f0", side: "left", top: "0%" },
+  about: { name: "Mercury", n: "01", img: "/solar/mercury.webp", side: "right", top: "6%" },
+  build: { name: "Venus", n: "02", img: "/solar/venus.webp", side: "left", top: "4%" },
+  earth: { name: "Earth", n: "03", img: "/solar/earth.webp", side: "right", top: "0%" },
+  work: { name: "Mars", n: "04", img: "/solar/mars.webp", side: "right", top: "8%" },
+  projects: { name: "Jupiter", n: "05", img: "/solar/jupiter.webp", side: "left", top: "0%" },
+  proof: { name: "Saturn", n: "06", img: "/solar/saturn.webp", wide: 2.45, side: "right", top: "10%" },
+  stack: { name: "Uranus", n: "07", img: "/solar/uranus.webp", side: "left", top: "0%" },
+  neptune: { name: "Neptune", n: "08", img: "/solar/neptune.webp", side: "right", top: "0%" },
 };
 
+/** A real planet photograph. For ringed Saturn the box is the planet disc and
+ *  the rings extend past it. */
 export function World({ spec }: { spec: Spec }) {
-  const [a, b, c] = spec.c;
   return (
     <div className="relative h-full w-full">
-      {spec.ring && (
-        <div
-          className="absolute left-1/2 top-1/2 h-[34%] w-[170%] rounded-[50%] border-[3px] opacity-60"
-          style={{
-            borderColor: spec.ring,
-            transform: "translate(-50%,-50%) rotate(-18deg)",
-            boxShadow: `0 0 24px ${spec.ring}55, inset 0 0 24px ${spec.ring}44`,
-          }}
-        />
-      )}
-      <div
-        className="absolute inset-0 overflow-hidden rounded-full"
-        style={{
-          background: `radial-gradient(circle at 30% 26%, ${a} 0%, ${b} 40%, ${c} 78%, #000 100%)`,
-          boxShadow: `0 0 90px ${b}40, inset -36px -28px 70px #000d`,
-        }}
-      >
-        {/* slowly drifting surface bands */}
-        <div
-          className="planet-bands absolute inset-[-20%]"
-          style={{
-            background: `repeating-linear-gradient(${spec.ring ? 8 : -12}deg, transparent 0 22px, ${a}26 22px 34px, transparent 34px 60px)`,
-            mixBlendMode: "soft-light",
-          }}
-        />
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={spec.img}
+        alt=""
+        draggable={false}
+        className={
+          spec.wide
+            ? "pointer-events-none absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
+            : "pointer-events-none h-full w-full select-none"
+        }
+        style={spec.wide ? { width: `${spec.wide * 100}%` } : undefined}
+      />
     </div>
   );
 }

@@ -34,13 +34,6 @@
    the fixed star canvas renders transparently on top of it, content above that */
 html {
   background-color: #000000;
-  background-image:
-    /* the sun: bright core, soft corona, long warm falloff */
-    radial-gradient(circle at 106% 16%, #fff6df 0, #ffe0a0 2.5%, rgba(255, 176, 72, 0.55) 9%, rgba(255, 140, 40, 0.2) 24%, transparent 52%),
-    radial-gradient(70% 60% at 100% 14%, rgba(255, 160, 60, 0.16), transparent 70%),
-    radial-gradient(60% 45% at 0% 100%, rgba(255, 200, 162, 0.06), transparent 65%);
-  /* the sun belongs to the first page only: it is one viewport tall and
-     scrolls away with the page, leaving plain black space below */
   background-repeat: no-repeat;
   background-size: 100% 100vh;
   background-position: top left;
