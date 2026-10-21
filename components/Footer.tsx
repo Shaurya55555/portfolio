@@ -11,7 +11,7 @@ export default function Footer() {
     { href: `mailto:${person.email}`, label: "Email", Icon: FaEnvelope, big: false },
   ];
   return (
-    <footer className="relative z-10 mx-auto flex max-w-7xl flex-col items-center gap-5 px-6 py-10 sm:flex-row sm:justify-between sm:px-16">
+    <footer className="relative z-10 mx-auto flex max-w-7xl flex-col items-center gap-5 px-6 pb-24 pt-10 sm:flex-row sm:justify-between sm:px-16">
       <div className="flex flex-col items-center gap-2 sm:items-start">
         <StatusBadge />
         <p className="text-[14px] text-secondary">
