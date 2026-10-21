@@ -112,7 +112,7 @@ function Contact() {
         variants={slideIn("right", "tween", 0.2, 1)}
         className={scene ? "h-auto min-h-[520px] flex-1" : "h-[350px] md:h-[550px] xl:h-auto xl:flex-1"}
       >
-        <InView className="h-full w-full" rootMargin="250px">
+        <InView className="h-full w-full" rootMargin="250px" once={false}>
           <EarthCanvas />
         </InView>
       </motion.div>

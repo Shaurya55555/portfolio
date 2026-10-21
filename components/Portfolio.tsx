@@ -36,10 +36,29 @@ export default function Portfolio() {
   const [astro, setAstro] = useState(false);
   const [astroShown, setAstroShown] = useState(false);
 
-  // the astronaut is the hero: start it on the next frame, not on idle
+  // the astronaut is the hero: start it on the next frame, not on idle.
+  // Browsers allow about 16 live WebGL contexts, and the tech bricks and the
+  // Earth need most of them further down, so the astronaut scene is released
+  // once the visitor is well past the first page and rebuilt on the way back.
   useEffect(() => {
-    const id = requestAnimationFrame(() => setAstro(true));
-    return () => cancelAnimationFrame(id);
+    let on = false;
+    const set = (v: boolean) => {
+      if (v !== on) {
+        on = v;
+        setAstro(v);
+      }
+    };
+    const id = requestAnimationFrame(() => set(true));
+    const onScroll = () => {
+      const vh = window.innerHeight;
+      if (window.scrollY > vh * 1.6) set(false);
+      else if (window.scrollY < vh * 1.1) set(true);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   useEffect(() => {
