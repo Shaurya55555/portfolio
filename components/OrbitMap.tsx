@@ -68,9 +68,9 @@ export default function OrbitMap() {
   const cy = dim.h * (wide ? 0.55 : 0.79);
   const rx = wide ? Math.min(dim.w * 0.245, 520) : dim.w * 0.44;
   const ry = rx * (wide ? 0.4 : 0.5);
-  const unit = wide ? 30 : 17;
-  const px = (b: Body) => Math.max(wide ? 24 : 20, Math.round(unit * b.size));
-  const sun = wide ? 92 : 50;
+  const unit = wide ? 38 : 21;
+  const px = (b: Body) => Math.max(wide ? 30 : 24, Math.round(unit * b.size));
+  const sun = wide ? 112 : 58;
 
   useEffect(() => {
     if (!dim.w) return;
@@ -196,7 +196,7 @@ export default function OrbitMap() {
                   />
                 </span>
                 <span
-                  className={`absolute left-1/2 top-full mt-1 hidden -translate-x-1/2 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.18em] transition-colors sm:block sm:text-[10px] ${
+                  className={`absolute left-1/2 top-full mt-1 hidden -translate-x-1/2 whitespace-nowrap font-mono text-[8px] uppercase tracking-[0.14em] transition-colors sm:block sm:text-[8px] ${
                     hover === i ? "text-accent" : "text-muted"
                   }`}
                   style={b.planet === "proof" ? { marginTop: size * 0.25 } : undefined}
@@ -224,7 +224,7 @@ export default function OrbitMap() {
             </div>
           )}
 
-          <p className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted sm:block">
+          <p className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 font-mono text-[8px] uppercase tracking-[0.22em] text-muted sm:block">
             Pick a planet · the astronaut flies you there
           </p>
         </>
