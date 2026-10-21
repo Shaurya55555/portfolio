@@ -278,24 +278,9 @@ export const technologies = [
   { name: "MongoDB", icon: "/tech/mongodb.png" },
   { name: "git", icon: "/tech/git.png" },
   { name: "Docker", icon: "/tech/docker.png" },
-];
-
-/** Flat logos for the wider toolbox (the 3D stones above are the core set). */
-export const moreTech = [
   { name: "Next.js", icon: "/tech/x-nextdotjs.svg" },
-  { name: "Express", icon: "/tech/x-express.svg" },
   { name: "Python", icon: "/tech/x-python.svg" },
-  { name: "FastAPI", icon: "/tech/x-fastapi.svg" },
-  { name: "C++", icon: "/tech/x-cplusplus.svg" },
   { name: "PostgreSQL", icon: "/tech/x-postgresql.svg" },
-  { name: "Redis", icon: "/tech/x-redis.svg" },
-  { name: "GraphQL", icon: "/tech/x-graphql.svg" },
-  { name: "Kafka", icon: "/tech/x-apachekafka.svg" },
-  { name: "Nginx", icon: "/tech/x-nginx.svg" },
-  { name: "Jenkins", icon: "/tech/x-jenkins.svg" },
-  { name: "GitHub Actions", icon: "/tech/x-githubactions.svg" },
-  { name: "LangChain", icon: "/tech/x-langchain.svg" },
-  { name: "Gemini API", icon: "/tech/x-googlegemini.svg" },
 ];
 
 export const sectionCopy = {
