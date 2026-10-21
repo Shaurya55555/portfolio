@@ -15,6 +15,14 @@ const EarthCanvas = dynamic(() => import("./canvas/Earth"), { ssr: false });
 function Contact() {
   const scene = useScene();
   const [form, setForm] = useState({ email: "", message: "" });
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard?.writeText(person.email).then(() => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,6 +79,33 @@ function Contact() {
             Send
           </button>
         </form>
+
+        <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-white/10 pt-6 text-[14px]">
+          <span className="text-secondary">Or reach me directly:</span>
+          <button
+            type="button"
+            onClick={copyEmail}
+            className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent"
+          >
+            {copied ? "Copied" : person.email}
+          </button>
+          <a
+            href={person.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent"
+          >
+            LinkedIn
+          </a>
+          <a
+            href={person.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent"
+          >
+            Resume
+          </a>
+        </div>
       </motion.div>
 
       <motion.div
