@@ -111,7 +111,7 @@ function Scrubber({
         ))}
         <span
           aria-hidden
-          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_18px_rgba(255,180,84,0.65)] transition-[left] duration-200 ease-out"
+          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-black shadow-[0_0_18px_rgba(185,198,214,0.65)] transition-[left] duration-200 ease-out"
           style={{ left: `${pct(value)}%` }}
         />
       </div>

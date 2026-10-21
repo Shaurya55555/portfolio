@@ -53,7 +53,7 @@ export default function Navbar() {
             window.scrollTo(0, 0);
           }}
         >
-          <p className="cursor-pointer text-[18px] font-bold text-white transition-colors hover:text-[#ffe2b8]">
+          <p className="cursor-pointer text-[18px] font-bold text-white transition-colors hover:text-[#e3eaf3]">
             {person.name}
           </p>
         </a>
@@ -69,7 +69,7 @@ export default function Navbar() {
             >
               <a href={`#${nav.id}`}>{nav.title}</a>
               <span
-                className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#ffb454] transition-all duration-300 ${
+                className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-[#b9c6d6] transition-all duration-300 ${
                   current === nav.id ? "w-full" : "w-0"
                 }`}
               />

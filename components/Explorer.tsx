@@ -137,7 +137,7 @@ export default function Explorer() {
               <span
                 className={`block rounded-full transition-all ${
                   active === d.id
-                    ? "h-2.5 w-2.5 bg-accent shadow-[0_0_10px_2px_rgba(255,180,84,0.6)]"
+                    ? "h-2.5 w-2.5 bg-accent shadow-[0_0_10px_2px_rgba(185,198,214,0.6)]"
                     : "h-1.5 w-1.5 bg-white/30 group-hover:bg-white/70"
                 }`}
               />
