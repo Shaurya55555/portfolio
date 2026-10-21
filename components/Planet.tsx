@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 export type PlanetKey = "about" | "build" | "work" | "projects" | "proof" | "stack";
 
-type Spec = {
+export type Spec = {
   name: string;
   n: string;
   /** light, mid, shadow */
@@ -26,7 +26,7 @@ export const PLANETS: Record<PlanetKey, Spec> = {
   stack: { name: "Aquor", n: "06", c: ["#cdf3ff", "#2f93b8", "#06202c"], ring: "#8fd8f0", side: "left", top: "0%" },
 };
 
-function World({ spec }: { spec: Spec }) {
+export function World({ spec }: { spec: Spec }) {
   const [a, b, c] = spec.c;
   return (
     <div className="relative h-full w-full">

@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState, type MutableRefObject } from "re
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Center, Environment, Lightformer, Preload, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import { flyStore } from "@/lib/flyStore";
 
 const MODEL_URL = "/models/astronaut.glb";
 
@@ -25,6 +26,15 @@ function Model() {
 function Flyer({ ctl, onReady }: { ctl: MutableRefObject<Control>; onReady: () => void }) {
   const g = useRef<THREE.Group>(null);
   const intro = useRef(0);
+  const blend = useRef(0); // 0 = on its orbit, 1 = at the planet it was sent to
+  const dest = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    flyStore.listening = true;
+    return () => {
+      flyStore.listening = false;
+    };
+  }, []);
 
   // the model is parsed and uploaded by the time this mounts
   useEffect(() => {
@@ -55,8 +65,26 @@ function Flyer({ ctl, onReady }: { ctl: MutableRefObject<Control>; onReady: () =
     const roamX = orbitCx + Math.cos(orbitAngle) * orbitRx + c.px * 0.3;
     const roamY = orbitCy + Math.sin(orbitAngle) * orbitRy + c.py * 0.2;
 
-    grp.position.x = THREE.MathUtils.lerp(-3.2, roamX, e);
-    grp.position.y = THREE.MathUtils.lerp(-2.2, roamY, e) + c.past * 9;
+    // flying to a planet picked on the first page: map its screen position
+    // to world units at the astronaut's depth and ease toward it
+    const T = flyStore.target;
+    if (T) {
+      const cam = state.camera as THREE.PerspectiveCamera;
+      const halfH = Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) * cam.position.z;
+      const halfW = halfH * (state.size.width / state.size.height);
+      dest.current.x = (T.x / state.size.width) * 2 * halfW - halfW - 0.9;
+      dest.current.y = -((T.y / state.size.height) * 2 - 1) * halfH - 0.15;
+    }
+    blend.current += ((T ? 1 : 0) - blend.current) * Math.min(1, delta * 4);
+    if (T && blend.current > 0.95) flyStore.arrive();
+
+    grp.position.x = THREE.MathUtils.lerp(
+      THREE.MathUtils.lerp(-3.2, roamX, e),
+      dest.current.x,
+      blend.current,
+    );
+    grp.position.y =
+      THREE.MathUtils.lerp(THREE.MathUtils.lerp(-2.2, roamY, e), dest.current.y, blend.current) + c.past * 9;
     grp.position.z = Math.sin(orbitAngle) * 0.3;
 
     // no auto-spin or banking - it always faces front. Rotation only comes

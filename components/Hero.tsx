@@ -2,17 +2,19 @@
 
 import { motion } from "framer-motion";
 import { person, heroCopy } from "@/lib/data";
+import OrbitMap from "./OrbitMap";
 
 export default function Hero() {
   return (
     <section id="intro" className="relative mx-auto h-screen w-full">
-      <div className="absolute inset-0 top-[120px] mx-auto flex max-w-7xl flex-row items-start gap-5 px-6 sm:px-16">
+      <OrbitMap />
+      <div className="pointer-events-none absolute inset-0 top-[120px] z-10 mx-auto flex max-w-7xl flex-row items-start gap-5 px-6 sm:px-16">
         <div className="mt-5 flex flex-col items-center justify-center">
           <div className="h-5 w-5 rounded-full bg-[#ffc8a2]" />
           <div className="violet-gradient h-40 w-1 sm:h-80" />
         </div>
 
-        <div>
+        <div className="pointer-events-auto">
           <h1 className="mt-2 text-[40px] font-black text-white xs:text-[50px] sm:text-[60px] sm:leading-[80px] lg:text-[80px] lg:leading-[98px]">
             Hi, I&apos;m <span className="text-[#ffc8a2]">{person.firstName}</span>
           </h1>
