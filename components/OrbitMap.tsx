@@ -67,10 +67,10 @@ export default function OrbitMap() {
 
   const wide = dim.w >= 768;
   const cx = dim.w * (wide ? 0.7 : 0.5);
-  const cy = dim.h * (wide ? 0.56 : 0.8);
+  const cy = dim.h * (wide ? 0.56 : 0.79);
   const rx = wide ? Math.min(dim.w * 0.27, 520) : dim.w * 0.4;
-  const ry = rx * (wide ? 0.36 : 0.3);
-  const base = wide ? 62 : 36;
+  const ry = rx * (wide ? 0.36 : 0.5);
+  const base = wide ? 62 : 38;
 
   useEffect(() => {
     if (!dim.w) return;
@@ -164,7 +164,7 @@ export default function OrbitMap() {
                 <World spec={b.spec} />
               </span>
               <span
-                className={`absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.18em] transition-colors sm:text-[10px] ${
+                className={`absolute left-1/2 top-full mt-1.5 hidden -translate-x-1/2 whitespace-nowrap sm:block font-mono text-[9px] uppercase tracking-[0.18em] transition-colors sm:text-[10px] ${
                   hover === i ? "text-accent" : "text-muted"
                 }`}
               >
