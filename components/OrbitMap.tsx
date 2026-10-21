@@ -70,7 +70,7 @@ export default function OrbitMap() {
   const ry = rx * (wide ? 0.4 : 0.5);
   const unit = wide ? 30 : 17;
   const px = (b: Body) => Math.max(wide ? 24 : 20, Math.round(unit * b.size));
-  const sun = wide ? 84 : 46;
+  const sun = wide ? 92 : 50;
 
   useEffect(() => {
     if (!dim.w) return;
@@ -93,6 +93,12 @@ export default function OrbitMap() {
         if (el) {
           el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%) scale(${s})`;
           el.style.zIndex = String(Math.round(depth * 10) + 1);
+          // light comes from the sun: shade the far side of each world
+          const dx = cx - x;
+          const dy = cy - y;
+          const len = Math.hypot(dx, dy) || 1;
+          el.style.setProperty("--sx", `${(dx / len) * 30}%`);
+          el.style.setProperty("--sy", `${(dy / len) * 30}%`);
           el.dataset.x = String(x);
           el.dataset.y = String(y);
         }
@@ -125,26 +131,39 @@ export default function OrbitMap() {
           {/* orbit lines, one per world */}
           <svg aria-hidden className="absolute inset-0 h-full w-full">
             {RINGS.map((r) => (
-              <ellipse key={r} cx={cx} cy={cy} rx={rx * r} ry={ry * r} fill="none" stroke="rgba(255,255,255,0.16)" strokeWidth="1" />
+              <ellipse key={r} cx={cx} cy={cy} rx={rx * r} ry={ry * r} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
             ))}
           </svg>
 
-          {/* the sun, in the middle */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          {/* the sun, in the middle: soft corona behind a clean photographed disc */}
+          <div
             aria-hidden
-            src="/solar/sun.webp"
-            alt=""
-            draggable={false}
-            className="absolute select-none"
-            style={{
-              left: cx,
-              top: cy,
-              width: sun,
-              transform: "translate(-50%,-50%)",
-              filter: "drop-shadow(0 0 28px rgba(255,150,50,0.75)) drop-shadow(0 0 70px rgba(255,120,30,0.35))",
-            }}
-          />
+            className="absolute"
+            style={{ left: cx, top: cy, width: sun, height: sun, transform: "translate(-50%,-50%)" }}
+          >
+            <div
+              className="absolute left-1/2 top-1/2 rounded-full"
+              style={{
+                width: sun * 4.2,
+                height: sun * 4.2,
+                transform: "translate(-50%,-50%)",
+                background:
+                  "radial-gradient(circle, rgba(255,190,110,0.55) 0%, rgba(255,150,60,0.28) 22%, rgba(255,120,40,0.1) 40%, transparent 62%)",
+              }}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/solar/sun.webp"
+              alt=""
+              draggable={false}
+              className="absolute inset-0 h-full w-full select-none rounded-full"
+              style={{ boxShadow: "0 0 40px 8px rgba(255,150,60,0.6)" }}
+            />
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{ background: "radial-gradient(circle, transparent 55%, rgba(120,30,0,0.55) 100%)" }}
+            />
+          </div>
 
           {BODIES.map((b, i) => {
             const size = px(b);
@@ -165,8 +184,16 @@ export default function OrbitMap() {
                 className="pointer-events-auto absolute left-0 top-0 cursor-pointer outline-none"
                 style={{ width: size, height: size, willChange: "transform" }}
               >
-                <span className={`block h-full w-full transition-transform duration-200 ${hover === i ? "scale-125" : ""}`}>
+                <span className={`relative block h-full w-full transition-transform duration-200 ${hover === i ? "scale-125" : ""}`}>
                   <World spec={PLANETS[b.planet]} />
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 rounded-full"
+                    style={{
+                      background:
+                        "radial-gradient(circle at calc(50% + var(--sx, 0%)) calc(50% + var(--sy, 0%)), transparent 32%, rgba(0,0,0,0.78) 82%)",
+                    }}
+                  />
                 </span>
                 <span
                   className={`absolute left-1/2 top-full mt-1 hidden -translate-x-1/2 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.18em] transition-colors sm:block sm:text-[10px] ${
