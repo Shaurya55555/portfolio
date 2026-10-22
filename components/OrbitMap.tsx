@@ -197,7 +197,7 @@ export default function OrbitMap() {
                 </span>
                 <span
                   className={`absolute left-1/2 top-full mt-1 hidden -translate-x-1/2 whitespace-nowrap font-mono text-[8px] uppercase tracking-[0.14em] transition-colors sm:block sm:text-[8px] ${
-                    hover === i ? "text-accent" : "text-muted"
+                    hover === i ? "text-white" : "text-muted"
                   }`}
                   style={b.planet === "proof" ? { marginTop: size * 0.25 } : undefined}
                 >
@@ -216,7 +216,7 @@ export default function OrbitMap() {
                 top: Math.max(8, Number(els.current[hover!]?.dataset.y ?? cy) - px(h) - 100),
               }}
             >
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white">
                 {hs.name} · {h.title}
               </p>
               <p className="mt-1.5 text-[13px] leading-snug text-white">{h.detail}</p>

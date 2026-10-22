@@ -10,17 +10,17 @@ export default function Hero() {
       <OrbitMap />
       <div className="pointer-events-none absolute inset-0 top-[120px] z-10 mx-auto flex max-w-7xl flex-row items-start gap-5 px-6 sm:px-16">
         <div className="mt-5 flex flex-col items-center justify-center">
-          <div className="h-5 w-5 rounded-full bg-[#8b5cf6]" />
-          <div className="violet-gradient h-40 w-1 sm:h-80" />
+          <div className="h-5 w-5 rounded-full bg-white" />
+          <div className="h-40 w-1 bg-gradient-to-b from-white to-transparent sm:h-80" />
         </div>
 
         <div className="pointer-events-auto">
           <h1 className="mt-2 text-[40px] font-black text-white xs:text-[50px] sm:text-[60px] sm:leading-[80px] lg:text-[80px] lg:leading-[98px]">
-            Hi, I&apos;m <span className="text-[#8b5cf6]">{person.firstName}</span>
+            Hi, I&apos;m {person.firstName}
           </h1>
           <p className="mt-2 max-w-2xl text-[16px] font-medium text-white-100 xs:text-[20px] sm:text-[26px] sm:leading-[38px] lg:text-[30px] lg:leading-[40px]">
             {heroCopy.lead}{" "}
-            <span className="text-[#d4c4fb]">{heroCopy.lead2}</span>
+            {heroCopy.lead2}
           </p>
           <p className="mt-4 max-w-xl text-[14px] leading-[24px] text-secondary sm:text-[16px]">
             {heroCopy.sub}
@@ -28,7 +28,7 @@ export default function Hero() {
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="#projects"
-              className="rounded-full bg-[#8b5cf6] px-6 py-2.5 text-[14px] font-semibold text-white transition-transform hover:scale-105"
+              className="rounded-full bg-white px-6 py-2.5 text-[14px] font-semibold text-black transition-transform hover:scale-105"
             >
               View projects
             </a>
@@ -36,7 +36,7 @@ export default function Hero() {
               href={person.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/20 px-6 py-2.5 text-[14px] font-semibold text-white transition-colors hover:border-[#8b5cf6]"
+              className="rounded-full border border-white/20 px-6 py-2.5 text-[14px] font-semibold text-white transition-colors hover:border-white"
             >
               Resume
             </a>
