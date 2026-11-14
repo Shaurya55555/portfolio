@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PLANETS, World, type PlanetKey, type Spec } from "./Planet";
 import { flyStore } from "@/lib/flyStore";
 import { person } from "@/lib/data";
@@ -54,7 +54,7 @@ export default function OrbitMap() {
 
   hoverRef.current = hover;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = box.current;
     if (!el) return;
     const ro = new ResizeObserver(() => setDim({ w: el.clientWidth, h: el.clientHeight }));
@@ -72,7 +72,7 @@ export default function OrbitMap() {
   const px = (b: Body) => Math.max(wide ? 30 : 24, Math.round(unit * b.size));
   const sun = wide ? 112 : 58;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!dim.w) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
@@ -105,7 +105,8 @@ export default function OrbitMap() {
       });
       raf = requestAnimationFrame(draw);
     };
-    raf = requestAnimationFrame(draw);
+    // place every world and label before the first frame, not one frame later
+    draw(last);
     return () => cancelAnimationFrame(raf);
   }, [dim.w, dim.h, cx, cy, rx, ry]);
 

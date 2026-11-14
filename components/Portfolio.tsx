@@ -24,9 +24,6 @@ import { Travel } from "./Planet";
 const StarsCanvas = dynamic(() => import("./canvas/Stars"), { ssr: false });
 const loadAstronaut = () => import("./AstronautCanvas");
 const AstronautCanvas = dynamic(loadAstronaut, { ssr: false });
-// begin fetching the 3D chunk now, in parallel with hydration, instead of
-// after it
-if (typeof window !== "undefined") void loadAstronaut();
 
 export default function Portfolio() {
   // Mount the WebGL layers only once the page has had a chance to paint,
@@ -48,7 +45,11 @@ export default function Portfolio() {
         setAstro(v);
       }
     };
-    const id = requestAnimationFrame(() => set(true));
+    // the orbit map paints first; the astronaut follows once the page is idle
+    const hasIdle = "requestIdleCallback" in window;
+    const id = hasIdle
+      ? window.requestIdleCallback(() => set(true), { timeout: 700 })
+      : window.setTimeout(() => set(true), 300);
     const onScroll = () => {
       const vh = window.innerHeight;
       if (window.scrollY > vh * 1.6) set(false);
@@ -56,7 +57,8 @@ export default function Portfolio() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      cancelAnimationFrame(id);
+      if (hasIdle) window.cancelIdleCallback(id);
+      else window.clearTimeout(id);
       window.removeEventListener("scroll", onScroll);
     };
   }, []);

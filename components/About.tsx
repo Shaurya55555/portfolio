@@ -1,5 +1,6 @@
 "use client";
 
+import ResumeMenu from "./ResumeMenu";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { Accent, Kicker, Reveal, Section, SectionHead, TiltCard } from "./ui";
@@ -72,14 +73,11 @@ export default function About() {
               <Kicker>Right now</Kicker>
               <p className="mt-4 text-[17px] leading-[1.65] text-ink">{rightNow}</p>
               <p className="mt-4 text-[15px] leading-[1.65] text-muted">{person.availability}</p>
-              <a
-                href={person.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-2 font-mono text-[13px] text-accent transition-colors hover:text-white"
-              >
-                Read the resume <span aria-hidden>↗</span>
-              </a>
+              <div className="mt-6">
+                <ResumeMenu className="inline-flex items-center gap-2 font-mono text-[13px] text-accent transition-colors hover:text-white">
+                  Read the resume
+                </ResumeMenu>
+              </div>
             </div>
           </TiltCard>
         </Reveal>

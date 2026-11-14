@@ -1,5 +1,6 @@
 "use client";
 
+import ResumeMenu from "./ResumeMenu";
 import { motion } from "framer-motion";
 import { person, heroCopy } from "@/lib/data";
 import OrbitMap from "./OrbitMap";
@@ -32,14 +33,9 @@ export default function Hero() {
             >
               View projects
             </a>
-            <a
-              href={person.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-white/20 px-6 py-2.5 text-[14px] font-semibold text-white transition-colors hover:border-white"
-            >
+            <ResumeMenu className="rounded-full border border-white/20 px-6 py-2.5 text-[14px] font-semibold text-white transition-colors hover:border-white">
               Resume
-            </a>
+            </ResumeMenu>
           </div>
         </div>
       </div>

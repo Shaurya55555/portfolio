@@ -88,12 +88,17 @@ export default function RootLayout({
       className={`${poppins.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
       <head>
-        {/* start fetching the astronaut before any JS has run */}
+        {/* the orbit map is the first thing seen: fetch its planets first */}
+        {["sun", "mercury", "venus", "earth", "mars", "jupiter", "saturn", "uranus", "neptune"].map((n) => (
+          <link key={n} rel="preload" as="image" href={`/solar/${n}.webp`} type="image/webp" />
+        ))}
+        {/* the astronaut comes second, at low priority so it cannot slow the orbit map */}
         <link
           rel="preload"
           as="fetch"
           href="/models/astronaut.glb"
           crossOrigin="anonymous"
+          fetchPriority="low"
         />
       </head>
       <body>{children}</body>

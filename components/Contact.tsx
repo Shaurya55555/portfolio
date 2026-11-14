@@ -1,5 +1,6 @@
 "use client";
 
+import ResumeMenu from "./ResumeMenu";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
@@ -97,22 +98,9 @@ function Contact() {
           >
             LinkedIn
           </a>
-          <a
-            href={person.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent"
-          >
-            Resume (SDE)
-          </a>
-          <a
-            href={person.resumeAI}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent"
-          >
-            Resume (AI)
-          </a>
+          <ResumeMenu className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent">
+            Resume
+          </ResumeMenu>
         </div>
       </motion.div>
 
@@ -120,7 +108,7 @@ function Contact() {
         variants={slideIn("right", "tween", 0.2, 1)}
         className={scene ? "h-auto min-h-[520px] flex-1" : "h-[350px] md:h-[550px] xl:h-auto xl:flex-1"}
       >
-        <InView className="h-full w-full" rootMargin="250px" once={false}>
+        <InView className="h-full w-full" rootMargin="1200px" once={false}>
           <EarthCanvas />
         </InView>
       </motion.div>

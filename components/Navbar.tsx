@@ -1,5 +1,6 @@
 "use client";
 
+import ResumeMenu from "./ResumeMenu";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { sceneStore } from "@/lib/sceneStore";
 import { HiMenu, HiX } from "react-icons/hi";
@@ -76,9 +77,7 @@ export default function Navbar() {
             </li>
           ))}
           <li className="cursor-pointer text-[18px] font-medium text-secondary hover:text-white">
-            <a href={person.resume} target="_blank" rel="noopener noreferrer">
-              Resume
-            </a>
+            <ResumeMenu align="right">Resume</ResumeMenu>
           </li>
         </ul>
 
@@ -112,9 +111,7 @@ export default function Navbar() {
                 </li>
               ))}
               <li className="cursor-pointer text-[16px] font-medium text-secondary">
-                <a href={person.resume} target="_blank" rel="noopener noreferrer">
-                  Resume
-                </a>
+                <ResumeMenu align="right">Resume</ResumeMenu>
               </li>
             </ul>
           </div>
