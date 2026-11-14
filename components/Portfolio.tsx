@@ -6,7 +6,7 @@ import { MotionConfig } from "framer-motion";
 import Navbar from "./Navbar";
 import Hero from "./Hero";
 import About from "./About";
-import Steps from "./Steps";
+import OpenSource from "./OpenSource";
 import Experience from "./Experience";
 import Works from "./Works";
 import Proof from "./Proof";
@@ -93,8 +93,8 @@ export default function Portfolio() {
         <Navbar />
         <Hero />
         <About />
-        <Travel to="How I work" />
-        <Steps />
+        <Travel to="Open source" />
+        <OpenSource />
         <Travel to="Experience" />
         <Experience />
         <Travel to="Projects" />

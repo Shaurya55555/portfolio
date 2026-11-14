@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 export type PlanetKey =
   | "about"
-  | "build"
+  | "opensource"
   | "work"
   | "projects"
   | "proof"
@@ -28,7 +28,7 @@ export type Spec = {
  *  photographs via Wikimedia Commons (see the footer credit). */
 export const PLANETS: Record<PlanetKey, Spec> = {
   about: { name: "Mercury", n: "01", img: "/solar/mercury.webp", side: "right", top: "6%" },
-  build: { name: "Venus", n: "02", img: "/solar/venus.webp", side: "left", top: "4%" },
+  opensource: { name: "Venus", n: "02", img: "/solar/venus.webp", side: "left", top: "4%" },
   earth: { name: "Earth", n: "03", img: "/solar/earth.webp", side: "right", top: "0%" },
   work: { name: "Mars", n: "04", img: "/solar/mars.webp", side: "right", top: "8%" },
   projects: { name: "Jupiter", n: "05", img: "/solar/jupiter.webp", side: "left", top: "0%" },

@@ -1,5 +1,5 @@
 import Portfolio from "@/components/Portfolio";
-import { person, experiences, projects, aboutContent } from "@/lib/data";
+import { person, experiences, projects, aboutContent, openSource } from "@/lib/data";
 
 // Visually hidden, always in the DOM: gives crawlers, link-preview bots and
 // screen readers the full text that the 3D/animated UI renders client-side.
@@ -53,6 +53,23 @@ export default function Page() {
                 </>
               ) : null}
               : {p.description}
+            </li>
+          ))}
+        </ul>
+
+        <h2>Open source</h2>
+        <p>
+          {openSource.merged} merged pull requests across {openSource.projects} projects.
+        </p>
+        <ul>
+          {openSource.items.map((o) => (
+            <li key={o.name}>
+              <a href={o.href}>{o.name}</a>: {o.text}{" "}
+              {o.prs.map((p) => (
+                <a key={p.n} href={p.href}>
+                  #{p.n}{" "}
+                </a>
+              ))}
             </li>
           ))}
         </ul>

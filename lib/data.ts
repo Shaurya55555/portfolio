@@ -29,7 +29,7 @@ export const navLinks = [
 export const dockLinks = [
   { id: "intro", label: "Intro" },
   { id: "about", label: "About" },
-  { id: "build", label: "Steps" },
+  { id: "opensource", label: "Open source" },
   { id: "work", label: "Work" },
   { id: "projects", label: "Projects" },
   { id: "proof", label: "Proof" },
@@ -54,32 +54,84 @@ export const stats = [
   { value: "300+", label: "data structures and algorithms problems solved in C++" },
 ];
 
-export const steps = [
-  {
-    n: "01",
-    title: "Model the data",
-    text: "Schema first. Relational design on PostgreSQL, indexes and queries tuned against real load, plus MongoDB where the shape is document-like.",
-    log: ["$ EXPLAIN ANALYZE orders;", "● Seq Scan on orders", "✓ index scan after the fix"],
-  },
-  {
-    n: "02",
-    title: "Build the service",
-    text: "Node/Express and FastAPI services, REST and GraphQL, Kafka between services. LLM features with tool calling, streaming and retrieval.",
-    log: ["POST /chat", "● tool_call: get_quote", "✓ streamed over SSE"],
-  },
-  {
-    n: "03",
-    title: "Build the interface",
-    text: "React, Next.js, Redux and Tailwind. Responsive components, real-time updates over WebSockets, state that stays predictable.",
-    log: ["<Dashboard />", "● websocket connected", "✓ mobile and desktop ok"],
-  },
-  {
-    n: "04",
-    title: "Ship and trace",
-    text: "Docker, GitHub Actions and Jenkins pipelines, a Git-based deploy flow, and application logs traced to the root cause when something breaks.",
-    log: ["$ git push origin main", "● build · test · deploy", "✓ live · logs clean"],
-  },
-];
+export const openSource = {
+  merged: 12,
+  projects: 9,
+  prsSearch: "https://github.com/search?q=author%3AShaurya55555+type%3Apr&type=pullrequests",
+  inReview: "Terraform AWS provider, Pulumi, Firebase CLI, Hugging Face smolagents, Sphinx, LlamaIndex, boto3",
+  items: [
+    {
+      name: "Kubernetes",
+      area: "apimachinery",
+      text: "Compile the wildcard DNS-1123 subdomain regexp once instead of on every validation.",
+      prs: [{ n: 143793, href: "https://github.com/kubernetes/kubernetes/pull/143793" }],
+      href: "https://github.com/kubernetes/kubernetes",
+    },
+    {
+      name: "Hugging Face PEFT",
+      area: "fine-tuning",
+      text: "Reject layers_to_transform combined with a regex target_modules, for all PEFT methods.",
+      prs: [{ n: 4087, href: "https://github.com/huggingface/peft/pull/4087" }],
+      href: "https://github.com/huggingface/peft",
+    },
+    {
+      name: "NestJS",
+      area: "microservices",
+      text: "Reset the MQTT client state when closing the connection fails.",
+      prs: [{ n: 18352, href: "https://github.com/nestjs/nest/pull/18352" }],
+      href: "https://github.com/nestjs/nest",
+    },
+    {
+      name: "AWS SAM CLI",
+      area: "cloud",
+      text: "Compare Fn::Equals values as strings, as CloudFormation does.",
+      prs: [{ n: 9407, href: "https://github.com/aws/aws-sam-cli/pull/9407" }],
+      href: "https://github.com/aws/aws-sam-cli",
+    },
+    {
+      name: "authlib",
+      area: "OAuth",
+      text: "Ignore Basic auth credentials that are not valid UTF-8 instead of failing the request.",
+      prs: [{ n: 999, href: "https://github.com/authlib/authlib/pull/999" }],
+      href: "https://github.com/authlib/authlib",
+    },
+    {
+      name: "Expo",
+      area: "CLI",
+      text: "Return null from get() when a section on the path is not an object.",
+      prs: [{ n: 52975, href: "https://github.com/expo/expo/pull/52975" }],
+      href: "https://github.com/expo/expo",
+    },
+    {
+      name: "GraphQL Yoga",
+      area: "GraphQL",
+      text: "Match the request Content-Type media type case-insensitively.",
+      prs: [{ n: 4650, href: "https://github.com/graphql-hive/graphql-yoga/pull/4650" }],
+      href: "https://github.com/graphql-hive/graphql-yoga",
+    },
+    {
+      name: "promptfoo",
+      area: "LLM evals",
+      text: "Surface Mistral and Cohere embedding API errors instead of swallowing them.",
+      prs: [
+        { n: 12054, href: "https://github.com/promptfoo/promptfoo/pull/12054" },
+        { n: 12025, href: "https://github.com/promptfoo/promptfoo/pull/12025" },
+      ],
+      href: "https://github.com/promptfoo/promptfoo",
+    },
+    {
+      name: "AnythingLLM",
+      area: "LLM apps",
+      text: "File extension from the last path segment only, Voyage AI embedding progress, Foundry Local in onboarding.",
+      prs: [
+        { n: 6997, href: "https://github.com/Mintplex-Labs/anything-llm/pull/6997" },
+        { n: 6882, href: "https://github.com/Mintplex-Labs/anything-llm/pull/6882" },
+        { n: 6884, href: "https://github.com/Mintplex-Labs/anything-llm/pull/6884" },
+      ],
+      href: "https://github.com/Mintplex-Labs/anything-llm",
+    },
+  ],
+};
 
 export const experiences = [
   {

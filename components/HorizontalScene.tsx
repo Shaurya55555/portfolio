@@ -26,7 +26,7 @@ import { sceneStore } from "@/lib/sceneStore";
 /** The stations, in order, with their design widths (px). */
 export const STATIONS = [
   { id: "about", label: "About", w: 1180 },
-  { id: "build", label: "Steps", w: 1320 },
+  { id: "opensource", label: "Open source", w: 1320 },
   { id: "work", label: "Work", w: 1560 },
   { id: "projects", label: "Projects", w: 1300 },
   { id: "proof", label: "Proof", w: 1520 },
