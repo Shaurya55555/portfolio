@@ -25,7 +25,7 @@ const BODIES: Body[] = [
   { id: "projects", planet: "projects", title: "Projects", detail: "OARFIN, NammaStocks, Ecom GraphQL and more, live.", ring: 0.75, size: 2.0, a0: 3.7 },
   { id: "proof", planet: "proof", title: "Proof", detail: "Hackathon result, DSA and certifications.", ring: 0.87, size: 1.6, a0: 5.7 },
   { id: "stack", planet: "stack", title: "Tech stack", detail: "Languages, frameworks and tools I ship with.", ring: 0.96, size: 1.2, a0: 0.9 },
-  { id: "resume", planet: "neptune", title: "Resume", detail: "My one-page resume, as a PDF.", ring: 1, size: 1.15, a0: 3.2 },
+  { id: "resume", planet: "neptune", title: "Resume", detail: "My one-page resume, as a PDF (SDE or AI version in Contact).", ring: 1, size: 1.15, a0: 3.2 },
 ];
 
 const RINGS = [...new Set(BODIES.map((b) => b.ring))];

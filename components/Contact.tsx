@@ -103,7 +103,15 @@ function Contact() {
             rel="noopener noreferrer"
             className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent"
           >
-            Resume
+            Resume (SDE)
+          </a>
+          <a
+            href={person.resumeAI}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/15 px-4 py-1.5 text-white transition-colors hover:border-accent"
+          >
+            Resume (AI)
           </a>
         </div>
       </motion.div>

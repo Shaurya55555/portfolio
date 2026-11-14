@@ -53,7 +53,8 @@ export default function Explorer() {
           );
         },
       },
-      { label: "Open resume", hint: "PDF", run: () => window.open(person.resume, "_blank", "noopener") },
+      { label: "Open resume (SDE)", hint: "PDF", run: () => window.open(person.resumeSDE, "_blank", "noopener") },
+      { label: "Open resume (AI)", hint: "PDF", run: () => window.open(person.resumeAI, "_blank", "noopener") },
       { label: "GitHub", hint: "github.com/Shaurya55555", run: () => window.open(person.github, "_blank", "noopener") },
       { label: "LinkedIn", hint: "linkedin.com/in/shaurya-bajpai", run: () => window.open(person.linkedin, "_blank", "noopener") },
       { label: "LeetCode", hint: "leetcode.com/u/shaurya55555", run: () => window.open(person.leetcode, "_blank", "noopener") },

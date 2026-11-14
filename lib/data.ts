@@ -9,7 +9,9 @@ export const person = {
   github: "https://github.com/Shaurya55555",
   linkedin: "https://www.linkedin.com/in/shaurya-bajpai/",
   leetcode: "https://leetcode.com/u/shaurya55555/",
-  resume: "/Shaurya_Bajpai_Resume.pdf",
+  resume: "/shaurya_resume_SDE.pdf",
+  resumeSDE: "/shaurya_resume_SDE.pdf",
+  resumeAI: "/shaurya_resume_AI.pdf",
 };
 
 export const heroCopy = {

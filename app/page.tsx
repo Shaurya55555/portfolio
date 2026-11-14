@@ -95,7 +95,8 @@ export default function Page() {
           <a href={person.github}>GitHub</a>,{" "}
           <a href={person.linkedin}>LinkedIn</a>,{" "}
           <a href={person.leetcode}>LeetCode</a>,{" "}
-          <a href={person.resume}>Resume (PDF)</a>.
+          <a href={person.resumeSDE}>Resume, SDE (PDF)</a>,{" "}
+          <a href={person.resumeAI}>Resume, AI (PDF)</a>.
         </p>
       </article>
 
