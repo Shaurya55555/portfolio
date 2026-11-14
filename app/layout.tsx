@@ -92,6 +92,10 @@ export default function RootLayout({
         {["sun", "mercury", "venus", "earth", "mars", "jupiter", "saturn", "uranus", "neptune"].map((n) => (
           <link key={n} rel="preload" as="image" href={`/solar/${n}.webp`} type="image/webp" />
         ))}
+        {/* the Contact globe: fetched quietly while the visitor reads, so it is cached on arrival */}
+        {["scene.gltf", "scene.bin", "textures/Clouds_baseColor.jpg", "textures/Planet_baseColor.jpg"].map((f) => (
+          <link key={f} rel="prefetch" href={`/planet/${f}`} />
+        ))}
         {/* the astronaut comes second, at low priority so it cannot slow the orbit map */}
         <link
           rel="preload"
