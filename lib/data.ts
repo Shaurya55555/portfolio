@@ -57,10 +57,10 @@ export const stats = [
 ];
 
 export const openSource = {
-  merged: 12,
-  projects: 9,
+  merged: 14,
+  projects: 10,
   prsSearch: "https://github.com/search?q=author%3AShaurya55555+type%3Apr&type=pullrequests",
-  inReview: "Terraform AWS provider, Pulumi, Firebase CLI, Hugging Face smolagents, Sphinx, LlamaIndex, boto3",
+  inReview: "Terraform AWS provider, Pulumi, Firebase CLI, AWS SAM CLI, Sphinx, LlamaIndex, boto3",
   items: [
     {
       name: "Kubernetes",
@@ -86,9 +86,19 @@ export const openSource = {
     {
       name: "AWS SAM CLI",
       area: "cloud",
-      text: "Compare Fn::Equals values as strings, as CloudFormation does.",
-      prs: [{ n: 9407, href: "https://github.com/aws/aws-sam-cli/pull/9407" }],
+      text: "Compare Fn::Equals values as strings and accept a string index in Fn::Select, as CloudFormation does.",
+      prs: [
+        { n: 9407, href: "https://github.com/aws/aws-sam-cli/pull/9407" },
+        { n: 9406, href: "https://github.com/aws/aws-sam-cli/pull/9406" },
+      ],
       href: "https://github.com/aws/aws-sam-cli",
+    },
+    {
+      name: "Terraform AWS provider",
+      area: "infrastructure",
+      text: "Match ElastiCache Global Datastore members by Region when waiting for detach.",
+      prs: [{ n: 50882, href: "https://github.com/hashicorp/terraform-provider-aws/pull/50882" }],
+      href: "https://github.com/hashicorp/terraform-provider-aws",
     },
     {
       name: "authlib",

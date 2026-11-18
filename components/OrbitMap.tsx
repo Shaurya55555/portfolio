@@ -19,7 +19,7 @@ type Body = {
  *  section, so a visitor can read a one-line detail from orbit and drop in. */
 const BODIES: Body[] = [
   { id: "about", planet: "about", title: "About", detail: "Who I am, what I build, and how I think.", ring: 0.26, size: 0.5, a0: 0.4 },
-  { id: "opensource", planet: "opensource", title: "Open source", detail: "12 merged PRs across 9 projects, Kubernetes to PEFT.", ring: 0.38, size: 0.85, a0: 2.6 },
+  { id: "opensource", planet: "opensource", title: "Open source", detail: "14 merged PRs across 10 projects, Kubernetes to Terraform.", ring: 0.38, size: 0.85, a0: 2.6 },
   { id: "contact", planet: "earth", title: "Contact", detail: "Send a message, or grab my email and resume.", ring: 0.5, size: 0.9, a0: 4.9 },
   { id: "work", planet: "work", title: "Experience", detail: "Marine Edge and APJ Academy internships.", ring: 0.62, size: 0.65, a0: 1.3 },
   { id: "projects", planet: "projects", title: "Projects", detail: "OARFIN, NammaStocks, Ecom GraphQL and more, live.", ring: 0.75, size: 2.0, a0: 3.7 },
